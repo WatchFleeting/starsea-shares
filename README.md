@@ -48,9 +48,7 @@
 │
 ├── data/                      # 所有内容数据
 │   ├── cards/                 # 资源卡片定义（一个.md文件对应一张首页卡片）
-│   │
 │   ├── articles/              # 完整文章内容（由文章卡片调用）
-│   │
 │   └── files/                 # 文件分享详情（由文件卡片调用）
 │
 └── assets/                    # 静态资源（图片、文件等）
@@ -240,12 +238,7 @@ export default async function handler(req, res) {
 
 为保护付费资源，网站已内置多层防复制机制：
 
-· CSS 禁止选中：user-select: none 阻止文本选择。
-· 禁用右键菜单：contextmenu 事件被阻止。
-· 禁用常用快捷键：Ctrl+C、Ctrl+A、Ctrl+S、Ctrl+U、F12、Ctrl+Shift+I 等均被拦截。
-· 禁用复制事件：copy 事件被阻止。
-· 下载链接不暴露文本：下载按钮使用 JavaScript 动态触发，不显示真实 URL。
-· 简单开发者工具检测：检测窗口大小变化，但仅记录日志，不干扰正常使用。
+· CSS 禁止选中：user-select: none 阻止文本选择。· 禁用右键菜单：contextmenu 事件被阻止。· 禁用常用快捷键：Ctrl+C、Ctrl+A、Ctrl+S、Ctrl+U、F12、Ctrl+Shift+I 等均被拦截。· 禁用复制事件：copy 事件被阻止。· 下载链接不暴露文本：下载按钮使用 JavaScript 动态触发，不显示真实 URL。· 简单开发者工具检测：检测窗口大小变化，但仅记录日志，不干扰正常使用。
 
 ---
 
