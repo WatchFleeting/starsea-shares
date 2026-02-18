@@ -258,15 +258,18 @@ export default async function handler(req, res) {
 ❓ 常见问题 (FAQ)
 
 Q: 为什么我新加的卡片没有显示在首页？
+
 A: 请按顺序检查：
 1. 确保 data-index.json 中已添加了新卡片的路径；
 2. 检查 Markdown 文件的 YAML 格式是否正确；
 3. 尝试清除浏览器缓存后刷新。
 
 Q: 网站流量和存储有限制吗？
+
 A: GitHub Pages 每月有 100GB 带宽和 1GB 存储空间的限制。如果分享大型文件，强烈建议使用第三方对象存储服务（如阿里云OSS、Backblaze B2），并将 downloadUrl 指向该服务提供的链接。
 
 Q: 如何备份我的内容？
+
 A: 整个 data/ 目录包含了你的所有核心内容，定期备份此目录和 data-index.json 文件即可。
 
 ---
