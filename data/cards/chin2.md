@@ -1,14 +1,16 @@
 ---
-id: 5
-title: "chin2"
-description: "收录海量优质漫画，更新及时，画质清晰，支持多语言版本。以高质量的翻译和精致的排版著称。"
-category: "漫画资源"
+id: "chin2"
+resource_id: "chin2"
+title: "Chin2 工具箱"
+description: "实用的在线工具集合。"
 type: "web"
-url: "https://www.chin2.net/"
-icon: "fas fa-book-open"
+category: "工具"
 tags: ["推荐"]
-date: "2025-10-11"
-docUrl: "https://www.chin2.net/Team"
+author: "鸿渚"
+date: "2026-02-15"
+icon: "fas fa-tools"
+cover: "/assets/covers/chin2.jpg"
+url: "https://chin2.com"
 ---
 
 chin2以高质量的翻译和精致的排版著称，提供优质的漫画阅读体验。
