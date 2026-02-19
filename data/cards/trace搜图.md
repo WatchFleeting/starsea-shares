@@ -1,13 +1,16 @@
 ---
-id: 11
-title: "trace搜图"
-description: "动漫识图神器，可以识别动漫截图出处。支持通过截图查找动画名称、集数和时间点。"
-category: "识图资源"
+id: "trace搜图"
+resource_id: "trace搜图"
+title: "Trace.moe 动漫搜图"
+description: "通过截图搜索动漫出处。"
 type: "web"
-url: "https://trace.moe/"
+category: "搜图工具"
+tags: ["热门"]
+author: "鸿渚"
+date: "2026-02-09"
 icon: "fas fa-film"
-tags: []
-date: "2025-10-11"
+cover: "/assets/covers/trace.jpg"
+url: "https://trace.moe"
 ---
 
 trace搜图是专业的动漫识图工具，可以精确识别动漫截图出处。
