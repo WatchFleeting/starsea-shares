@@ -1,5 +1,5 @@
 ---
-id: "article-1"
+id: "ai_painting"
 title: "AI绘画完全指南"
 author: "鸿渚"
 date: "2025-12-15"
