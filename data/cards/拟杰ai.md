@@ -1,13 +1,15 @@
 ---
-id: 22
-title: "拟杰ai"
-description: "AI绘画技术教程与资源分享。提供详细的AI绘画入门教程和实用工具推荐。"
-category: "优质UP"
+id: "拟杰ai"
+resource_id: "拟杰ai"
+title: "拟杰 AI 工具"
+description: "AI 绘画与聊天机器人。"
 type: "web"
-url: "https://b23.tv/BCA8dg1"
-icon: "fas fa-unlock-alt"
-tags: ["最新"]
-date: "2025-11-11"
+category: "AI"
+author: "鸿渚"
+date: "2026-01-29"
+icon: "fas fa-robot"
+cover: "/assets/covers/nijieai.jpg"
+url: "https://nijieai.example.com"
 ---
 
 拟杰ai提供详细的AI绘画入门教程和实用工具推荐。
