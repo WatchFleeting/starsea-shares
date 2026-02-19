@@ -1,13 +1,16 @@
 ---
-id: 3
-title: "nhentai"
-description: "收录海量优质漫画，更新及时，画质清晰，支持多语言版本。拥有详细的分类标签系统，便于用户快速找到自己喜欢的漫画类型。"
-category: "漫画资源"
+id: "nhentai"
+resource_id: "nhentai"
+title: "nhentai 镜像站"
+description: "全球最大的二次元漫画分享平台镜像。"
 type: "web"
-url: "https://nhentai.net/"
-icon: "fas fa-book"
-tags: ["热门", "推荐"]
-date: "2025-10-11"
+category: "漫画"
+tags: ["热门"]
+author: "鸿渚"
+date: "2026-02-17"
+icon: "fas fa-globe"
+cover: "/assets/covers/nhentai.jpg"
+url: "https://nhentai.net"
 ---
 
 nhentai是一个专注于漫画资源的网站，提供海量优质漫画内容，更新及时，画质清晰，支持多语言版本。
