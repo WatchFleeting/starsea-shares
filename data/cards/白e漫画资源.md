@@ -1,16 +1,15 @@
 ---
-id: 8
-title: "白e - 漫画资源"
-description: "Ehviewer白版，简洁界面，专注于核心阅读功能。无广告，启动快速，适合追求简洁的用户。"
-category: "程序资源"
-type: "software"
-url: "https://gitee.com/nightmare97/EhViewer"
-icon: "fas fa-snowflake"
-tags: []
-date: "2025-10-11"
-docUrl: "https://gitee.com/nightmare97/EhViewer/blob/test/README.md"
-version: "最新版"
-platform: "Android"
+id: "白e漫画资源"
+resource_id: "白e漫画资源"
+title: "白e 漫画资源"
+description: "白色漫画资源合集。"
+type: "file"
+category: "漫画"
+author: "鸿渚"
+date: "2026-02-12"
+icon: "fas fa-file-archive"
+cover: "/assets/covers/bai-e.jpg"
+fileRef: "data/files/bai-e-details.md"
 ---
 
 白e是Ehviewer的白色简洁版本，专注于核心阅读功能，无广告，启动快速。
