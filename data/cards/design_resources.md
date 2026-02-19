@@ -1,15 +1,18 @@
 ---
-id: 1
-title: "UI设计资源包"
-description: "包含1000+高质量图标、50+UI组件模板和20套配色方案的完整设计资源集合。"
-category: "设计资源"  
+id: "design_resources"
+resource_id: "design_resources"
+title: "设计资源包"
+description: "包含 UI 素材、图标、样机等设计资源。"
 type: "file"
-icon: "fas fa-file-archive"
-tags: ["最新", "推荐"]
+category: "设计素材"
+tags: ["热门", "推荐"]
 author: "鸿渚"
-date: "2025-12-15"
-cover: "/assets/covers/file-design.jpg"
+date: "2026-02-19"
+icon: "fas fa-file-archive"
+cover: "/assets/covers/design.jpg"
 fileRef: "data/files/design-resources-details.md"
+is_paid: true
+price: 9.99
 ---
 
 <!-- 文件分享卡片：通过外部链接分享可下载文件 -->
