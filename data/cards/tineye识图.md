@@ -1,13 +1,15 @@
 ---
-id: 16
-title: "tineye识图"
-description: "反向图片搜索引擎，支持多种图片格式。可以查找图片在互联网上的使用情况。"
-category: "识图资源"
+id: "tineye识图"
+resource_id: "tineye识图"
+title: "TinEye 识图"
+description: "反向图片搜索引擎。"
 type: "web"
-url: "https://tineye.com/"
-icon: "fas fa-eye"
-tags: []
-date: "2025-10-11"
+category: "搜图工具"
+author: "鸿渚"
+date: "2026-02-04"
+icon: "fas fa-search"
+cover: "/assets/covers/tineye.jpg"
+url: "https://tineye.com"
 ---
 
 tineye是专业的反向图片搜索引擎，支持查找图片在互联网上的使用情况。
