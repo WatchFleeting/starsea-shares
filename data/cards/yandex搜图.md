@@ -1,13 +1,15 @@
 ---
-id: 10
-title: "yandex搜图"
-description: "俄罗斯的搜索引擎，识图功能强大。特别擅长识别动漫和二次元图片，准确率较高。"
-category: "识图资源"
+id: "yandex搜图"
+resource_id: "yandex搜图"
+title: "Yandex 识图"
+description: "俄罗斯搜索引擎的以图搜图功能。"
 type: "web"
-url: "https://yandex.com/images/"
+category: "搜图工具"
+author: "鸿渚"
+date: "2026-02-10"
 icon: "fas fa-search"
-tags: ["推荐"]
-date: "2025-10-11"
+cover: "/assets/covers/yandex.jpg"
+url: "https://yandex.com/images"
 ---
 
 yandex搜图是俄罗斯的搜索引擎，特别擅长识别动漫和二次元图片。
