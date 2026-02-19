@@ -1,14 +1,15 @@
 ---
-id: 4
-title: "shotalove"
-description: "收录海量优质漫画，更新及时，画质清晰，支持多语言版本。特别适合喜欢轻松恋爱题材的用户。"
-category: "漫画资源"
+id: "shotalove"
+resource_id: "shotalove"
+title: "正太资源站"
+description: "分享正太相关图片与资源。"
 type: "web"
-url: "https://shotalove.fun/"
-icon: "fas fa-heart"
-tags: ["最新"]
-date: "2025-10-11"
-docUrl: "https://shotalove.fun/about/"
+category: "图库"
+author: "鸿渚"
+date: "2026-02-16"
+icon: "fas fa-image"
+cover: "/assets/covers/shotalove.jpg"
+url: "https://example.com/shotalove"
 ---
 
 shotalove专注于提供优质漫画资源，特别适合喜欢轻松恋爱题材的用户。
