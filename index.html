@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>鸿渚资源分享站 | 网页·软件·文件·文章一站式分享</title>
+    <title>鸿渚资源分享站</title>
     <meta name="description" content="基于Markdown的静态资源分享站，支持网页推荐、软件下载、文件分享和技术文章。">
     <meta name="keywords" content="资源分享,网页推荐,软件下载,技术文章,Markdown">
     <meta name="author" content="鸿渚">
@@ -15,53 +15,37 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
     
     <style>
-        /* ===== 全局CSS变量，定义颜色、阴影、圆角等 ===== */
+        /* ===== CSS 变量 ===== */
         :root {
-            /* 资源类型颜色 */
             --color-web: #3b82f6;
             --color-software: #8b5cf6;
             --color-file: #10b981;
             --color-article: #f59e0b;
-            
-            /* 主题颜色 */
             --primary-color: #2563eb;
             --secondary-color: #475569;
             --accent-color: #f59e0b;
             --danger-color: #ef4444;
             --success-color: #10b981;
-            
-            /* 背景和文字 */
             --bg-light: #f8fafc;
             --bg-card: #ffffff;
             --text-primary: #1e293b;
             --text-secondary: #64748b;
             --border-color: #e2e8f0;
-            
-            /* 阴影和圆角 */
             --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --card-shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.15);
             --border-radius: 12px;
-            
-            /* 过渡动画 */
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        /* 深色模式变量覆盖 */
         body.dark-mode {
             --bg-light: #0f172a;
             --bg-card: #1e293b;
             --text-primary: #f1f5f9;
             --text-secondary: #94a3b8;
             --border-color: #334155;
-            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
         }
         
-        /* ===== 基础重置 ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
@@ -70,26 +54,20 @@
             line-height: 1.6;
             transition: var(--transition);
             min-height: 100vh;
-            /* 防复制：禁止用户选中文本 */
-            user-select: none;
+            user-select: none; /* 防复制：禁止选中文本 */
             -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
         }
         
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
         
-        /* ===== 头部样式 ===== */
+        /* ===== 头部 ===== */
         header {
             background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
             color: white;
             padding: 2.5rem 0;
             margin-bottom: 2rem;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
         
         .site-title {
@@ -99,12 +77,6 @@
             display: flex;
             align-items: center;
             gap: 15px;
-        }
-        
-        .site-subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            max-width: 600px;
         }
         
         .header-actions {
@@ -122,12 +94,9 @@
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             cursor: pointer;
-            transition: var(--transition);
             font-size: 1.2rem;
+            transition: var(--transition);
         }
         
         .theme-toggle:hover {
@@ -135,10 +104,60 @@
             transform: rotate(15deg);
         }
         
+        /* ===== 搜索和筛选栏 ===== */
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 40px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .category-filters {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin: 1rem 0 2rem;
+        }
+        
+        .filter-btn {
+            padding: 8px 20px;
+            border: 2px solid var(--border-color);
+            background: transparent;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+        
+        .filter-btn:hover { border-color: var(--primary-color); color: var(--primary-color); }
+        .filter-btn.active { color: white; border-color: transparent; }
+        .filter-all.active { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .filter-web.active { background: var(--color-web); }
+        .filter-software.active { background: var(--color-software); }
+        .filter-file.active { background: var(--color-file); }
+        .filter-article.active { background: var(--color-article); }
+        
         /* ===== 统计面板 ===== */
         .stats-panel {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             gap: 1.5rem;
             margin: 2.5rem 0;
         }
@@ -146,89 +165,20 @@
         .stat-card {
             background: var(--bg-card);
             border-radius: var(--border-radius);
-            padding: 1.8rem;
+            padding: 1.5rem;
             text-align: center;
             border: 2px solid var(--border-color);
-            transition: var(--transition);
             box-shadow: var(--card-shadow);
         }
         
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--card-shadow-hover);
-        }
+        .stat-icon { font-size: 2.2rem; margin-bottom: 0.8rem; }
+        .stat-value { font-size: 2rem; font-weight: 800; }
+        .stat-label { color: var(--text-secondary); font-size: 0.9rem; }
         
-        .stat-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .stat-value {
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-label {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .stat-web .stat-icon { color: var(--color-web); }
-        .stat-software .stat-icon { color: var(--color-software); }
-        .stat-file .stat-icon { color: var(--color-file); }
-        .stat-article .stat-icon { color: var(--color-article); }
-        
-        /* ===== 分类筛选按钮 ===== */
-        .category-filters {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: var(--bg-card);
-            border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-            box-shadow: var(--card-shadow);
-        }
-        
-        .filter-btn {
-            padding: 0.7rem 1.8rem;
-            border: 2px solid var(--border-color);
-            background: transparent;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: var(--text-primary);
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .filter-btn:hover {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-        }
-        
-        .filter-btn.active {
-            color: white;
-            border-color: transparent;
-        }
-        
-        .filter-all.active { background: linear-gradient(135deg, #667eea, #764ba2); }
-        .filter-web.active { background: var(--color-web); }
-        .filter-software.active { background: var(--color-software); }
-        .filter-file.active { background: var(--color-file); }
-        .filter-article.active { background: var(--color-article); }
-        
-        /* ===== 资源卡片网格 ===== */
+        /* ===== 卡片网格 ===== */
         .resources-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
             margin: 3rem 0;
         }
@@ -243,17 +193,22 @@
             cursor: pointer;
             display: flex;
             flex-direction: column;
-            height: 100%;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .resource-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-6px);
             box-shadow: var(--card-shadow-hover);
             border-color: var(--primary-color);
         }
         
         .card-header {
-            height: 180px;
+            height: 160px;
             background-size: cover;
             background-position: center;
             position: relative;
@@ -265,20 +220,17 @@
         .card-header::after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            bottom: 0; left: 0; right: 0;
             height: 60%;
             background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
         }
         
         .card-type-badge {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            padding: 6px 15px;
+            top: 15px; right: 15px;
+            padding: 4px 12px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 700;
             color: white;
             z-index: 2;
@@ -286,122 +238,66 @@
             background: rgba(0,0,0,0.7);
         }
         
-        .card-type-web { background: var(--color-web); }
-        .card-type-software { background: var(--color-software); }
-        .card-type-file { background: var(--color-file); }
-        .card-type-article { background: var(--color-article); }
-        
         .card-icon {
-            font-size: 3.5rem;
+            font-size: 3rem;
             color: white;
             z-index: 1;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
         }
         
-        .card-tags {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            display: flex;
-            gap: 0.5rem;
-            z-index: 2;
-        }
-        
-        .card-tag {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            backdrop-filter: blur(10px);
-        }
-        
-        .tag-hot { background: rgba(239, 68, 68, 0.8); color: white; }
-        .tag-new { background: rgba(16, 185, 129, 0.8); color: white; }
-        .tag-rec { background: rgba(245, 158, 11, 0.8); color: white; }
-        
         .card-body {
-            padding: 1.8rem;
+            padding: 1.5rem;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
         }
         
         .card-title {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
-            margin-bottom: 0.8rem;
-            line-height: 1.3;
+            margin-bottom: 0.5rem;
         }
         
         .card-desc {
             color: var(--text-secondary);
             flex-grow: 1;
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem;
-            line-height: 1.6;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
         }
         
         .card-meta {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding-top: 1.2rem;
-            margin-top: auto;
+            padding-top: 1rem;
             border-top: 1px solid var(--border-color);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text-secondary);
         }
         
         .card-price {
             color: var(--accent-color);
             font-weight: 700;
-            font-size: 1.1rem;
-        }
-        
-        .card-actions {
-            margin-top: 1rem;
-            display: flex;
-            gap: 0.8rem;
         }
         
         .card-action-btn {
-            flex: 1;
-            padding: 0.8rem 1.2rem;
+            width: 100%;
+            margin-top: 1rem;
+            padding: 10px;
             border: none;
             border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            text-decoration: none;
-        }
-        
-        .card-action-btn.primary {
             background: var(--primary-color);
             color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
         }
         
-        .card-action-btn.secondary {
-            background: var(--bg-light);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-        }
+        .card-action-btn:hover { opacity: 0.9; transform: translateY(-2px); }
         
-        .card-action-btn:hover {
-            transform: translateY(-2px);
-        }
-        
-        /* ===== 模态框样式 ===== */
+        /* ===== 模态框 ===== */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.85);
             display: flex;
             align-items: center;
@@ -423,22 +319,19 @@
             background: var(--bg-card);
             border-radius: var(--border-radius);
             width: 100%;
-            max-width: 900px;
-            max-height: 90vh;
+            max-width: 800px;
+            max-height: 85vh;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
             transform: translateY(30px);
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: 1px solid var(--border-color);
+            transition: transform 0.4s;
         }
         
-        .modal-overlay.active .modal {
-            transform: translateY(0);
-        }
+        .modal-overlay.active .modal { transform: translateY(0); }
         
         .modal-header {
-            padding: 1.5rem 2rem;
+            padding: 1.2rem 1.8rem;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
@@ -448,162 +341,30 @@
             border-radius: var(--border-radius) var(--border-radius) 0 0;
         }
         
-        .modal-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
         .modal-close {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255,255,255,0.2);
             border: none;
             color: white;
-            width: 44px;
-            height: 44px;
+            width: 38px; height: 38px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 1.2rem;
-            transition: var(--transition);
+            font-size: 1.1rem;
         }
         
-        .modal-close:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: rotate(90deg);
-        }
+        .modal-close:hover { background: rgba(255,255,255,0.3); transform: rotate(90deg); }
         
         .modal-body {
             padding: 2rem;
             overflow-y: auto;
-            flex-grow: 1;
         }
         
-        /* ===== 文章内容样式（用于markdown渲染） ===== */
-        .article-content {
-            line-height: 1.8;
-        }
-        
-        .article-content h1 {
-            font-size: 2.2rem;
-            margin: 2rem 0 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 3px solid var(--border-color);
-            color: var(--primary-color);
-        }
-        
-        .article-content h2 {
-            font-size: 1.8rem;
-            margin: 1.8rem 0 1rem;
-            color: var(--text-primary);
-        }
-        
-        .article-content h3 {
-            font-size: 1.4rem;
-            margin: 1.5rem 0 0.8rem;
-            color: var(--text-primary);
-        }
-        
-        .article-content p {
-            margin-bottom: 1.5rem;
-        }
-        
-        .article-content pre {
-            background: #1a1a1a;
-            color: #f8f8f2;
-            padding: 1.5rem;
-            border-radius: 10px;
-            overflow-x: auto;
-            margin: 1.5rem 0;
-            font-family: 'Cascadia Code', 'Courier New', monospace;
-        }
-        
-        .article-content code {
-            background: var(--bg-light);
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-family: 'Cascadia Code', 'Courier New', monospace;
-            font-size: 0.9em;
-        }
-        
-        .article-content blockquote {
-            border-left: 4px solid var(--accent-color);
-            padding-left: 1.5rem;
-            margin: 1.5rem 0;
-            color: var(--text-secondary);
-            font-style: italic;
-        }
-        
-        .article-content ul, .article-content ol {
-            margin: 1rem 0 1.5rem 1.5rem;
-        }
-        
-        .article-content li {
-            margin-bottom: 0.5rem;
-        }
-        
-        /* ===== 文件详情样式 ===== */
-        .file-detail {
-            text-align: center;
-            padding: 2rem 0;
-        }
-        
-        .file-icon-large {
-            font-size: 5rem;
-            margin-bottom: 1.5rem;
-            color: var(--color-file);
-        }
-        
-        .file-name {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        
-        .file-meta {
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            font-size: 1.1rem;
-        }
-        
-        .download-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            padding: 16px 40px;
-            background: linear-gradient(135deg, var(--color-file), #059669);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            cursor: pointer;
-            text-decoration: none;
-            transition: var(--transition);
-            margin: 2rem 0;
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
-        }
-        
-        .download-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
-        }
-        
-        /* ===== 兑换码输入区域样式 ===== */
+        /* ===== 兑换码区域 ===== */
         .redeem-box {
             background: var(--bg-light);
             border-radius: 16px;
-            padding: 2rem;
-            margin: 2rem 0;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
             border: 2px dashed var(--accent-color);
-        }
-        
-        .redeem-box h3 {
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--accent-color);
         }
         
         .redeem-input {
@@ -613,1132 +374,660 @@
             border-radius: 40px;
             background: var(--bg-card);
             color: var(--text-primary);
-            font-size: 1rem;
             margin: 1rem 0;
-        }
-        
-        .redeem-input:focus {
-            outline: none;
-            border-color: var(--accent-color);
         }
         
         .redeem-btn {
             background: var(--accent-color);
             color: white;
             border: none;
-            padding: 12px 32px;
+            padding: 12px 28px;
             border-radius: 40px;
             font-weight: 700;
-            font-size: 1.1rem;
             cursor: pointer;
             transition: var(--transition);
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
         }
         
-        .redeem-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.5);
-        }
-        
-        .redeem-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
+        .redeem-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(245,158,11,0.4); }
+        .redeem-btn:disabled { opacity: 0.6; cursor: not-allowed; }
         
         .redeem-result {
-            margin-top: 1.5rem;
-            padding: 1rem;
+            margin-top: 1rem;
+            padding: 0.8rem;
             border-radius: 8px;
             font-weight: 600;
         }
+        .redeem-success { background: rgba(16,185,129,0.2); color: var(--success-color); border: 1px solid var(--success-color); }
+        .redeem-error { background: rgba(239,68,68,0.2); color: var(--danger-color); border: 1px solid var(--danger-color); }
         
-        .redeem-success {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--success-color);
-            border: 1px solid var(--success-color);
+        /* ===== 下载按钮 ===== */
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 35px;
+            background: linear-gradient(135deg, var(--color-file), #059669);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin: 1rem 0;
+            box-shadow: 0 5px 15px rgba(16,185,129,0.3);
         }
         
-        .redeem-error {
-            background: rgba(239, 68, 68, 0.2);
-            color: var(--danger-color);
-            border: 1px solid var(--danger-color);
-        }
-        
-        /* ===== 加载状态 ===== */
-        .loading {
+        /* ===== 加载与空状态 ===== */
+        .loading, .empty-state, .error-state {
             text-align: center;
             padding: 4rem;
             color: var(--text-secondary);
         }
+        .loading i { font-size: 3rem; margin-bottom: 1rem; animation: spin 1s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         
-        .loading-spinner {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            color: var(--primary-color);
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* ===== 空状态 ===== */
-        .empty-state {
-            text-align: center;
-            padding: 4rem;
-            color: var(--text-secondary);
-        }
-        
-        .empty-state i {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-            color: var(--border-color);
-        }
-        
-        /* ===== 错误状态 ===== */
-        .error-state {
-            text-align: center;
-            padding: 4rem;
-            color: var(--danger-color);
-        }
-        
-        .error-state i {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        /* ===== 页脚样式 ===== */
         footer {
             text-align: center;
-            padding: 3rem 0;
-            margin-top: 4rem;
+            padding: 2rem 0;
+            margin-top: 3rem;
             color: var(--text-secondary);
             border-top: 1px solid var(--border-color);
         }
         
-        /* ===== 响应式设计 ===== */
-        @media (max-width: 768px) {
-            .resources-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-            
-            .site-title {
-                font-size: 2rem;
-            }
-            
-            .stats-panel {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .category-filters {
-                justify-content: center;
-            }
-            
-            .modal-body {
-                padding: 1.5rem;
-            }
-            
-            .header-actions {
-                position: static;
-                margin-top: 1rem;
-                justify-content: flex-end;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .stats-panel {
-                grid-template-columns: 1fr;
-            }
-            
-            .filter-btn {
-                padding: 0.6rem 1.2rem;
-                font-size: 0.9rem;
-            }
-            
-            .modal-header {
-                padding: 1rem 1.5rem;
-            }
-        }
-        
         /* ===== 工具类 ===== */
-        .hidden {
-            display: none !important;
-        }
-        
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-        
-        /* ===== 滚动条样式 ===== */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: var(--bg-light);
-            border-radius: 5px;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 5px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-secondary);
-        }
+        .hidden { display: none !important; }
+        @media (max-width: 600px) { .header-actions { position: static; margin-top: 1rem; } }
     </style>
 </head>
 <body>
-    <!-- ==================== 头部区域 ==================== -->
+    <!-- 头部区域 -->
     <header>
         <div class="container">
-            <h1 class="site-title">
-                <i class="fas fa-cube"></i>
-                鸿渚资源分享站
-            </h1>
-            <p class="site-subtitle">
-                基于Markdown的静态资源分享站 · 支持网页推荐、软件下载、文件分享、技术文章
-            </p>
+            <h1 class="site-title"><i class="fas fa-cube"></i> 鸿渚资源分享站</h1>
+            <p class="site-subtitle">网页·软件·文件·文章 一站式分享</p>
             <div class="header-actions">
-                <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
-                    <i class="fas fa-moon"></i>
-                </button>
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题"><i class="fas fa-moon"></i></button>
             </div>
         </div>
     </header>
 
     <main class="container">
-        <!-- ==================== 统计面板 ==================== -->
-        <div class="stats-panel">
-            <div class="stat-card stat-web">
-                <i class="fas fa-globe stat-icon"></i>
-                <div class="stat-value" id="statWeb">0</div>
-                <div class="stat-label">网页分享</div>
-            </div>
-            <div class="stat-card stat-software">
-                <i class="fas fa-download stat-icon"></i>
-                <div class="stat-value" id="statSoftware">0</div>
-                <div class="stat-label">软件分享</div>
-            </div>
-            <div class="stat-card stat-file">
-                <i class="fas fa-file-archive stat-icon"></i>
-                <div class="stat-value" id="statFile">0</div>
-                <div class="stat-label">文件分享</div>
-            </div>
-            <div class="stat-card stat-article">
-                <i class="fas fa-book-open stat-icon"></i>
-                <div class="stat-value" id="statArticle">0</div>
-                <div class="stat-label">文章分享</div>
-            </div>
-        </div>
+        <!-- 统计面板：动态显示各类资源数量 -->
+        <div class="stats-panel" id="statsPanel"></div>
 
-        <!-- ==================== 分类筛选按钮 ==================== -->
+        <!-- 搜索与筛选区域 -->
+        <div class="search-bar">
+            <input type="text" class="search-input" id="searchInput" placeholder="搜索资源名称、描述或标签...">
+        </div>
         <div class="category-filters" id="categoryFilters">
-            <button class="filter-btn filter-all active" data-category="all">
-                <i class="fas fa-th-large"></i> 全部资源
-            </button>
-            <button class="filter-btn filter-web" data-category="web">
-                <i class="fas fa-globe"></i> 网页分享
-            </button>
-            <button class="filter-btn filter-software" data-category="software">
-                <i class="fas fa-download"></i> 软件分享
-            </button>
-            <button class="filter-btn filter-file" data-category="file">
-                <i class="fas fa-file-archive"></i> 文件分享
-            </button>
-            <button class="filter-btn filter-article" data-category="article">
-                <i class="fas fa-book-open"></i> 文章分享
-            </button>
+            <button class="filter-btn filter-all active" data-category="all">全部</button>
+            <button class="filter-btn filter-web" data-category="web">网页</button>
+            <button class="filter-btn filter-software" data-category="software">软件</button>
+            <button class="filter-btn filter-file" data-category="file">文件</button>
+            <button class="filter-btn filter-article" data-category="article">文章</button>
         </div>
 
-        <!-- ==================== 资源卡片容器（动态渲染） ==================== -->
-        <div id="resourcesContainer">
-            <div class="loading">
-                <i class="fas fa-spinner fa-spin loading-spinner"></i>
-                <h3>正在从GitHub加载资源数据...</h3>
-                <p>首次加载可能需要几秒钟时间</p>
-            </div>
+        <!-- 加载指示器 -->
+        <div id="loading" class="loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            <h3>正在加载资源...</h3>
         </div>
+
+        <!-- 空状态：无匹配结果时显示 -->
+        <div id="noResults" class="empty-state hidden">
+            <i class="fas fa-search"></i>
+            <h3>未找到匹配的资源</h3>
+        </div>
+
+        <!-- 资源卡片网格 -->
+        <div class="resources-grid" id="resourcesGrid"></div>
     </main>
 
-    <!-- ==================== 详情模态框 ==================== -->
+    <!-- 详情模态框 -->
     <div class="modal-overlay" id="detailModal">
         <div class="modal">
             <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">
-                    <i class="fas fa-info-circle"></i>
-                    资源详情
-                </h2>
-                <button class="modal-close" id="modalClose">
-                    <i class="fas fa-times"></i>
-                </button>
+                <h2 class="modal-title" id="modalTitle">资源详情</h2>
+                <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
             </div>
             <div class="modal-body" id="modalBody">
-                <div class="loading">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    <p>正在加载内容...</p>
-                </div>
+                <div class="loading"><i class="fas fa-spinner fa-spin"></i></div>
             </div>
         </div>
     </div>
 
-    <!-- ==================== 页脚 ==================== -->
     <footer>
         <div class="container">
-            <p>© 2025-2026 鸿渚资源分享站 | 基于Markdown + GitHub Pages构建</p>
-            <p style="margin-top: 0.5rem; font-size: 0.9rem;">
-                版本 1.2 | 防复制保护 | 最后更新: <span id="currentDate">2026-02-16</span>
-            </p>
+            <p>© 2025-2026 鸿渚资源分享站 | 优化版 v2.1（统计实时更新）</p>
         </div>
     </footer>
 
     <script>
-        // ============================================================================
-        // 防复制功能模块：禁用右键、选择、复制快捷键等
-        // ============================================================================
+        // ==================== 防复制模块 ====================
+        // 该自执行函数用于禁用常见的复制操作，保护网站内容。
         (function antiCopy() {
-            // 1. 禁用右键菜单
-            document.addEventListener('contextmenu', function(e) {
-                e.preventDefault();
-                return false;
-            });
-
-            // 2. 禁用常用复制快捷键 (Ctrl+C, Ctrl+A, Ctrl+S, Ctrl+U, F12, Ctrl+Shift+I)
-            document.addEventListener('keydown', function(e) {
+            // 禁用右键菜单
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            // 禁用常用快捷键：Ctrl+C, Ctrl+A, Ctrl+S, Ctrl+U, F12, Ctrl+Shift+I
+            document.addEventListener('keydown', e => {
                 const isCtrl = e.ctrlKey || e.metaKey;
                 const key = e.key.toLowerCase();
-                
-                // 阻止 Ctrl+C, Ctrl+A, Ctrl+S, Ctrl+U
-                if (isCtrl && (key === 'c' || key === 'a' || key === 's' || key === 'u')) {
-                    e.preventDefault();
-                    return false;
-                }
-                
-                // 阻止 F12 和 Ctrl+Shift+I (开发者工具)
-                if (e.key === 'F12' || (isCtrl && e.shiftKey && key === 'i')) {
-                    e.preventDefault();
-                    return false;
-                }
+                if (isCtrl && (key === 'c' || key === 'a' || key === 's' || key === 'u')) e.preventDefault();
+                if (e.key === 'F12' || (isCtrl && e.shiftKey && key === 'i')) e.preventDefault();
             });
-
-            // 3. 禁用选择（防止通过鼠标拖动选择）
-            document.addEventListener('selectstart', function(e) {
-                e.preventDefault();
-                return false;
-            });
-
-            // 4. 禁用复制事件
-            document.addEventListener('copy', function(e) {
-                e.preventDefault();
-                return false;
-            });
-
-            // 5. 针对移动端长按菜单
-            document.addEventListener('touchstart', function(e) {
-                if (e.touches.length > 1) {
-                    e.preventDefault(); // 防止双指手势
-                }
-            }, { passive: false });
-
-            // 6. 简单检测开发者工具（仅记录日志，不干扰用户）
-            setInterval(function() {
-                if (window.outerHeight - window.innerHeight > 200 || window.outerWidth - window.innerWidth > 200) {
-                    console.log('检测到开发者工具可能打开，但网站功能正常运行。');
-                }
-            }, 5000);
+            // 禁用鼠标选择
+            document.addEventListener('selectstart', e => e.preventDefault());
+            // 禁用复制事件
+            document.addEventListener('copy', e => e.preventDefault());
         })();
 
-        // ============================================================================
-        // 配置文件与全局状态
-        // ============================================================================
+        // ==================== 全局配置 ====================
+        // 所有可配置参数集中在此，方便修改
         const CONFIG = {
-            dataIndexUrl: 'data-index.json',                // 索引文件路径
-            cacheBuster: '?v=' + new Date().getTime(),      // 缓存破坏参数
-            // 云函数验证接口地址（请替换为你的实际地址）
-            verifyApiUrl: 'https://your-vercel-app.vercel.app/api/verify-redeem'
+            dataIndexUrl: 'data-index.json',                           // 资源索引文件路径
+            verifyApiUrl: 'https://your-vercel-app.vercel.app/api/verify-redeem', // 兑换码验证API地址（请替换）
+            cacheDuration: 60 * 60 * 1000,                             // 本地缓存有效期 1小时（毫秒）
+            searchDebounceMs: 300,                                      // 搜索防抖延迟（毫秒）
         };
 
-        const AppState = {
-            allResources: [],          // 所有卡片数据
-            filteredResources: [],      // 筛选后的卡片数据
-            currentCategory: 'all',     // 当前选中的分类
-            isDarkMode: localStorage.getItem('darkMode') === 'true', // 深色模式状态
-            loadedFiles: new Map(),      // 已加载的Markdown文件缓存
-            unlockedResources: new Set() // 已解锁的资源ID集合
-        };
+        // ==================== 全局状态 ====================
+        let allResources = [];                // 从服务器加载的所有原始资源
+        let filteredResources = [];           // 经过筛选后的资源列表
+        let currentModalResource = null;      // 当前模态框中显示的资源对象
+        let searchTimeout = null;              // 搜索防抖定时器ID
+        const unlockedResources = new Set();   // 已解锁的付费资源ID集合（用于避免重复验证）
 
-        // ============================================================================
-        // 主应用类：负责数据加载、渲染、事件处理
-        // ============================================================================
-        class ResourceShareApp {
-            constructor() {
-                this.init();
+        // DOM 元素引用
+        const statsPanel = document.getElementById('statsPanel');
+        const resourcesGrid = document.getElementById('resourcesGrid');
+        const noResults = document.getElementById('noResults');
+        const loading = document.getElementById('loading');
+        const categoryFilters = document.getElementById('categoryFilters');
+        const searchInput = document.getElementById('searchInput');
+        const modalOverlay = document.getElementById('detailModal');
+        const modalBody = document.getElementById('modalBody');
+        const modalClose = document.getElementById('modalClose');
+        const themeToggle = document.getElementById('themeToggle');
+
+        // ==================== 初始化 ====================
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', init);
+
+        /**
+         * 应用初始化入口
+         * 1. 绑定事件监听器
+         * 2. 加载资源数据（优先使用缓存）
+         * 3. 渲染统计面板（基于全部资源）
+         * 4. 执行首次筛选（渲染卡片）
+         * 5. 隐藏加载指示器
+         */
+        async function init() {
+            setupEventListeners();
+            await loadResourcesWithCache();
+            renderStats(allResources); // 初始统计基于全部资源
+            filterResources();          // 首次渲染
+            loading.classList.add('hidden');
+        }
+
+        /**
+         * 绑定所有事件监听器
+         * - 分类筛选按钮点击
+         * - 搜索输入（带防抖）
+         * - 模态框关闭
+         * - 主题切换
+         */
+        function setupEventListeners() {
+            // 分类筛选：点击按钮时切换激活状态并重新筛选
+            categoryFilters.addEventListener('click', (e) => {
+                const btn = e.target.closest('.filter-btn');
+                if (!btn) return;
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                filterResources();
+            });
+
+            // 搜索输入：防抖处理，避免频繁筛选
+            searchInput.addEventListener('input', () => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => filterResources(), CONFIG.searchDebounceMs);
+            });
+
+            // 模态框关闭按钮
+            modalClose.addEventListener('click', closeModal);
+            // 点击模态框背景（遮罩）关闭
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) closeModal();
+            });
+
+            // 主题切换
+            themeToggle.addEventListener('click', toggleDarkMode);
+            // 恢复深色模式状态（从 localStorage 读取）
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
             }
+        }
 
-            // 初始化应用
-            async init() {
+        /**
+         * 切换深色/浅色主题
+         * 同时更新 localStorage 中的设置，并更改按钮图标
+         */
+        function toggleDarkMode() {
+            const isDark = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+            themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        }
+
+        // ==================== 数据加载（带缓存） ====================
+
+        /**
+         * 加载资源数据，优先使用 localStorage 缓存
+         * 如果缓存存在且未过期，直接使用；否则从网络加载并存入缓存
+         */
+        async function loadResourcesWithCache() {
+            const cacheKey = 'starsea_resources';
+            const cached = localStorage.getItem(cacheKey);
+            if (cached) {
                 try {
-                    this.setCurrentDate();
-                    this.initTheme();
-                    this.bindEvents();
-                    
-                    await this.loadDataIndex();
-                    await this.loadAllResources();
-                    
-                    this.renderResources();
-                    this.updateStatistics();
-                    
-                    console.log('✅ 应用初始化完成，加载资源数:', AppState.allResources.length);
-                } catch (error) {
-                    console.error('❌ 应用初始化失败:', error);
-                    this.showError('无法加载资源数据，请检查控制台或网络连接。');
-                }
-            }
-
-            // 设置页脚当前日期
-            setCurrentDate() {
-                const now = new Date();
-                const dateStr = now.toLocaleDateString('zh-CN', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit'
-                });
-                document.getElementById('currentDate').textContent = dateStr;
-            }
-
-            // 初始化主题（从localStorage读取）
-            initTheme() {
-                if (AppState.isDarkMode) {
-                    document.body.classList.add('dark-mode');
-                    document.querySelector('#themeToggle i').className = 'fas fa-sun';
-                }
-            }
-
-            // 绑定全局事件
-            bindEvents() {
-                // 主题切换
-                document.getElementById('themeToggle').addEventListener('click', () => this.toggleTheme());
-                
-                // 分类筛选
-                document.getElementById('categoryFilters').addEventListener('click', (e) => {
-                    const filterBtn = e.target.closest('.filter-btn');
-                    if (filterBtn) {
-                        const category = filterBtn.dataset.category;
-                        this.setActiveCategory(category);
+                    const { data, timestamp } = JSON.parse(cached);
+                    if (Date.now() - timestamp < CONFIG.cacheDuration) {
+                        allResources = data;
+                        console.log('使用缓存数据');
+                        return;
                     }
-                });
-
-                // 模态框关闭
-                document.getElementById('modalClose').addEventListener('click', () => this.closeModal());
-                document.getElementById('detailModal').addEventListener('click', (e) => {
-                    if (e.target === e.currentTarget) this.closeModal();
-                });
-
-                // ESC键关闭模态框
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape') this.closeModal();
-                });
+                } catch (e) { console.warn('缓存解析失败'); }
             }
+            // 缓存不存在或已过期，从网络加载
+            await loadResourcesFromNetwork();
+            // 存入缓存
+            localStorage.setItem(cacheKey, JSON.stringify({ data: allResources, timestamp: Date.now() }));
+        }
 
-            // 切换深色/浅色主题
-            toggleTheme() {
-                AppState.isDarkMode = !AppState.isDarkMode;
-                document.body.classList.toggle('dark-mode', AppState.isDarkMode);
-                localStorage.setItem('darkMode', AppState.isDarkMode);
-                
-                const icon = document.querySelector('#themeToggle i');
-                icon.className = AppState.isDarkMode ? 'fas fa-sun' : 'fas fa-moon';
-                
-                this.showNotification(
-                    AppState.isDarkMode ? '已切换到深色模式' : '已切换到浅色模式',
-                    'info'
+        /**
+         * 从网络加载资源数据
+         * 1. 获取索引文件 data-index.json
+         * 2. 并行获取所有卡片 Markdown 文件
+         * 3. 解析每个 Markdown 的 YAML 前置元数据
+         * 4. 构造资源对象存入 allResources
+         */
+        async function loadResourcesFromNetwork() {
+            try {
+                const indexRes = await fetch(CONFIG.dataIndexUrl);
+                if (!indexRes.ok) throw new Error('索引加载失败');
+                const index = await indexRes.json();
+                const cardPaths = index.cards || [];
+
+                if (cardPaths.length === 0) { allResources = []; return; }
+
+                // 并行获取所有卡片内容
+                const contents = await Promise.all(
+                    cardPaths.map(file =>
+                        fetch(file).then(res => res.ok ? res.text() : null)
+                    )
                 );
-            }
 
-            // 加载数据索引文件（data-index.json）
-            async loadDataIndex() {
-                try {
-                    const response = await fetch(CONFIG.dataIndexUrl + CONFIG.cacheBuster);
-                    if (!response.ok) throw new Error(`HTTP ${response.status}: ${CONFIG.dataIndexUrl}`);
-                    
-                    this.dataIndex = await response.json();
-                    console.log('📁 数据索引加载成功:', this.dataIndex);
-                } catch (error) {
-                    console.error('❌ 加载数据索引失败:', error);
-                    throw error;
-                }
-            }
-
-            // 加载所有卡片资源（从data-index.json中的路径）
-            async loadAllResources() {
-                if (!this.dataIndex?.cards) {
-                    throw new Error('索引文件中未找到卡片数据');
-                }
-
-                AppState.allResources = [];
-                
-                // 并行加载所有卡片
-                const loadPromises = this.dataIndex.cards.map(async (cardPath) => {
-                    try {
-                        if (AppState.loadedFiles.has(cardPath)) {
-                            return AppState.loadedFiles.get(cardPath);
-                        }
-                        
-                        const resource = await this.loadMarkdownFile(cardPath);
-                        AppState.loadedFiles.set(cardPath, resource);
-                        return resource;
-                    } catch (error) {
-                        console.warn(`⚠️ 卡片加载失败 ${cardPath}:`, error);
-                        return null;
-                    }
-                });
-
-                const results = await Promise.all(loadPromises);
-                AppState.allResources = results.filter(r => r !== null && !r.meta._error);
-                AppState.filteredResources = [...AppState.allResources];
-                
-                console.log(`✅ 成功加载 ${AppState.allResources.length} 张卡片`);
-            }
-
-            // 加载单个Markdown文件，并解析YAML前置元数据
-            async loadMarkdownFile(filePath) {
-                try {
-                    const response = await fetch(filePath + CONFIG.cacheBuster);
-                    if (!response.ok) throw new Error(`HTTP ${response.status}: ${filePath}`);
-                    
-                    const text = await response.text();
-                    const parsed = this.parseFrontMatter(text);
-                    
-                    // 验证必要字段
-                    if (!parsed.meta.id && !parsed.meta.title) {
-                        console.warn(`文件 ${filePath} 缺少必要的元数据`);
-                        parsed.meta._error = true;
-                    }
-                    
-                    parsed.meta._sourcePath = filePath;
-                    return parsed;
-                } catch (error) {
-                    console.error(`❌ 加载文件失败 ${filePath}:`, error);
+                // 解析每个文件，构造资源对象
+                allResources = contents.filter(Boolean).map((text, idx) => {
+                    const parsed = parseFrontMatter(text);
                     return {
-                        meta: {
-                            _error: true,
-                            id: filePath,
-                            title: '加载失败',
-                            description: '无法加载此资源',
-                            type: 'web',
-                            category: '错误'
-                        },
-                        content: ''
+                        ...parsed.meta,                // 合并 YAML 元数据
+                        id: parsed.meta.id || idx,      // 确保有 id
+                        content: parsed.content,        // 保留正文内容
+                        _sourcePath: cardPaths[idx]     // 源文件路径（用于后续加载详情）
                     };
-                }
+                }).filter(r => r.title); // 过滤掉没有标题的无效资源
+            } catch (error) {
+                console.error('加载失败:', error);
+                loading.innerHTML = `<div class="error-state"><i class="fas fa-exclamation-triangle"></i><p>加载失败，请刷新</p></div>`;
+                allResources = [];
             }
+        }
 
-            // 解析YAML前置元数据和正文
-            parseFrontMatter(content) {
-                content = content.trim();
-                
-                // 如果没有YAML分隔符，则全部当作正文
-                if (!content.startsWith('---')) {
-                    return {
-                        meta: {
-                            title: '未命名资源',
-                            description: content.slice(0, 150) + '...',
-                            type: 'web',
-                            category: '未分类'
-                        },
-                        content: content
-                    };
-                }
-
-                const lines = content.split('\n');
-                let i = 1;
-                const meta = {};
-                let yamlLines = [];
-
-                // 收集YAML内容（直到下一个'---'）
-                while (i < lines.length && lines[i].trim() !== '---') {
-                    yamlLines.push(lines[i]);
-                    i++;
-                }
-
-                // 解析YAML行
-                yamlLines.forEach(line => {
-                    const trimmed = line.trim();
-                    if (!trimmed || trimmed.startsWith('#')) return;
-                    
-                    const colonIndex = trimmed.indexOf(':');
-                    if (colonIndex > -1) {
-                        const key = trimmed.slice(0, colonIndex).trim();
-                        let value = trimmed.slice(colonIndex + 1).trim();
-                        
-                        // 处理数组
-                        if (value.startsWith('[') && value.endsWith(']')) {
-                            try {
-                                value = value.slice(1, -1)
-                                    .split(',')
-                                    .map(v => v.trim().replace(/^['"]|['"]$/g, ''));
-                            } catch (e) {
-                                value = [];
-                            }
-                        }
-                        // 处理带引号的字符串
-                        else if ((value.startsWith('"') && value.endsWith('"')) || 
-                                 (value.startsWith("'") && value.endsWith("'"))) {
-                            value = value.slice(1, -1);
-                        }
-                        // 处理布尔值
-                        else if (value.toLowerCase() === 'true') value = true;
-                        else if (value.toLowerCase() === 'false') value = false;
-                        // 处理数字
-                        else if (/^-?\d+(\.\d+)?$/.test(value)) value = Number(value);
-                        
-                        meta[key] = value;
-                    }
-                });
-
-                // 获取正文内容（跳过YAML部分）
-                const mainContent = lines.slice(i + 1).join('\n').trim();
-                
-                // 设置默认值
-                if (!meta.type) meta.type = 'web';
-                if (!meta.category) meta.category = '未分类';
-                if (!meta.icon) meta.icon = this.getDefaultIcon(meta.type);
-                if (!meta.date) meta.date = new Date().toISOString().split('T')[0];
-                
-                return { meta, content: mainContent };
+        /**
+         * 解析 Markdown 文件的 YAML 前置元数据
+         * 简化版，仅处理基本的 key: value 格式，不处理复杂 YAML
+         * @param {string} content - 完整的 Markdown 内容
+         * @returns {object} { meta: 解析后的元数据对象, content: 正文内容 }
+         */
+        function parseFrontMatter(content) {
+            const lines = content.split('\n');
+            // 如果没有以 '---' 开头，则视为无元数据，全部为正文
+            if (!lines[0].startsWith('---')) return { meta: {}, content };
+            let i = 1;
+            const meta = {};
+            // 逐行解析，直到遇到结束的 '---'
+            while (i < lines.length && !lines[i].startsWith('---')) {
+                const [key, ...val] = lines[i].split(':');
+                if (key && val.length) meta[key.trim()] = val.join(':').trim();
+                i++;
             }
+            const mainContent = lines.slice(i + 1).join('\n');
+            return { meta, content: mainContent };
+        }
 
-            // 渲染所有卡片到网格
-            renderResources() {
-                const container = document.getElementById('resourcesContainer');
-                const resources = AppState.filteredResources;
+        // ==================== 渲染统计 ====================
 
-                if (resources.length === 0) {
-                    container.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-search"></i>
-                            <h3>未找到匹配的资源</h3>
-                            <p>尝试选择其他分类或稍后再试。</p>
-                        </div>
-                    `;
-                    return;
+        /**
+         * 渲染统计面板
+         * @param {Array} resources - 要统计的资源数组（通常是全部或筛选后的）
+         */
+        function renderStats(resources) {
+            const total = resources.length;
+            const counts = { web:0, software:0, file:0, article:0 };
+            resources.forEach(r => { if (counts.hasOwnProperty(r.type)) counts[r.type]++; });
+            statsPanel.innerHTML = `
+                <div class="stat-card"><i class="fas fa-cube stat-icon"></i><div class="stat-value">${total}</div><div class="stat-label">全部</div></div>
+                <div class="stat-card"><i class="fas fa-globe stat-icon" style="color:var(--color-web)"></i><div class="stat-value">${counts.web}</div><div class="stat-label">网页</div></div>
+                <div class="stat-card"><i class="fas fa-download stat-icon" style="color:var(--color-software)"></i><div class="stat-value">${counts.software}</div><div class="stat-label">软件</div></div>
+                <div class="stat-card"><i class="fas fa-file-archive stat-icon" style="color:var(--color-file)"></i><div class="stat-value">${counts.file}</div><div class="stat-label">文件</div></div>
+                <div class="stat-card"><i class="fas fa-book-open stat-icon" style="color:var(--color-article)"></i><div class="stat-value">${counts.article}</div><div class="stat-label">文章</div></div>
+            `;
+        }
+
+        // ==================== 筛选与排序 ====================
+
+        /**
+         * 根据当前选中的分类和搜索词对资源进行筛选，并排序
+         * 更新 filteredResources 后，重新渲染统计和卡片网格
+         */
+        function filterResources() {
+            const activeCategory = document.querySelector('.filter-btn.active')?.dataset.category || 'all';
+            const searchTerm = searchInput.value.trim().toLowerCase();
+
+            filteredResources = allResources.filter(res => {
+                // 分类筛选
+                if (activeCategory !== 'all' && res.type !== activeCategory) return false;
+                // 搜索筛选（匹配标题、描述、标签）
+                if (searchTerm) {
+                    return (res.title?.toLowerCase().includes(searchTerm) ||
+                            res.description?.toLowerCase().includes(searchTerm) ||
+                            (res.tags && res.tags.some(t => t.toLowerCase().includes(searchTerm))));
                 }
+                return true;
+            });
 
-                container.innerHTML = resources.map((resource, index) => {
-                    const meta = resource.meta;
-                    const type = meta.type || 'web';
-                    const typeText = this.getTypeChineseName(type);
-                    const typeClass = `card-type-${type}`;
-                    
-                    // 构建标签HTML
-                    let tagsHtml = '';
-                    if (meta.tags && Array.isArray(meta.tags)) {
-                        tagsHtml = meta.tags.map(tag => {
-                            let tagClass = 'card-tag';
-                            if (tag === '热门') tagClass += ' tag-hot';
-                            else if (tag === '最新') tagClass += ' tag-new';
-                            else if (tag === '推荐') tagClass += ' tag-rec';
-                            return `<span class="${tagClass}">${tag}</span>`;
-                        }).join('');
-                    }
-                    
-                    // 构建动作按钮
-                    let actionHtml = '';
-                    let actionText = '';
-                    let actionIcon = '';
-                    
-                    switch(type) {
-                        case 'article':
-                            actionText = '阅读文章';
-                            actionIcon = 'book-open';
-                            break;
-                        case 'file':
-                            actionText = '查看详情';
-                            actionIcon = 'download';
-                            break;
-                        case 'web':
-                        case 'software':
-                            actionText = '访问链接';
-                            actionIcon = 'external-link-alt';
-                            break;
-                    }
-                    
-                    // 付费卡片显示价格标签，按钮文字统一为“查看详情”
-                    if (meta.is_paid && meta.price) {
-                        actionHtml = `
-                            <div class="card-price">¥${meta.price}</div>
-                            <button class="card-action-btn primary" data-index="${index}" data-type="${type}">
-                                <i class="fas fa-${actionIcon}"></i>
-                                查看详情
-                            </button>
-                        `;
-                    } else {
-                        actionHtml = `
-                            <button class="card-action-btn primary" data-index="${index}" data-type="${type}">
-                                <i class="fas fa-${actionIcon}"></i>
-                                ${actionText}
-                            </button>
-                        `;
-                    }
+            // 简单排序：按 id 升序（可根据需要修改）
+            filteredResources.sort((a, b) => (a.id || 0) - (b.id || 0));
+            
+            // 更新统计面板（基于筛选后的结果）
+            renderStats(filteredResources);
+            
+            // 渲染卡片网格
+            renderGrid();
+        }
 
-                    return `
-                    <div class="resource-card" data-index="${index}">
-                        <div class="card-header" ${meta.cover ? `style="background-image: url('${meta.cover}')"` : ''}>
-                            <div class="card-type-badge ${typeClass}">${typeText}</div>
-                            ${tagsHtml ? `<div class="card-tags">${tagsHtml}</div>` : ''}
-                            <i class="${meta.icon} card-icon"></i>
+        /**
+         * 渲染卡片网格
+         * 根据 filteredResources 生成 HTML 并插入到 resourcesGrid 中
+         * 如果 filteredResources 为空，显示空状态
+         */
+        function renderGrid() {
+            if (filteredResources.length === 0) {
+                resourcesGrid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+            noResults.classList.add('hidden');
+
+            resourcesGrid.innerHTML = filteredResources.map((res, idx) => {
+                const typeClass = `card-type-${res.type}`;
+                const priceDisplay = res.is_paid ? `¥${res.price}` : '免费';
+                const icon = res.icon || getDefaultIcon(res.type);
+                const desc = (res.description || '').substring(0, 80) + (res.description?.length > 80 ? '...' : '');
+                return `
+                    <div class="resource-card" data-index="${idx}">
+                        <div class="card-header" ${res.cover ? `style="background-image: url('${res.cover}')"` : ''}>
+                            <span class="card-type-badge ${typeClass}">${res.type}</span>
+                            <i class="${icon} card-icon"></i>
                         </div>
                         <div class="card-body">
-                            <h3 class="card-title">${this.escapeHtml(meta.title)}</h3>
-                            <p class="card-desc">${this.escapeHtml(meta.description || '暂无描述')}</p>
+                            <h3 class="card-title">${escapeHtml(res.title)}</h3>
+                            <p class="card-desc">${escapeHtml(desc)}</p>
                             <div class="card-meta">
-                                <span>${this.escapeHtml(meta.category)}</span>
-                                <span>${meta.date || ''}</span>
+                                <span>${escapeHtml(res.category || '其他')}</span>
+                                <span class="card-price">${priceDisplay}</span>
                             </div>
-                            ${actionHtml}
+                            <button class="card-action-btn" data-index="${idx}">查看详情</button>
                         </div>
                     </div>
-                    `;
-                }).join('');
+                `;
+            }).join('');
 
-                // 绑定卡片点击事件
-                this.bindCardEvents();
-            }
-
-            // 绑定卡片上的按钮点击事件
-            bindCardEvents() {
-                const container = document.getElementById('resourcesContainer');
-                
-                container.addEventListener('click', (e) => {
-                    const card = e.target.closest('.resource-card');
-                    const actionBtn = e.target.closest('.card-action-btn');
-                    
-                    if (card && actionBtn) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        
-                        const index = parseInt(card.dataset.index);
-                        const type = actionBtn.dataset.type;
-                        this.handleCardAction(index, type);
-                    } else if (card && !e.target.closest('.card-price')) {
-                        // 点击卡片空白区域也触发详情（付费卡片除外）
-                        const index = parseInt(card.dataset.index);
-                        const resource = AppState.filteredResources[index];
-                        if (resource) {
-                            this.handleCardAction(index, resource.meta.type);
-                        }
-                    }
+            // 为每个卡片详情按钮绑定点击事件
+            document.querySelectorAll('.card-action-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const idx = btn.dataset.index;
+                    openModal(filteredResources[idx]);
                 });
-            }
+            });
+        }
 
-            // 处理卡片点击动作
-            async handleCardAction(index, type) {
-                const resource = AppState.filteredResources[index];
-                if (!resource) return;
+        /**
+         * 根据资源类型返回默认的 Font Awesome 图标类名
+         * @param {string} type - 资源类型（web/software/file/article）
+         * @returns {string} 图标类名
+         */
+        function getDefaultIcon(type) {
+            const map = { web:'fas fa-globe', software:'fas fa-download', file:'fas fa-file-archive', article:'fas fa-book-open' };
+            return map[type] || 'fas fa-star';
+        }
 
-                const meta = resource.meta;
-                
-                switch(type) {
-                    case 'article':
-                        if (meta.contentRef) {
-                            await this.openArticleModal(meta.contentRef, meta);
-                        } else {
-                            this.showNotification('该文章暂无内容', 'warning');
-                        }
-                        break;
-                    case 'file':
-                        if (meta.fileRef) {
-                            await this.openFileModal(meta.fileRef, meta);
-                        } else if (meta.url) {
-                            window.open(meta.url, '_blank');
-                        }
-                        break;
-                    case 'web':
-                    case 'software':
-                        if (meta.url) {
-                            window.open(meta.url, '_blank');
-                            this.showNotification(`正在访问: ${meta.title}`, 'info');
-                        }
-                        break;
+        /**
+         * 转义 HTML 特殊字符，防止 XSS 攻击
+         * @param {string} text - 原始文本
+         * @returns {string} 转义后的安全文本
+         */
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ==================== 模态框详情 ====================
+
+        /**
+         * 打开模态框并加载资源详情
+         * @param {object} resource - 要显示的资源对象
+         */
+        function openModal(resource) {
+            currentModalResource = resource;
+            document.getElementById('modalTitle').innerHTML = `<i class="fas fa-info-circle"></i> ${escapeHtml(resource.title)}`;
+            modalBody.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i></div>';
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // 禁止背景滚动
+
+            // 根据资源类型调用不同的渲染函数
+            if (resource.type === 'file') renderFileDetail(resource);
+            else if (resource.type === 'article') renderArticleDetail(resource);
+            else renderDefaultDetail(resource);
+        }
+
+        /** 关闭模态框 */
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto'; // 恢复滚动
+        }
+
+        /**
+         * 渲染文件类型资源的详情
+         * 如果资源有 fileRef，会尝试加载对应的详情文件
+         * 根据付费状态和是否解锁显示兑换码输入框或下载按钮
+         * @param {object} resource - 资源对象（可能来自卡片或已加载的详情）
+         */
+        async function renderFileDetail(resource) {
+            try {
+                let fileMeta = resource;
+                // 如果有 fileRef 且尚未加载完整详情，则加载对应的 Markdown 文件
+                if (resource.fileRef && !resource._fullDetail) {
+                    const fileRes = await fetch(resource.fileRef);
+                    const text = await fileRes.text();
+                    const parsed = parseFrontMatter(text);
+                    fileMeta = { ...resource, ...parsed.meta, content: parsed.content, _fullDetail: true };
                 }
-            }
 
-            // 打开文章模态框
-            async openArticleModal(articlePath, cardMeta) {
-                try {
-                    document.getElementById('modalTitle').innerHTML = 
-                        `<i class="fas fa-book-open"></i> ${this.escapeHtml(cardMeta.title)}`;
-                    document.getElementById('modalBody').innerHTML = `
-                        <div class="loading">
-                            <i class="fas fa-spinner fa-spin"></i>
-                            <p>正在加载文章内容...</p>
-                        </div>
-                    `;
-                    this.openModal();
+                const resourceKey = fileMeta.id || fileMeta.fileRef || 'unknown';
+                const isUnlocked = unlockedResources.has(resourceKey);
+                const isPaid = fileMeta.is_paid;
 
-                    // 加载文章内容
-                    let article;
-                    if (AppState.loadedFiles.has(articlePath)) {
-                        article = AppState.loadedFiles.get(articlePath);
-                    } else {
-                        article = await this.loadMarkdownFile(articlePath);
-                        AppState.loadedFiles.set(articlePath, article);
-                    }
-                    
-                    if (article.meta._error) throw new Error('文章文件加载失败');
-                    
-                    // 渲染文章内容
-                    const htmlContent = article.content ? marked.parse(article.content) : '<p>暂无内容</p>';
-                    const readTime = article.meta.readTime || cardMeta.readTime || '10分钟阅读';
-                    const author = article.meta.author || cardMeta.author || '鸿渚';
-                    const date = article.meta.date || cardMeta.date || '未知日期';
-                    
-                    document.getElementById('modalBody').innerHTML = `
-                        <div style="margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-color);">
-                            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center;">
-                                <span><i class="fas fa-user"></i> ${this.escapeHtml(author)}</span>
-                                <span><i class="fas fa-calendar"></i> ${this.escapeHtml(date)}</span>
-                                <span><i class="fas fa-clock"></i> ${this.escapeHtml(readTime)}</span>
-                            </div>
-                        </div>
-                        <div class="article-content">
-                            ${htmlContent}
-                        </div>
-                    `;
-
-                    // 代码高亮
-                    setTimeout(() => {
-                        document.querySelectorAll('pre code').forEach(block => {
-                            hljs.highlightElement(block);
-                        });
-                    }, 100);
-                } catch (error) {
-                    console.error('❌ 加载文章失败:', error);
-                    document.getElementById('modalBody').innerHTML = `<div class="error-state">...</div>`;
-                }
-            }
-
-            // 打开文件模态框
-            async openFileModal(filePath, cardMeta) {
-                try {
-                    document.getElementById('modalTitle').innerHTML = 
-                        `<i class="fas fa-file-archive"></i> ${this.escapeHtml(cardMeta.title)}`;
-                    document.getElementById('modalBody').innerHTML = `<div class="loading">...</div>`;
-                    this.openModal();
-
-                    // 加载文件详情
-                    let fileDetail;
-                    if (AppState.loadedFiles.has(filePath)) {
-                        fileDetail = AppState.loadedFiles.get(filePath);
-                    } else {
-                        fileDetail = await this.loadMarkdownFile(filePath);
-                        AppState.loadedFiles.set(filePath, fileDetail);
-                    }
-                    
-                    const fileMeta = fileDetail.meta;
-                    
-                    // 资源唯一标识（用于兑换码验证）
-                    const resourceKey = fileMeta.id || cardMeta.id || filePath;
-                    const isUnlocked = AppState.unlockedResources.has(resourceKey);
-                    
-                    // 渲染文件详情（根据解锁状态）
-                    this.renderFileDetail(fileMeta, cardMeta, fileDetail.content, isUnlocked, resourceKey);
-                } catch (error) {
-                    console.error('❌ 加载文件详情失败:', error);
-                    document.getElementById('modalBody').innerHTML = `<div class="error-state">...</div>`;
-                }
-            }
-
-            // 渲染文件详情（付费/免费，已解锁/未解锁）
-            renderFileDetail(fileMeta, cardMeta, content, isUnlocked, resourceKey) {
-                const isPaid = cardMeta.is_paid || fileMeta.is_paid;
-                const fileIcon = this.getFileIcon(fileMeta.fileType);
-                const fileSize = fileMeta.fileSize || '大小未知';
-                const fileName = fileMeta.fileName || cardMeta.title;
-                const downloadUrl = fileMeta.downloadUrl || '#';
-                
-                let detailHtml = `
-                    <div class="file-detail">
-                        <i class="fas fa-${fileIcon} file-icon-large"></i>
-                        <h2 class="file-name">${this.escapeHtml(fileName)}</h2>
-                        <div class="file-meta">
-                            <p><i class="fas fa-weight-hanging"></i> ${this.escapeHtml(fileSize)}</p>
-                            <p><i class="fas fa-calendar"></i> ${this.escapeHtml(cardMeta.date || '未知日期')}</p>
-                        </div>
-                        <p style="margin: 1.5rem 0;">${this.escapeHtml(fileMeta.description || cardMeta.description)}</p>
+                let html = `
+                    <div class="file-detail" style="text-align:center">
+                        <i class="fas fa-${getFileIcon(fileMeta.fileType)}" style="font-size:4rem; color:var(--color-file)"></i>
+                        <h2>${escapeHtml(fileMeta.fileName || fileMeta.title)}</h2>
+                        <p>${escapeHtml(fileMeta.description || '')}</p>
+                        <p><i class="fas fa-weight-hanging"></i> ${fileMeta.fileSize || '大小未知'}</p>
                 `;
 
-                // 付费且未解锁 → 显示兑换码输入框
+                // 付费且未解锁 -> 显示兑换码输入框
                 if (isPaid && !isUnlocked) {
-                    detailHtml += `
-                        <div class="redeem-box" id="redeemBox">
-                            <h3><i class="fas fa-lock"></i> 该资源为付费内容</h3>
-                            <p>请在爱发电赞助后获取兑换码，然后输入以解锁：</p>
-                            <input type="text" id="redeemCode" class="redeem-input" placeholder="输入16位兑换码" />
-                            <button id="redeemBtn" class="redeem-btn" data-resource-key="${this.escapeHtml(resourceKey)}" data-file-meta='${this.escapeHtml(JSON.stringify(fileMeta))}' data-card-meta='${this.escapeHtml(JSON.stringify(cardMeta))}'>
-                                <i class="fas fa-unlock-alt"></i> 验证兑换码
-                            </button>
+                    html += `
+                        <div class="redeem-box">
+                            <h3><i class="fas fa-lock"></i> 付费内容</h3>
+                            <input type="text" id="redeemCode" class="redeem-input" placeholder="输入16位兑换码">
+                            <button id="redeemBtn" class="redeem-btn">验证兑换码</button>
                             <div id="redeemResult" class="redeem-result"></div>
                         </div>
                     `;
                 } else {
-                    // 已解锁或免费 → 显示下载按钮（不暴露URL文本）
-                    detailHtml += `
-                        <button class="download-btn" id="downloadFileBtn" data-url="${this.escapeHtml(downloadUrl)}">
-                            <i class="fas fa-download"></i> 下载文件
-                        </button>
-                    `;
+                    // 免费或已解锁 -> 显示下载按钮
+                    const downloadUrl = fileMeta.downloadUrl || '#';
+                    html += `<button class="download-btn" id="downloadBtn" data-url="${downloadUrl}"><i class="fas fa-download"></i> 下载文件</button>`;
                     if (fileMeta.password) {
-                        detailHtml += `
-                            <div style="background: var(--bg-light); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
-                                <p><i class="fas fa-key"></i> 解压密码: <code>${this.escapeHtml(fileMeta.password)}</code></p>
-                            </div>
-                        `;
+                        html += `<p><i class="fas fa-key"></i> 解压密码: <code>${escapeHtml(fileMeta.password)}</code></p>`;
                     }
                 }
 
-                // 添加详细说明（Markdown内容）
-                if (content) {
-                    const contentHtml = marked.parse(content);
-                    detailHtml += `
-                        <div style="text-align: left; margin-top: 2.5rem;">
-                            <h3 style="margin-bottom: 1rem;"><i class="fas fa-info-circle"></i> 详细说明</h3>
-                            <div class="article-content">${contentHtml}</div>
-                        </div>
-                    `;
+                // 如果存在详细说明内容，则渲染
+                if (fileMeta.content) {
+                    html += `<hr><div class="article-content">${marked.parse(fileMeta.content)}</div>`;
                 }
+                html += '</div>';
+                modalBody.innerHTML = html;
 
-                detailHtml += `</div>`;
-                document.getElementById('modalBody').innerHTML = detailHtml;
-
-                // 绑定事件
+                // 绑定兑换码验证事件
                 if (isPaid && !isUnlocked) {
-                    document.getElementById('redeemBtn').addEventListener('click', (e) => {
-                        const btn = e.currentTarget;
+                    document.getElementById('redeemBtn').addEventListener('click', () => {
                         const code = document.getElementById('redeemCode').value.trim();
-                        const resourceKey = btn.dataset.resourceKey;
-                        const fileMeta = JSON.parse(btn.dataset.fileMeta);
-                        const cardMeta = JSON.parse(btn.dataset.cardMeta);
-                        this.verifyRedeemCode(code, resourceKey, fileMeta, cardMeta);
+                        verifyRedeemCode(code, resourceKey, fileMeta);
                     });
                 } else {
-                    const downloadBtn = document.getElementById('downloadFileBtn');
-                    if (downloadBtn) {
-                        downloadBtn.addEventListener('click', function(e) {
-                            const url = this.dataset.url;
+                    // 绑定下载按钮事件（通过创建临时 <a> 标签触发下载，不暴露 URL 文本）
+                    const btn = document.getElementById('downloadBtn');
+                    if (btn) {
+                        btn.addEventListener('click', () => {
+                            const url = btn.dataset.url;
                             if (url && url !== '#') {
-                                // 创建临时a标签触发下载（不暴露URL）
                                 const a = document.createElement('a');
                                 a.href = url;
-                                a.download = '';
-                                a.style.display = 'none';
-                                document.body.appendChild(a);
+                                a.download = ''; // 让浏览器决定文件名
                                 a.click();
-                                document.body.removeChild(a);
-                            } else {
-                                alert('下载链接无效，请联系管理员。');
                             }
                         });
                     }
                 }
-            }
-
-            // 验证兑换码（调用云函数）
-            async verifyRedeemCode(code, resourceKey, fileMeta, cardMeta) {
-                if (!code) {
-                    this.showRedeemResult('请输入兑换码', 'error');
-                    return;
-                }
-
-                const redeemBtn = document.getElementById('redeemBtn');
-                const originalText = redeemBtn.innerHTML;
-                redeemBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 验证中...';
-                redeemBtn.disabled = true;
-
-                try {
-                    const response = await fetch(CONFIG.verifyApiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ code, resourceId: resourceKey })
-                    });
-
-                    const data = await response.json();
-                    
-                    if (data.success) {
-                        AppState.unlockedResources.add(resourceKey);
-                        this.showRedeemResult('✅ 验证成功！正在加载下载链接...', 'success');
-                        setTimeout(() => {
-                            this.renderFileDetail(fileMeta, cardMeta, '', true, resourceKey);
-                        }, 1500);
-                    } else {
-                        this.showRedeemResult(`❌ 验证失败：${data.message || '无效的兑换码'}`, 'error');
-                        redeemBtn.innerHTML = originalText;
-                        redeemBtn.disabled = false;
-                    }
-                } catch (error) {
-                    console.error('验证请求失败:', error);
-                    this.showRedeemResult('❌ 网络错误，请稍后重试', 'error');
-                    redeemBtn.innerHTML = originalText;
-                    redeemBtn.disabled = false;
-                }
-            }
-
-            // 显示兑换结果消息
-            showRedeemResult(message, type) {
-                const resultDiv = document.getElementById('redeemResult');
-                resultDiv.innerHTML = message;
-                resultDiv.className = `redeem-result ${type === 'success' ? 'redeem-success' : 'redeem-error'}`;
-            }
-
-            // 切换分类
-            setActiveCategory(category) {
-                AppState.currentCategory = category;
-                document.querySelectorAll('.filter-btn').forEach(btn => {
-                    btn.classList.toggle('active', btn.dataset.category === category);
-                });
-                
-                if (category === 'all') {
-                    AppState.filteredResources = [...AppState.allResources];
-                } else {
-                    AppState.filteredResources = AppState.allResources.filter(
-                        resource => resource.meta.type === category
-                    );
-                }
-                
-                this.renderResources();
-                this.updateStatistics();
-            }
-
-            // 更新统计数字
-            updateStatistics() {
-                const resources = AppState.filteredResources;
-                let webCount = 0, softwareCount = 0, fileCount = 0, articleCount = 0;
-                
-                resources.forEach(resource => {
-                    switch(resource.meta.type) {
-                        case 'web': webCount++; break;
-                        case 'software': softwareCount++; break;
-                        case 'file': fileCount++; break;
-                        case 'article': articleCount++; break;
-                    }
-                });
-                
-                document.getElementById('statWeb').textContent = webCount;
-                document.getElementById('statSoftware').textContent = softwareCount;
-                document.getElementById('statFile').textContent = fileCount;
-                document.getElementById('statArticle').textContent = articleCount;
-            }
-
-            // 打开模态框
-            openModal() {
-                document.getElementById('detailModal').classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-
-            // 关闭模态框
-            closeModal() {
-                document.getElementById('detailModal').classList.remove('active');
-                document.body.style.overflow = 'auto';
-            }
-
-            // 显示错误信息
-            showError(message) {
-                const container = document.getElementById('resourcesContainer');
-                container.innerHTML = `<div class="error-state">...</div>`;
-            }
-
-            // 显示通知
-            showNotification(message, type = 'info') {
-                // 实现略（已提供）
-            }
-
-            // 工具函数：获取类型中文名
-            getTypeChineseName(type) {
-                const map = {
-                    'web': '网页分享',
-                    'software': '软件分享', 
-                    'file': '文件分享',
-                    'article': '文章分享'
-                };
-                return map[type] || type;
-            }
-
-            // 工具函数：获取默认图标
-            getDefaultIcon(type) {
-                const map = {
-                    'web': 'fas fa-globe',
-                    'software': 'fas fa-download',
-                    'file': 'fas fa-file-archive',
-                    'article': 'fas fa-book-open'
-                };
-                return map[type] || 'fas fa-star';
-            }
-
-            // 工具函数：根据文件类型获取图标
-            getFileIcon(fileType) {
-                if (!fileType) return 'file';
-                const map = {
-                    'zip': 'file-archive', 'rar': 'file-archive', '7z': 'file-archive',
-                    'pdf': 'file-pdf',
-                    'doc': 'file-word', 'docx': 'file-word',
-                    'xls': 'file-excel', 'xlsx': 'file-excel',
-                    'ppt': 'file-powerpoint', 'pptx': 'file-powerpoint',
-                    'jpg': 'file-image', 'jpeg': 'file-image', 'png': 'file-image', 'gif': 'file-image',
-                    'mp4': 'file-video', 'avi': 'file-video', 'mov': 'file-video',
-                    'mp3': 'file-audio', 'wav': 'file-audio',
-                    'txt': 'file-alt', 'md': 'file-alt'
-                };
-                return map[fileType.toLowerCase()] || 'file';
-            }
-
-            // 工具函数：转义HTML特殊字符
-            escapeHtml(text) {
-                if (!text) return '';
-                const div = document.createElement('div');
-                div.textContent = text;
-                return div.innerHTML;
+                hljs.highlightAll(); // 高亮代码块
+            } catch (e) {
+                modalBody.innerHTML = `<div class="error-state">加载失败</div>`;
             }
         }
 
-        // ============================================================================
-        // 页面加载完成后启动应用
-        // ============================================================================
-        document.addEventListener('DOMContentLoaded', () => {
-            // 添加CSS动画
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes slideIn {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
+        /**
+         * 渲染文章类型资源的详情
+         * 如果有 contentRef，会加载对应的文章文件
+         * @param {object} resource - 资源对象
+         */
+        async function renderArticleDetail(resource) {
+            try {
+                let article = resource;
+                if (resource.contentRef && !resource._fullDetail) {
+                    const res = await fetch(resource.contentRef);
+                    const text = await res.text();
+                    const parsed = parseFrontMatter(text);
+                    article = { ...resource, ...parsed.meta, content: parsed.content };
                 }
-                @keyframes slideOut {
-                    from { transform: translateX(0); opacity: 1; }
-                    to { transform: translateX(100%); opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
+                modalBody.innerHTML = `
+                    <div class="article-content">
+                        <h1>${escapeHtml(article.title)}</h1>
+                        <p><i class="fas fa-user"></i> ${escapeHtml(article.author || '鸿渚')} | <i class="fas fa-calendar"></i> ${article.date || ''}</p>
+                        ${marked.parse(article.content || '')}
+                    </div>
+                `;
+                hljs.highlightAll();
+            } catch (e) {
+                modalBody.innerHTML = `<div class="error-state">加载失败</div>`;
+            }
+        }
 
-            // 启动应用
-            window.app = new ResourceShareApp();
-            
-            // 调试快捷键（Alt+Shift+D）
-            document.addEventListener('keydown', (e) => {
-                if (e.altKey && e.shiftKey && e.key === 'D') {
-                    console.log('🔧 调试信息:', AppState);
+        /**
+         * 渲染其他类型资源（网页/软件）的默认详情
+         * 通常只显示标题、描述和访问链接
+         * @param {object} resource - 资源对象
+         */
+        function renderDefaultDetail(resource) {
+            modalBody.innerHTML = `
+                <div style="text-align:center; padding:2rem">
+                    <h2>${escapeHtml(resource.title)}</h2>
+                    <p>${escapeHtml(resource.description || '')}</p>
+                    ${resource.url ? `<a href="${resource.url}" target="_blank" class="download-btn">访问链接</a>` : ''}
+                </div>
+            `;
+        }
+
+        // ==================== 兑换码验证 ====================
+
+        /**
+         * 调用云函数验证兑换码
+         * @param {string} code - 用户输入的兑换码
+         * @param {string} resourceKey - 资源唯一标识（用于云函数识别）
+         * @param {object} fileMeta - 文件元数据，用于验证成功后重新渲染详情
+         */
+        async function verifyRedeemCode(code, resourceKey, fileMeta) {
+            const btn = document.getElementById('redeemBtn');
+            const resultDiv = document.getElementById('redeemResult');
+            if (!code) { resultDiv.innerHTML = '请输入兑换码'; resultDiv.className = 'redeem-result redeem-error'; return; }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 验证中...';
+            resultDiv.innerHTML = '';
+
+            try {
+                const res = await fetch(CONFIG.verifyApiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code, resourceId: resourceKey })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    // 解锁成功，将资源加入已解锁集合
+                    unlockedResources.add(resourceKey);
+                    resultDiv.innerHTML = '✅ 验证成功！正在刷新...';
+                    resultDiv.className = 'redeem-result redeem-success';
+                    // 延迟后重新渲染详情（显示下载按钮）
+                    setTimeout(() => renderFileDetail(fileMeta), 1500);
+                } else {
+                    resultDiv.innerHTML = `❌ ${data.message || '验证失败'}`;
+                    resultDiv.className = 'redeem-result redeem-error';
+                    btn.disabled = false;
+                    btn.innerHTML = '验证兑换码';
                 }
-            });
-        });
+            } catch (err) {
+                resultDiv.innerHTML = '❌ 网络错误，请重试';
+                resultDiv.className = 'redeem-result redeem-error';
+                btn.disabled = false;
+                btn.innerHTML = '验证兑换码';
+            }
+        }
+
+        /**
+         * 根据文件扩展名返回对应的 Font Awesome 图标类名
+         * @param {string} type - 文件类型扩展名（如 zip, pdf 等）
+         * @returns {string} 图标类名
+         */
+        function getFileIcon(type) {
+            const map = { zip:'file-archive', rar:'file-archive', pdf:'file-pdf', doc:'file-word', xls:'file-excel', jpg:'file-image', png:'file-image', mp4:'file-video', mp3:'file-audio' };
+            return map[type] || 'file';
+        }
     </script>
 </body>
 </html>
