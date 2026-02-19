@@ -1,13 +1,15 @@
 ---
-id: 13
-title: "搜图bot搜图"
-description: "专注于本子识图的机器人。支持Telegram和Discord平台，使用方便快捷。"
-category: "识图资源"
+id: "搜图bot搜图"
+resource_id: "搜图bot搜图"
+title: "搜图 Bot"
+description: "Telegram 搜图机器人。"
 type: "web"
-url: "https://soutubot.moe/"
-icon: "fas fa-robot"
-tags: []
-date: "2025-10-11"
+category: "搜图工具"
+author: "鸿渚"
+date: "2026-02-07"
+icon: "fab fa-telegram"
+cover: "/assets/covers/soutubot.jpg"
+url: "https://t.me/soutubot"
 ---
 
 搜图bot是专注于本子识图的机器人，支持Telegram和Discord平台。
