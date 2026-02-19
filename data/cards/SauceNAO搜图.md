@@ -1,13 +1,15 @@
 ---
-id: 12
-title: "SauceNAO搜图"
-description: "Pixiv图片搜索专家，精准识别P站作品。拥有庞大的数据库，支持多种图片来源查询。"
-category: "识图资源"
+id: "SauceNAO搜图"
+resource_id: "SauceNAO搜图"
+title: "SauceNAO 识图"
+description: "二次元图片搜索神器。"
 type: "web"
-url: "https://saucenao.com/"
-icon: "fas fa-images"
-tags: ["推荐"]
-date: "2025-10-11"
+category: "搜图工具"
+author: "鸿渚"
+date: "2026-02-08"
+icon: "fas fa-search"
+cover: "/assets/covers/saucenao.jpg"
+url: "https://saucenao.com"
 ---
 
 SauceNAO是Pixiv图片搜索专家，拥有庞大的数据库支持多种图片来源查询。
