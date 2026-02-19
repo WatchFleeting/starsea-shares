@@ -1,16 +1,15 @@
 ---
-id: 7
-title: "绿e - 漫画资源"
-description: "Ehviewer绿版，优化版本，提供更好的阅读体验。体积小巧，运行流畅，适合低配置设备。"
-category: "程序资源"
-type: "software"
-url: "https://github.com/xiaojieonly/Ehviewer_CN_SXJ/releases"
-icon: "fas fa-leaf"
-tags: []
-date: "2025-10-11"
-docUrl: "https://github.com/xiaojieonly/Ehviewer_CN_SXJ/blob/BiLi_PC_Gamer/README.md"
-version: "最新版"
-platform: "Android"
+id: "绿e漫画资源"
+resource_id: "绿e漫画资源"
+title: "绿e 漫画资源"
+description: "绿色漫画资源合集。"
+type: "file"
+category: "漫画"
+author: "鸿渚"
+date: "2026-02-13"
+icon: "fas fa-file-archive"
+cover: "/assets/covers/lv-e.jpg"
+fileRef: "data/files/lv-e-details.md"
 ---
 
 绿e是Ehviewer的绿色优化版本，体积小巧，运行流畅，特别适合低配置设备。
