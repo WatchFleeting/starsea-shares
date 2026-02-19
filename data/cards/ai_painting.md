@@ -1,15 +1,15 @@
 ---
-id: 2
-title: "AI绘画完全指南"
-description: "从基础到进阶，全面讲解AI绘画的原理、工具选择和实践技巧。"
-category: "技术文章"
+id: "ai_painting"
+resource_id: "ai_painting"
+title: "AI 绘画指南"
+description: "Stable Diffusion 与 Midjourney 从入门到精通。"
 type: "article"
-icon: "fas fa-book-open"
-tags: ["热门", "推荐"]
+category: "教程"
+tags: ["最新"]
 author: "鸿渚"
-date: "2025-12-15"
-readTime: "15分钟阅读"
-cover: "/assets/covers/article-ai.jpg"
+date: "2026-02-18"
+icon: "fas fa-book-open"
+cover: "/assets/covers/ai-painting.jpg"
 contentRef: "data/articles/ai-painting-guide.md"
 ---
 
