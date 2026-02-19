@@ -1,13 +1,15 @@
 ---
-id: 15
-title: "iqdb识图"
-description: "多图库搜索，支持多种动漫图库。可以同时在多个图库中搜索图片，提高查找效率。"
-category: "识图资源"
+id: "iqdb识图"
+resource_id: "iqdb识图"
+title: "IQDB 识图"
+description: "多站点二次元图片搜索。"
 type: "web"
-url: "http://www.iqdb.org/"
-icon: "fas fa-database"
-tags: []
-date: "2025-10-11"
+category: "搜图工具"
+author: "鸿渚"
+date: "2026-02-05"
+icon: "fas fa-search"
+cover: "/assets/covers/iqdb.jpg"
+url: "https://iqdb.org"
 ---
 
 iqdb识图支持多图库同时搜索，提高动漫图片查找效率。
