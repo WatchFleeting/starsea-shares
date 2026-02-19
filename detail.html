@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加载中 - 鸿渚资源分享站</title>
+    <meta name="description" content="资源详情页">
+    <meta name="author" content="鸿渚">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    
+    <style>
+        /* 复制 index.html 中的所有样式（包括变量、暗色模式、布局等），并添加详情页特有样式 */
+        :root {
+            --color-web: #3b82f6;
+            --color-software: #8b5cf6;
+            --color-file: #10b981;
+            --color-article: #f59e0b;
+            --primary-color: #2563eb;
+            --secondary-color: #475569;
+            --accent-color: #f59e0b;
+            --danger-color: #ef4444;
+            --success-color: #10b981;
+            --bg-light: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --card-shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.15);
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        body.dark-mode {
+            --bg-light: #0f172a;
+            --bg-card: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: var(--transition);
+            min-height: 100vh;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .site-title {
+            font-size: 2rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .site-title a {
+            color: white;
+            text-decoration: none;
+        }
+        .header-actions {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            display: flex;
+            gap: 10px;
+        }
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(15deg);
+        }
+        .detail-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            margin: 2rem 0;
+        }
+        .detail-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .detail-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        .detail-meta {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        .detail-meta i {
+            margin-right: 5px;
+        }
+        .detail-content {
+            line-height: 1.8;
+        }
+        .detail-content h1 { font-size: 2.2rem; margin: 2rem 0 1rem; padding-bottom:0.5rem; border-bottom:3px solid var(--border-color); color:var(--primary-color); }
+        .detail-content h2 { font-size: 1.8rem; margin: 1.8rem 0 1rem; }
+        .detail-content h3 { font-size: 1.4rem; margin: 1.5rem 0 0.8rem; }
+        .detail-content p { margin-bottom: 1.5rem; }
+        .detail-content pre {
+            background: #1a1a1a;
+            color: #f8f8f2;
+            padding: 1.5rem;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-family: 'Cascadia Code', 'Courier New', monospace;
+        }
+        .detail-content code {
+            background: var(--bg-light);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Cascadia Code', 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        .detail-content blockquote {
+            border-left: 4px solid var(--accent-color);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        .detail-content ul, .detail-content ol { margin: 1rem 0 1.5rem 1.5rem; }
+        .file-detail {
+            text-align: center;
+            padding: 2rem 0;
+        }
+        .file-icon-large {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            color: var(--color-file);
+        }
+        .file-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .file-meta {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, var(--color-file), #059669);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: var(--transition);
+            margin: 2rem 0;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+        }
+        .redeem-box {
+            max-width: 500px;
+            margin: 2rem auto;
+            text-align: center;
+        }
+        .redeem-input {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.2rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-light);
+            color: var(--text-primary);
+            margin: 1rem 0;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        .redeem-btn {
+            background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+        .redeem-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+        }
+        .redeem-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .redeem-message {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        .redeem-message.success { background: rgba(16, 185, 129, 0.1); color: var(--success-color); border: 1px solid var(--success-color); }
+        .redeem-message.error { background: rgba(239, 68, 68, 0.1); color: var(--danger-color); border: 1px solid var(--danger-color); }
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-secondary);
+        }
+        .loading-spinner {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .error-state {
+            text-align: center;
+            padding: 4rem;
+            color: var(--danger-color);
+        }
+        .error-state i {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 4rem;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-color);
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link i { margin-right: 5px; }
+        @media (max-width: 768px) {
+            .header-actions { position: static; margin-top: 1rem; justify-content: flex-end; }
+        }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="site-title">
+                <a href="index.html"><i class="fas fa-cube"></i> 鸿渚资源分享站</a>
+            </h1>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> 返回首页</a>
+        <div class="detail-card" id="detailContainer">
+            <div class="loading">
+                <i class="fas fa-spinner fa-spin loading-spinner"></i>
+                <h3>正在加载资源详情...</h3>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025-2026 鸿渚资源分享站</p>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================================================
+        // 配置与状态（与首页保持一致）
+        // ============================================================================
+        const CONFIG = {
+            dataIndexUrl: 'data-index.json',
+            cacheBuster: '?v=' + new Date().getTime(),
+            verifyApiUrl: 'https://your-project.vercel.app/api/verify-redeem' // 替换为你的云函数地址
+        };
+
+        const AppState = {
+            loadedFiles: new Map(),
+            unlockedResources: new Set(JSON.parse(localStorage.getItem('unlockedResources') || '[]')),
+            isDarkMode: localStorage.getItem('darkMode') === 'true'
+        };
+
+        // ============================================================================
+        // 防复制保护
+        // ============================================================================
+        function enableCopyProtection() {
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('keydown', e => {
+                if (e.ctrlKey && ['c', 'a', 's', 'u'].includes(e.key.toLowerCase())) e.preventDefault();
+                if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['i', 'j', 'c'].includes(e.key.toLowerCase()))) e.preventDefault();
+                if (e.altKey && ['d', 'e'].includes(e.key.toLowerCase())) e.preventDefault();
+            });
+            document.addEventListener('copy', e => e.preventDefault());
+            document.addEventListener('cut', e => e.preventDefault());
+            document.addEventListener('paste', e => e.preventDefault());
+        }
+
+        // ============================================================================
+        // 工具函数
+        // ============================================================================
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function showError(message) {
+            document.getElementById('detailContainer').innerHTML = `<div class="error-state"><i class="fas fa-exclamation-triangle"></i><h3>加载失败</h3><p>${escapeHtml(message)}</p></div>`;
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `position:fixed; top:20px; right:20px; background:${type === 'info' ? '#3b82f6' : type === 'success' ? '#10b981' : '#ef4444'}; color:white; padding:1rem 1.5rem; border-radius:8px; box-shadow:0 5px 15px rgba(0,0,0,0.2); z-index:9999; animation:slideIn 0.3s ease; max-width:300px; display:flex; align-items:center; gap:10px;`;
+            const icon = type === 'info' ? 'info-circle' : type === 'success' ? 'check-circle' : 'exclamation-circle';
+            notification.innerHTML = `<i class="fas fa-${icon}"></i><span>${escapeHtml(message)}</span>`;
+            document.body.appendChild(notification);
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.parentNode?.removeChild(notification), 300);
+            }, 3000);
+        }
+
+        async function loadMarkdownFile(filePath) {
+            if (AppState.loadedFiles.has(filePath)) return AppState.loadedFiles.get(filePath);
+            const response = await fetch(filePath + CONFIG.cacheBuster);
+            if (!response.ok) throw new Error(`HTTP ${response.status}: ${filePath}`);
+            const text = await response.text();
+            const parsed = parseFrontMatter(text);
+            parsed.meta._sourcePath = filePath;
+            AppState.loadedFiles.set(filePath, parsed);
+            return parsed;
+        }
+
+        function parseFrontMatter(content) {
+            content = content.trim();
+            if (!content.startsWith('---')) {
+                return { meta: { title: '未命名', description: content.slice(0,150)+'...', type: 'web' }, content };
+            }
+            const lines = content.split('\n');
+            let i = 1;
+            const meta = {};
+            const yamlLines = [];
+            while (i < lines.length && lines[i].trim() !== '---') {
+                yamlLines.push(lines[i]);
+                i++;
+            }
+            yamlLines.forEach(line => {
+                const trimmed = line.trim();
+                if (!trimmed || trimmed.startsWith('#')) return;
+                const colonIndex = trimmed.indexOf(':');
+                if (colonIndex > -1) {
+                    const key = trimmed.slice(0, colonIndex).trim();
+                    let value = trimmed.slice(colonIndex + 1).trim();
+                    if (value.startsWith('[') && value.endsWith(']')) {
+                        try { value = value.slice(1,-1).split(',').map(v => v.trim().replace(/^['"]|['"]$/g,'')); } catch { value = []; }
+                    } else if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+                        value = value.slice(1,-1);
+                    } else if (value.toLowerCase() === 'true') value = true;
+                    else if (value.toLowerCase() === 'false') value = false;
+                    else if (/^-?\d+(\.\d+)?$/.test(value)) value = Number(value);
+                    meta[key] = value;
+                }
+            });
+            const mainContent = lines.slice(i + 1).join('\n').trim();
+            if (!meta.type) meta.type = 'web';
+            if (!meta.icon) {
+                const map = { web:'fas fa-globe', software:'fas fa-download', file:'fas fa-file-archive', article:'fas fa-book-open' };
+                meta.icon = map[meta.type] || 'fas fa-star';
+            }
+            if (!meta.date) meta.date = new Date().toISOString().split('T')[0];
+            return { meta, content: mainContent };
+        }
+
+        // ============================================================================
+        // 主题初始化
+        // ============================================================================
+        function initTheme() {
+            if (AppState.isDarkMode) {
+                document.body.classList.add('dark-mode');
+                document.querySelector('#themeToggle i').className = 'fas fa-sun';
+            }
+            document.getElementById('themeToggle').addEventListener('click', () => {
+                AppState.isDarkMode = !AppState.isDarkMode;
+                document.body.classList.toggle('dark-mode', AppState.isDarkMode);
+                localStorage.setItem('darkMode', AppState.isDarkMode);
+                const icon = document.querySelector('#themeToggle i');
+                icon.className = AppState.isDarkMode ? 'fas fa-sun' : 'fas fa-moon';
+            });
+        }
+
+        // ============================================================================
+        // 渲染文章
+        // ============================================================================
+        async function renderArticle(contentRef, cardMeta) {
+            const article = await loadMarkdownFile(contentRef);
+            const html = article.content ? marked.parse(article.content) : '<p>暂无内容</p>';
+            const readTime = article.meta.readTime || cardMeta.readTime || '10分钟阅读';
+            const author = article.meta.author || cardMeta.author || '鸿渚';
+            const date = article.meta.date || cardMeta.date || '未知日期';
+            document.getElementById('detailContainer').innerHTML = `
+                <div class="detail-header">
+                    <h1 class="detail-title">${escapeHtml(cardMeta.title)}</h1>
+                    <div class="detail-meta">
+                        <span><i class="fas fa-user"></i> ${escapeHtml(author)}</span>
+                        <span><i class="fas fa-calendar"></i> ${escapeHtml(date)}</span>
+                        <span><i class="fas fa-clock"></i> ${escapeHtml(readTime)}</span>
+                    </div>
+                </div>
+                <div class="detail-content">${html}</div>
+            `;
+            setTimeout(() => {
+                document.querySelectorAll('pre code').forEach(block => hljs.highlightElement(block));
+            }, 100);
+        }
+
+        // ============================================================================
+        // 渲染文件
+        // ============================================================================
+        async function renderFile(fileRef, cardMeta) {
+            const fileDetail = await loadMarkdownFile(fileRef);
+            const fileMeta = fileDetail.meta;
+            const fileIcon = getFileIcon(fileMeta.fileType);
+            const fileSize = fileMeta.fileSize || '大小未知';
+            const fileName = fileMeta.fileName || cardMeta.title;
+            const downloadUrl = fileMeta.downloadUrl || '#';
+            let html = `
+                <div class="file-detail">
+                    <i class="fas fa-${fileIcon} file-icon-large"></i>
+                    <h2 class="file-name">${escapeHtml(fileName)}</h2>
+                    <div class="file-meta">
+                        <p><i class="fas fa-weight-hanging"></i> ${escapeHtml(fileSize)}</p>
+                        <p><i class="fas fa-calendar"></i> ${escapeHtml(cardMeta.date || '未知日期')}</p>
+                    </div>
+                    <p style="margin:1.5rem 0; font-size:1.1rem;">${escapeHtml(fileMeta.description || cardMeta.description)}</p>
+                    <button class="download-btn" id="dynamicDownloadBtn" data-url="${escapeHtml(downloadUrl)}">
+                        <i class="fas fa-download"></i> 下载文件
+                    </button>
+            `;
+            if (fileMeta.password) {
+                html += `<div style="background:var(--bg-light); padding:1rem; border-radius:8px; margin:1rem 0;"><p><i class="fas fa-key"></i> 解压密码: <code>${escapeHtml(fileMeta.password)}</code></p></div>`;
+            }
+            if (fileDetail.content) {
+                const contentHtml = marked.parse(fileDetail.content);
+                html += `<div style="text-align:left; margin-top:2.5rem;"><h3 style="margin-bottom:1rem;"><i class="fas fa-info-circle"></i> 详细说明</h3><div class="detail-content">${contentHtml}</div></div>`;
+            }
+            html += `</div>`;
+            document.getElementById('detailContainer').innerHTML = html;
+            document.getElementById('dynamicDownloadBtn')?.addEventListener('click', (e) => {
+                const url = e.currentTarget.dataset.url;
+                if (url && url !== '#') {
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = '';
+                    a.style.display = 'none';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                }
+            });
+        }
+
+        function getFileIcon(fileType) {
+            if (!fileType) return 'file';
+            const map = { zip:'file-archive',rar:'file-archive','7z':'file-archive',pdf:'file-pdf',doc:'file-word',docx:'file-word',xls:'file-excel',xlsx:'file-excel',ppt:'file-powerpoint',pptx:'file-powerpoint',jpg:'file-image',jpeg:'file-image',png:'file-image',gif:'file-image',mp4:'file-video',avi:'file-video',mov:'file-video',mp3:'file-audio',wav:'file-audio',txt:'file-alt',md:'file-alt' };
+            return map[fileType.toLowerCase()] || 'file';
+        }
+
+        // ============================================================================
+        // 显示兑换码界面
+        // ============================================================================
+        function showRedeemBox(meta) {
+            document.getElementById('detailContainer').innerHTML = `
+                <div class="redeem-box">
+                    <i class="fas fa-lock" style="font-size:3rem; color:var(--accent-color);"></i>
+                    <h3 style="margin:1rem 0;">${escapeHtml(meta.title)}</h3>
+                    <p style="color:var(--text-secondary); margin-bottom:1.5rem;">请在爱发电赞助后获取兑换码，输入后即可解锁</p>
+                    <input type="text" class="redeem-input" id="redeemCode" placeholder="输入16位兑换码" maxlength="16">
+                    <button class="redeem-btn" id="redeemSubmit"><i class="fas fa-check"></i> 验证兑换码</button>
+                    <div id="redeemMessage" class="redeem-message"></div>
+                </div>
+            `;
+            document.getElementById('redeemSubmit').addEventListener('click', async () => {
+                const code = document.getElementById('redeemCode').value.trim();
+                if (!code) {
+                    showRedeemMessage('请输入兑换码', 'error');
+                    return;
+                }
+                const submitBtn = document.getElementById('redeemSubmit');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 验证中...';
+                try {
+                    const result = await verifyRedeemCode(code, meta.resource_id);
+                    if (result.success) {
+                        AppState.unlockedResources.add(meta.resource_id);
+                        localStorage.setItem('unlockedResources', JSON.stringify([...AppState.unlockedResources]));
+                        showRedeemMessage('✅ 兑换成功！正在加载内容...', 'success');
+                        setTimeout(() => {
+                            // 重新加载当前页面，或直接渲染内容
+                            loadResource(); // 重新执行加载流程
+                        }, 1500);
+                    } else {
+                        showRedeemMessage(result.message || '兑换码无效', 'error');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-check"></i> 验证兑换码';
+                    }
+                } catch (error) {
+                    console.error('验证失败:', error);
+                    showRedeemMessage('网络错误，请稍后重试', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-check"></i> 验证兑换码';
+                }
+            });
+        }
+
+        function showRedeemMessage(text, type) {
+            const msgDiv = document.getElementById('redeemMessage');
+            msgDiv.textContent = text;
+            msgDiv.className = `redeem-message ${type}`;
+        }
+
+        async function verifyRedeemCode(code, resourceId) {
+            const response = await fetch(CONFIG.verifyApiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code, resourceId })
+            });
+            return await response.json();
+        }
+
+        // ============================================================================
+        // 主加载逻辑
+        // ============================================================================
+        async function loadResource() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const resourceId = urlParams.get('id');
+            if (!resourceId) {
+                showError('缺少资源ID参数');
+                return;
+            }
+
+            // 加载索引，获取卡片路径（假设索引格式为 { cards: [{ id, path }] }）
+            let index;
+            try {
+                const resp = await fetch(CONFIG.dataIndexUrl + CONFIG.cacheBuster);
+                if (!resp.ok) throw new Error('无法加载索引');
+                index = await resp.json();
+            } catch (e) {
+                showError('加载索引失败：' + e.message);
+                return;
+            }
+
+            // 根据 resourceId 查找卡片路径
+            const cardInfo = index.cards.find(c => c.id === resourceId);
+            if (!cardInfo) {
+                showError('未找到对应的资源');
+                return;
+            }
+
+            // 加载卡片元数据
+            let card;
+            try {
+                card = await loadMarkdownFile(cardInfo.path);
+            } catch (e) {
+                showError('加载卡片失败：' + e.message);
+                return;
+            }
+            const meta = card.meta;
+
+            // 更新页面标题
+            document.title = meta.title + ' - 鸿渚资源分享站';
+
+            // 检查付费解锁
+            if (meta.is_paid) {
+                if (!AppState.unlockedResources.has(meta.resource_id)) {
+                    showRedeemBox(meta);
+                    return;
+                }
+            }
+
+            // 根据类型渲染
+            if (meta.type === 'article' && meta.contentRef) {
+                await renderArticle(meta.contentRef, meta);
+            } else if (meta.type === 'file' && meta.fileRef) {
+                await renderFile(meta.fileRef, meta);
+            } else {
+                showError('不支持的资源类型或缺少引用');
+            }
+        }
+
+        // ============================================================================
+        // 启动
+        // ============================================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const style = document.createElement('style');
+            style.textContent = `@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}@keyframes slideOut{from{transform:translateX(0);opacity:1}to{transform:translateX(100%);opacity:0}}`;
+            document.head.appendChild(style);
+            enableCopyProtection();
+            initTheme();
+            loadResource();
+        });
+    </script>
+</body>
+</html>
