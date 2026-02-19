@@ -3,49 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>鸿渚·资源库 | 网页·软件·文件·文章</title>
-    <meta name="description" content="精选网页推荐、软件下载、文件分享与技术文章，一站式资源发现平台。">
+    <title>鸿渚资源分享站 | 网页·软件·文件·文章一站式分享</title>
+    <meta name="description" content="基于Markdown的静态资源分享站，支持网页推荐、软件下载、文件分享和技术文章。">
     <meta name="keywords" content="资源分享,网页推荐,软件下载,技术文章,Markdown">
     <meta name="author" content="鸿渚">
     
-    <!-- 引入外部库 -->
+    <!-- 样式和脚本库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
     
     <style>
-        /* ===== CSS 变量（与原优化版相同）===== */
+        /* ===== CSS 变量定义 ===== */
         :root {
+            /* 资源类型颜色 */
             --color-web: #3b82f6;
             --color-software: #8b5cf6;
             --color-file: #10b981;
             --color-article: #f59e0b;
+            
+            /* 主题颜色 */
             --primary-color: #2563eb;
             --secondary-color: #475569;
             --accent-color: #f59e0b;
             --danger-color: #ef4444;
             --success-color: #10b981;
+            
+            /* 背景和文字 */
             --bg-light: #f8fafc;
             --bg-card: #ffffff;
             --text-primary: #1e293b;
             --text-secondary: #64748b;
             --border-color: #e2e8f0;
+            
+            /* 阴影和圆角 */
             --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --card-shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.15);
             --border-radius: 12px;
+            
+            /* 过渡动画 */
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
+        /* 深色模式 */
         body.dark-mode {
             --bg-light: #0f172a;
             --bg-card: #1e293b;
             --text-primary: #f1f5f9;
             --text-secondary: #94a3b8;
             --border-color: #334155;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
         }
         
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* ===== 基础样式 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
@@ -54,20 +70,21 @@
             line-height: 1.6;
             transition: var(--transition);
             min-height: 100vh;
-            user-select: none;
-            -webkit-user-select: none;
         }
         
-        .container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
         
-        /* 头部（重写文字部分） */
+        /* ===== 头部样式 ===== */
         header {
             background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
             color: white;
             padding: 2.5rem 0;
             margin-bottom: 2rem;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            position: relative;
         }
         
         .site-title {
@@ -100,9 +117,12 @@
             width: 44px;
             height: 44px;
             border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            font-size: 1.2rem;
             transition: var(--transition);
+            font-size: 1.2rem;
         }
         
         .theme-toggle:hover {
@@ -110,60 +130,10 @@
             transform: rotate(15deg);
         }
         
-        /* 搜索和筛选 */
-        .search-bar {
-            display: flex;
-            gap: 1rem;
-            margin: 2rem 0;
-            flex-wrap: wrap;
-        }
-        
-        .search-input {
-            flex: 1;
-            min-width: 250px;
-            padding: 12px 20px;
-            border: 2px solid var(--border-color);
-            border-radius: 40px;
-            background: var(--bg-card);
-            color: var(--text-primary);
-            font-size: 1rem;
-        }
-        
-        .search-input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-        }
-        
-        .category-filters {
-            display: flex;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-            margin: 1rem 0 2rem;
-        }
-        
-        .filter-btn {
-            padding: 8px 20px;
-            border: 2px solid var(--border-color);
-            background: transparent;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--text-primary);
-            transition: var(--transition);
-        }
-        
-        .filter-btn:hover { border-color: var(--primary-color); color: var(--primary-color); }
-        .filter-btn.active { color: white; border-color: transparent; }
-        .filter-all.active { background: linear-gradient(135deg, #667eea, #764ba2); }
-        .filter-web.active { background: var(--color-web); }
-        .filter-software.active { background: var(--color-software); }
-        .filter-file.active { background: var(--color-file); }
-        .filter-article.active { background: var(--color-article); }
-        
-        /* 统计面板 */
+        /* ===== 统计面板 ===== */
         .stats-panel {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.5rem;
             margin: 2.5rem 0;
         }
@@ -171,20 +141,89 @@
         .stat-card {
             background: var(--bg-card);
             border-radius: var(--border-radius);
-            padding: 1.5rem;
+            padding: 1.8rem;
             text-align: center;
             border: 2px solid var(--border-color);
+            transition: var(--transition);
             box-shadow: var(--card-shadow);
         }
         
-        .stat-icon { font-size: 2.2rem; margin-bottom: 0.8rem; }
-        .stat-value { font-size: 2rem; font-weight: 800; }
-        .stat-label { color: var(--text-secondary); font-size: 0.9rem; }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-shadow-hover);
+        }
         
-        /* 卡片网格 */
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .stat-web .stat-icon { color: var(--color-web); }
+        .stat-software .stat-icon { color: var(--color-software); }
+        .stat-file .stat-icon { color: var(--color-file); }
+        .stat-article .stat-icon { color: var(--color-article); }
+        
+        /* ===== 分类筛选 ===== */
+        .category-filters {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+        }
+        
+        .filter-btn {
+            padding: 0.7rem 1.8rem;
+            border: 2px solid var(--border-color);
+            background: transparent;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .filter-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .filter-btn.active {
+            color: white;
+            border-color: transparent;
+        }
+        
+        .filter-all.active { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .filter-web.active { background: var(--color-web); }
+        .filter-software.active { background: var(--color-software); }
+        .filter-file.active { background: var(--color-file); }
+        .filter-article.active { background: var(--color-article); }
+        
+        /* ===== 资源卡片网格 ===== */
         .resources-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 2rem;
             margin: 3rem 0;
         }
@@ -199,22 +238,17 @@
             cursor: pointer;
             display: flex;
             flex-direction: column;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            height: 100%;
         }
         
         .resource-card:hover {
-            transform: translateY(-6px);
+            transform: translateY(-8px);
             box-shadow: var(--card-shadow-hover);
             border-color: var(--primary-color);
         }
         
         .card-header {
-            height: 160px;
+            height: 180px;
             background-size: cover;
             background-position: center;
             position: relative;
@@ -226,17 +260,20 @@
         .card-header::after {
             content: '';
             position: absolute;
-            bottom: 0; left: 0; right: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
             height: 60%;
             background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
         }
         
         .card-type-badge {
             position: absolute;
-            top: 15px; right: 15px;
-            padding: 4px 12px;
+            top: 15px;
+            right: 15px;
+            padding: 6px 15px;
             border-radius: 20px;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-weight: 700;
             color: white;
             z-index: 2;
@@ -244,66 +281,122 @@
             background: rgba(0,0,0,0.7);
         }
         
+        .card-type-web { background: var(--color-web); }
+        .card-type-software { background: var(--color-software); }
+        .card-type-file { background: var(--color-file); }
+        .card-type-article { background: var(--color-article); }
+        
         .card-icon {
-            font-size: 3rem;
+            font-size: 3.5rem;
             color: white;
             z-index: 1;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
         }
         
+        .card-tags {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 2;
+        }
+        
+        .card-tag {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+        
+        .tag-hot { background: rgba(239, 68, 68, 0.8); color: white; }
+        .tag-new { background: rgba(16, 185, 129, 0.8); color: white; }
+        .tag-rec { background: rgba(245, 158, 11, 0.8); color: white; }
+        
         .card-body {
-            padding: 1.5rem;
+            padding: 1.8rem;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
         }
         
         .card-title {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
+            line-height: 1.3;
         }
         
         .card-desc {
             color: var(--text-secondary);
             flex-grow: 1;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
         
         .card-meta {
             display: flex;
             justify-content: space-between;
-            padding-top: 1rem;
+            align-items: center;
+            padding-top: 1.2rem;
+            margin-top: auto;
             border-top: 1px solid var(--border-color);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--text-secondary);
         }
         
         .card-price {
             color: var(--accent-color);
             font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .card-actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.8rem;
         }
         
         .card-action-btn {
-            width: 100%;
-            margin-top: 1rem;
-            padding: 10px;
+            flex: 1;
+            padding: 0.8rem 1.2rem;
             border: none;
             border-radius: 8px;
-            background: var(--primary-color);
-            color: white;
-            font-weight: 600;
             cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
             transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-decoration: none;
         }
         
-        .card-action-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+        .card-action-btn.primary {
+            background: var(--primary-color);
+            color: white;
+        }
         
-        /* 模态框 */
+        .card-action-btn.secondary {
+            background: var(--bg-light);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .card-action-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* ===== 模态框样式 ===== */
         .modal-overlay {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: rgba(0,0,0,0.85);
             display: flex;
             align-items: center;
@@ -325,19 +418,22 @@
             background: var(--bg-card);
             border-radius: var(--border-radius);
             width: 100%;
-            max-width: 800px;
-            max-height: 85vh;
+            max-width: 900px;
+            max-height: 90vh;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
             transform: translateY(30px);
-            transition: transform 0.4s;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid var(--border-color);
         }
         
-        .modal-overlay.active .modal { transform: translateY(0); }
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
         
         .modal-header {
-            padding: 1.2rem 1.8rem;
+            padding: 1.5rem 2rem;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
@@ -347,566 +443,1215 @@
             border-radius: var(--border-radius) var(--border-radius) 0 0;
         }
         
-        .modal-close {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
-            width: 38px; height: 38px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.1rem;
+        .modal-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
-        .modal-close:hover { background: rgba(255,255,255,0.3); transform: rotate(90deg); }
+        .modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+        
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
         
         .modal-body {
             padding: 2rem;
             overflow-y: auto;
+            flex-grow: 1;
         }
         
-        /* 兑换码区域 */
-        .redeem-box {
-            background: var(--bg-light);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border: 2px dashed var(--accent-color);
+        /* ===== 文章内容样式 ===== */
+        .article-content {
+            line-height: 1.8;
         }
         
-        .redeem-input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid var(--border-color);
-            border-radius: 40px;
-            background: var(--bg-card);
+        .article-content h1 {
+            font-size: 2.2rem;
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--border-color);
+            color: var(--primary-color);
+        }
+        
+        .article-content h2 {
+            font-size: 1.8rem;
+            margin: 1.8rem 0 1rem;
             color: var(--text-primary);
-            margin: 1rem 0;
         }
         
-        .redeem-btn {
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 12px 28px;
-            border-radius: 40px;
+        .article-content h3 {
+            font-size: 1.4rem;
+            margin: 1.5rem 0 0.8rem;
+            color: var(--text-primary);
+        }
+        
+        .article-content p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .article-content pre {
+            background: #1a1a1a;
+            color: #f8f8f2;
+            padding: 1.5rem;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-family: 'Cascadia Code', 'Courier New', monospace;
+        }
+        
+        .article-content code {
+            background: var(--bg-light);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Cascadia Code', 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .article-content blockquote {
+            border-left: 4px solid var(--accent-color);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        
+        .article-content ul, .article-content ol {
+            margin: 1rem 0 1.5rem 1.5rem;
+        }
+        
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* ===== 文件详情样式 ===== */
+        .file-detail {
+            text-align: center;
+            padding: 2rem 0;
+        }
+        
+        .file-icon-large {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            color: var(--color-file);
+        }
+        
+        .file-name {
+            font-size: 1.8rem;
             font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
+            margin-bottom: 0.5rem;
         }
         
-        .redeem-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(245,158,11,0.4); }
-        .redeem-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-        
-        .redeem-result {
-            margin-top: 1rem;
-            padding: 0.8rem;
-            border-radius: 8px;
-            font-weight: 600;
+        .file-meta {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
         }
-        .redeem-success { background: rgba(16,185,129,0.2); color: var(--success-color); border: 1px solid var(--success-color); }
-        .redeem-error { background: rgba(239,68,68,0.2); color: var(--danger-color); border: 1px solid var(--danger-color); }
         
-        /* 下载按钮 */
         .download-btn {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 14px 35px;
+            gap: 12px;
+            padding: 16px 40px;
             background: linear-gradient(135deg, var(--color-file), #059669);
             color: white;
             border: none;
             border-radius: 50px;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 700;
             cursor: pointer;
-            margin: 1rem 0;
-            box-shadow: 0 5px 15px rgba(16,185,129,0.3);
+            text-decoration: none;
+            transition: var(--transition);
+            margin: 2rem 0;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
         }
         
-        /* 加载与空状态 */
-        .loading, .empty-state, .error-state {
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+        }
+        
+        /* ===== 加载状态 ===== */
+        .loading {
             text-align: center;
             padding: 4rem;
             color: var(--text-secondary);
         }
-        .loading i { font-size: 3rem; margin-bottom: 1rem; animation: spin 1s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         
-        /* 尾部（重写文字部分） */
+        .loading-spinner {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* ===== 空状态 ===== */
+        .empty-state {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-secondary);
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: var(--border-color);
+        }
+        
+        /* ===== 错误状态 ===== */
+        .error-state {
+            text-align: center;
+            padding: 4rem;
+            color: var(--danger-color);
+        }
+        
+        .error-state i {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* ===== 页脚样式 ===== */
         footer {
             text-align: center;
-            padding: 2rem 0;
-            margin-top: 3rem;
+            padding: 3rem 0;
+            margin-top: 4rem;
             color: var(--text-secondary);
             border-top: 1px solid var(--border-color);
         }
         
-        .hidden { display: none !important; }
-        @media (max-width: 600px) { .header-actions { position: static; margin-top: 1rem; } }
+        /* ===== 响应式设计 ===== */
+        @media (max-width: 768px) {
+            .resources-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .site-title {
+                font-size: 2rem;
+            }
+            
+            .stats-panel {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .category-filters {
+                justify-content: center;
+            }
+            
+            .modal-body {
+                padding: 1.5rem;
+            }
+            
+            .header-actions {
+                position: static;
+                margin-top: 1rem;
+                justify-content: flex-end;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-panel {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+            
+            .modal-header {
+                padding: 1rem 1.5rem;
+            }
+        }
+        
+        /* ===== 工具类 ===== */
+        .hidden {
+            display: none !important;
+        }
+        
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* ===== PayPal 按钮样式 ===== */
+        .paypal-button-container {
+            margin-top: 1rem;
+            min-height: 40px;
+        }
+        
+        /* ===== 滚动条样式 ===== */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-light);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
     </style>
 </head>
 <body>
-    <!-- 头部（重写文字） -->
+    <!-- 网站头部 -->
     <header>
         <div class="container">
-            <h1 class="site-title"><i class="fas fa-cube"></i> 鸿渚·资源库</h1>
-            <p class="site-subtitle">精选网页、软件、文件与文章，一站式发现，让分享更有价值</p>
+            <h1 class="site-title">
+                <i class="fas fa-cube"></i>
+                鸿渚资源分享站
+            </h1>
+            <p class="site-subtitle">
+                基于Markdown的静态资源分享站 · 支持网页推荐、软件下载、文件分享、技术文章
+            </p>
             <div class="header-actions">
-                <button class="theme-toggle" id="themeToggle" aria-label="切换主题"><i class="fas fa-moon"></i></button>
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+                    <i class="fas fa-moon"></i>
+                </button>
             </div>
         </div>
     </header>
 
     <main class="container">
-        <!-- 统计面板：始终显示全部资源的统计，不随筛选变化 -->
-        <div class="stats-panel" id="statsPanel"></div>
-
-        <!-- 搜索与筛选 -->
-        <div class="search-bar">
-            <input type="text" class="search-input" id="searchInput" placeholder="搜索资源名称、描述或标签...">
+        <!-- 统计面板 -->
+        <div class="stats-panel">
+            <div class="stat-card stat-web">
+                <i class="fas fa-globe stat-icon"></i>
+                <div class="stat-value" id="statWeb">0</div>
+                <div class="stat-label">网页分享</div>
+            </div>
+            <div class="stat-card stat-software">
+                <i class="fas fa-download stat-icon"></i>
+                <div class="stat-value" id="statSoftware">0</div>
+                <div class="stat-label">软件分享</div>
+            </div>
+            <div class="stat-card stat-file">
+                <i class="fas fa-file-archive stat-icon"></i>
+                <div class="stat-value" id="statFile">0</div>
+                <div class="stat-label">文件分享</div>
+            </div>
+            <div class="stat-card stat-article">
+                <i class="fas fa-book-open stat-icon"></i>
+                <div class="stat-value" id="statArticle">0</div>
+                <div class="stat-label">文章分享</div>
+            </div>
         </div>
+
+        <!-- 分类筛选 -->
         <div class="category-filters" id="categoryFilters">
-            <button class="filter-btn filter-all active" data-category="all">全部</button>
-            <button class="filter-btn filter-web" data-category="web">网页</button>
-            <button class="filter-btn filter-software" data-category="software">软件</button>
-            <button class="filter-btn filter-file" data-category="file">文件</button>
-            <button class="filter-btn filter-article" data-category="article">文章</button>
+            <button class="filter-btn filter-all active" data-category="all">
+                <i class="fas fa-th-large"></i> 全部资源
+            </button>
+            <button class="filter-btn filter-web" data-category="web">
+                <i class="fas fa-globe"></i> 网页分享
+            </button>
+            <button class="filter-btn filter-software" data-category="software">
+                <i class="fas fa-download"></i> 软件分享
+            </button>
+            <button class="filter-btn filter-file" data-category="file">
+                <i class="fas fa-file-archive"></i> 文件分享
+            </button>
+            <button class="filter-btn filter-article" data-category="article">
+                <i class="fas fa-book-open"></i> 文章分享
+            </button>
         </div>
 
-        <!-- 加载指示器 -->
-        <div id="loading" class="loading">
-            <i class="fas fa-spinner fa-spin"></i>
-            <h3>正在加载资源...</h3>
+        <!-- 资源卡片容器 -->
+        <div id="resourcesContainer">
+            <div class="loading">
+                <i class="fas fa-spinner fa-spin loading-spinner"></i>
+                <h3>正在从GitHub加载资源数据...</h3>
+                <p>首次加载可能需要几秒钟时间</p>
+            </div>
         </div>
-
-        <!-- 空状态 -->
-        <div id="noResults" class="empty-state hidden">
-            <i class="fas fa-search"></i>
-            <h3>未找到匹配的资源</h3>
-        </div>
-
-        <!-- 资源卡片网格 -->
-        <div class="resources-grid" id="resourcesGrid"></div>
     </main>
 
     <!-- 详情模态框 -->
     <div class="modal-overlay" id="detailModal">
         <div class="modal">
             <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">资源详情</h2>
-                <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+                <h2 class="modal-title" id="modalTitle">
+                    <i class="fas fa-info-circle"></i>
+                    资源详情
+                </h2>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             <div class="modal-body" id="modalBody">
-                <div class="loading"><i class="fas fa-spinner fa-spin"></i></div>
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>正在加载内容...</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- 尾部（重写文字） -->
+    <!-- 页脚 -->
     <footer>
         <div class="container">
-            <p>© 2025-2026 鸿渚·资源库 | 分享让知识更有价值</p>
-            <p style="margin-top: 0.5rem; font-size: 0.9rem;">基于Markdown + GitHub Pages构建，优化版 v2.2</p>
+            <p>© 2025-2026 鸿渚资源分享站 | 基于Markdown + GitHub Pages构建</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+                版本 1.0 | 四种资源类型 | 最后更新: <span id="currentDate">2026-02-03</span>
+            </p>
         </div>
     </footer>
 
     <script>
-        // ==================== 防复制模块（完整保留）====================
-        (function antiCopy() {
-            document.addEventListener('contextmenu', e => e.preventDefault());
-            document.addEventListener('keydown', e => {
-                const isCtrl = e.ctrlKey || e.metaKey;
-                const key = e.key.toLowerCase();
-                if (isCtrl && (key === 'c' || key === 'a' || key === 's' || key === 'u')) e.preventDefault();
-                if (e.key === 'F12' || (isCtrl && e.shiftKey && key === 'i')) e.preventDefault();
-            });
-            document.addEventListener('selectstart', e => e.preventDefault());
-            document.addEventListener('copy', e => e.preventDefault());
-        })();
-
-        // ==================== 全局配置 ====================
+        // ============================================================================
+        // 配置文件与全局状态
+        // ============================================================================
         const CONFIG = {
             dataIndexUrl: 'data-index.json',
-            verifyApiUrl: 'https://your-vercel-app.vercel.app/api/verify-redeem', // 请替换
-            cacheDuration: 60 * 60 * 1000, // 1小时
-            searchDebounceMs: 300,
+            cacheBuster: '?v=' + new Date().getTime()
         };
 
-        // ==================== 全局状态 ====================
-        let allResources = [];
-        let filteredResources = [];
-        let currentModalResource = null;
-        let searchTimeout = null;
-        const unlockedResources = new Set();
+        const AppState = {
+            allResources: [],
+            filteredResources: [],
+            currentCategory: 'all',
+            isDarkMode: localStorage.getItem('darkMode') === 'true',
+            loadedFiles: new Map()
+        };
 
-        // DOM 元素
-        const statsPanel = document.getElementById('statsPanel');
-        const resourcesGrid = document.getElementById('resourcesGrid');
-        const noResults = document.getElementById('noResults');
-        const loading = document.getElementById('loading');
-        const categoryFilters = document.getElementById('categoryFilters');
-        const searchInput = document.getElementById('searchInput');
-        const modalOverlay = document.getElementById('detailModal');
-        const modalBody = document.getElementById('modalBody');
-        const modalClose = document.getElementById('modalClose');
-        const themeToggle = document.getElementById('themeToggle');
-
-        // ==================== 初始化 ====================
-        document.addEventListener('DOMContentLoaded', init);
-
-        async function init() {
-            setupEventListeners();
-            await loadResourcesWithCache();
-            // 统计面板仅在初始化时渲染一次（基于全部资源），之后不再改变
-            renderStats(allResources);
-            filterResources(); // 首次渲染卡片
-            loading.classList.add('hidden');
-        }
-
-        function setupEventListeners() {
-            categoryFilters.addEventListener('click', (e) => {
-                const btn = e.target.closest('.filter-btn');
-                if (!btn) return;
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                filterResources();
-            });
-
-            searchInput.addEventListener('input', () => {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => filterResources(), CONFIG.searchDebounceMs);
-            });
-
-            modalClose.addEventListener('click', closeModal);
-            modalOverlay.addEventListener('click', (e) => {
-                if (e.target === modalOverlay) closeModal();
-            });
-
-            themeToggle.addEventListener('click', toggleDarkMode);
-            if (localStorage.getItem('darkMode') === 'true') {
-                document.body.classList.add('dark-mode');
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        // ============================================================================
+        // 主应用类
+        // ============================================================================
+        class ResourceShareApp {
+            constructor() {
+                this.init();
             }
-        }
 
-        function toggleDarkMode() {
-            const isDark = document.body.classList.toggle('dark-mode');
-            localStorage.setItem('darkMode', isDark);
-            themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-        }
-
-        // ==================== 数据加载（带缓存）====================
-        async function loadResourcesWithCache() {
-            const cacheKey = 'starsea_resources';
-            const cached = localStorage.getItem(cacheKey);
-            if (cached) {
+            async init() {
                 try {
-                    const { data, timestamp } = JSON.parse(cached);
-                    if (Date.now() - timestamp < CONFIG.cacheDuration) {
-                        allResources = data;
-                        console.log('使用缓存数据');
-                        return;
-                    }
-                } catch (e) { console.warn('缓存解析失败'); }
-            }
-            await loadResourcesFromNetwork();
-            localStorage.setItem(cacheKey, JSON.stringify({ data: allResources, timestamp: Date.now() }));
-        }
-
-        async function loadResourcesFromNetwork() {
-            try {
-                const indexRes = await fetch(CONFIG.dataIndexUrl);
-                if (!indexRes.ok) throw new Error('索引加载失败');
-                const index = await indexRes.json();
-                const cardPaths = index.cards || [];
-
-                if (cardPaths.length === 0) { allResources = []; return; }
-
-                const contents = await Promise.all(
-                    cardPaths.map(file =>
-                        fetch(file).then(res => res.ok ? res.text() : null)
-                    )
-                );
-
-                allResources = contents.filter(Boolean).map((text, idx) => {
-                    const parsed = parseFrontMatter(text);
-                    return {
-                        ...parsed.meta,
-                        id: parsed.meta.id || idx,
-                        content: parsed.content,
-                        _sourcePath: cardPaths[idx]
-                    };
-                }).filter(r => r.title);
-            } catch (error) {
-                console.error('加载失败:', error);
-                loading.innerHTML = `<div class="error-state"><i class="fas fa-exclamation-triangle"></i><p>加载失败，请刷新</p></div>`;
-                allResources = [];
-            }
-        }
-
-        function parseFrontMatter(content) {
-            const lines = content.split('\n');
-            if (!lines[0].startsWith('---')) return { meta: {}, content };
-            let i = 1;
-            const meta = {};
-            while (i < lines.length && !lines[i].startsWith('---')) {
-                const [key, ...val] = lines[i].split(':');
-                if (key && val.length) meta[key.trim()] = val.join(':').trim();
-                i++;
-            }
-            const mainContent = lines.slice(i + 1).join('\n');
-            return { meta, content: mainContent };
-        }
-
-        // ==================== 渲染统计（基于全部资源）====================
-        function renderStats(resources) {
-            const total = resources.length;
-            const counts = { web:0, software:0, file:0, article:0 };
-            resources.forEach(r => { if (counts.hasOwnProperty(r.type)) counts[r.type]++; });
-            statsPanel.innerHTML = `
-                <div class="stat-card"><i class="fas fa-cube stat-icon"></i><div class="stat-value">${total}</div><div class="stat-label">全部</div></div>
-                <div class="stat-card"><i class="fas fa-globe stat-icon" style="color:var(--color-web)"></i><div class="stat-value">${counts.web}</div><div class="stat-label">网页</div></div>
-                <div class="stat-card"><i class="fas fa-download stat-icon" style="color:var(--color-software)"></i><div class="stat-value">${counts.software}</div><div class="stat-label">软件</div></div>
-                <div class="stat-card"><i class="fas fa-file-archive stat-icon" style="color:var(--color-file)"></i><div class="stat-value">${counts.file}</div><div class="stat-label">文件</div></div>
-                <div class="stat-card"><i class="fas fa-book-open stat-icon" style="color:var(--color-article)"></i><div class="stat-value">${counts.article}</div><div class="stat-label">文章</div></div>
-            `;
-        }
-
-        // ==================== 筛选与排序（统计不更新）====================
-        function filterResources() {
-            const activeCategory = document.querySelector('.filter-btn.active')?.dataset.category || 'all';
-            const searchTerm = searchInput.value.trim().toLowerCase();
-
-            filteredResources = allResources.filter(res => {
-                if (activeCategory !== 'all' && res.type !== activeCategory) return false;
-                if (searchTerm) {
-                    return (res.title?.toLowerCase().includes(searchTerm) ||
-                            res.description?.toLowerCase().includes(searchTerm) ||
-                            (res.tags && res.tags.some(t => t.toLowerCase().includes(searchTerm))));
+                    // 初始化设置
+                    this.setCurrentDate();
+                    this.initTheme();
+                    this.bindEvents();
+                    
+                    // 加载数据
+                    await this.loadDataIndex();
+                    await this.loadAllResources();
+                    
+                    // 渲染界面
+                    this.renderResources();
+                    this.updateStatistics();
+                    
+                    console.log('✅ 应用初始化完成，加载资源数:', AppState.allResources.length);
+                } catch (error) {
+                    console.error('❌ 应用初始化失败:', error);
+                    this.showError('无法加载资源数据，请检查控制台或网络连接。');
                 }
-                return true;
-            });
-
-            filteredResources.sort((a, b) => (a.id || 0) - (b.id || 0));
-            
-            // 注意：此处不再调用 renderStats，统计面板保持初始值不变
-            
-            renderGrid();
-        }
-
-        function renderGrid() {
-            if (filteredResources.length === 0) {
-                resourcesGrid.innerHTML = '';
-                noResults.classList.remove('hidden');
-                return;
             }
-            noResults.classList.add('hidden');
 
-            resourcesGrid.innerHTML = filteredResources.map((res, idx) => {
-                const typeClass = `card-type-${res.type}`;
-                const priceDisplay = res.is_paid ? `¥${res.price}` : '免费';
-                const icon = res.icon || getDefaultIcon(res.type);
-                const desc = (res.description || '').substring(0, 80) + (res.description?.length > 80 ? '...' : '');
-                return `
-                    <div class="resource-card" data-index="${idx}">
-                        <div class="card-header" ${res.cover ? `style="background-image: url('${res.cover}')"` : ''}>
-                            <span class="card-type-badge ${typeClass}">${res.type}</span>
-                            <i class="${icon} card-icon"></i>
-                        </div>
-                        <div class="card-body">
-                            <h3 class="card-title">${escapeHtml(res.title)}</h3>
-                            <p class="card-desc">${escapeHtml(desc)}</p>
-                            <div class="card-meta">
-                                <span>${escapeHtml(res.category || '其他')}</span>
-                                <span class="card-price">${priceDisplay}</span>
-                            </div>
-                            <button class="card-action-btn" data-index="${idx}">查看详情</button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            document.querySelectorAll('.card-action-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const idx = btn.dataset.index;
-                    openModal(filteredResources[idx]);
+            // 设置当前日期
+            setCurrentDate() {
+                const now = new Date();
+                const dateStr = now.toLocaleDateString('zh-CN', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
                 });
-            });
-        }
+                document.getElementById('currentDate').textContent = dateStr;
+            }
 
-        function getDefaultIcon(type) {
-            const map = { web:'fas fa-globe', software:'fas fa-download', file:'fas fa-file-archive', article:'fas fa-book-open' };
-            return map[type] || 'fas fa-star';
-        }
+            // 初始化主题
+            initTheme() {
+                if (AppState.isDarkMode) {
+                    document.body.classList.add('dark-mode');
+                    document.querySelector('#themeToggle i').className = 'fas fa-sun';
+                }
+            }
 
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
+            // 绑定事件监听器
+            bindEvents() {
+                // 主题切换
+                document.getElementById('themeToggle').addEventListener('click', () => this.toggleTheme());
+                
+                // 分类筛选
+                document.getElementById('categoryFilters').addEventListener('click', (e) => {
+                    const filterBtn = e.target.closest('.filter-btn');
+                    if (filterBtn) {
+                        const category = filterBtn.dataset.category;
+                        this.setActiveCategory(category);
+                    }
+                });
 
-        // ==================== 模态框详情 ====================
-        function openModal(resource) {
-            currentModalResource = resource;
-            document.getElementById('modalTitle').innerHTML = `<i class="fas fa-info-circle"></i> ${escapeHtml(resource.title)}`;
-            modalBody.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i></div>';
-            modalOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
+                // 模态框关闭
+                document.getElementById('modalClose').addEventListener('click', () => this.closeModal());
+                document.getElementById('detailModal').addEventListener('click', (e) => {
+                    if (e.target === e.currentTarget) this.closeModal();
+                });
 
-            if (resource.type === 'file') renderFileDetail(resource);
-            else if (resource.type === 'article') renderArticleDetail(resource);
-            else renderDefaultDetail(resource);
-        }
+                // 键盘快捷键
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') this.closeModal();
+                    if (e.key === 'r' && e.ctrlKey) {
+                        e.preventDefault();
+                        this.refreshData();
+                    }
+                    if (e.key === 'd' && e.altKey) {
+                        e.preventDefault();
+                        this.toggleTheme();
+                    }
+                });
+            }
 
-        function closeModal() {
-            modalOverlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
+            // 切换主题
+            toggleTheme() {
+                AppState.isDarkMode = !AppState.isDarkMode;
+                document.body.classList.toggle('dark-mode', AppState.isDarkMode);
+                localStorage.setItem('darkMode', AppState.isDarkMode);
+                
+                const icon = document.querySelector('#themeToggle i');
+                icon.className = AppState.isDarkMode ? 'fas fa-sun' : 'fas fa-moon';
+                
+                this.showNotification(
+                    AppState.isDarkMode ? '已切换到深色模式' : '已切换到浅色模式',
+                    'info'
+                );
+            }
 
-        async function renderFileDetail(resource) {
-            try {
-                let fileMeta = resource;
-                if (resource.fileRef && !resource._fullDetail) {
-                    const fileRes = await fetch(resource.fileRef);
-                    const text = await fileRes.text();
-                    const parsed = parseFrontMatter(text);
-                    fileMeta = { ...resource, ...parsed.meta, content: parsed.content, _fullDetail: true };
+            // 加载数据索引
+            async loadDataIndex() {
+                try {
+                    const response = await fetch(CONFIG.dataIndexUrl + CONFIG.cacheBuster);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}: ${CONFIG.dataIndexUrl}`);
+                    
+                    this.dataIndex = await response.json();
+                    console.log('📁 数据索引加载成功:', this.dataIndex);
+                } catch (error) {
+                    console.error('❌ 加载数据索引失败:', error);
+                    throw error;
+                }
+            }
+
+            // 加载所有资源
+            async loadAllResources() {
+                if (!this.dataIndex?.cards) {
+                    throw new Error('索引文件中未找到卡片数据');
                 }
 
-                const resourceKey = fileMeta.id || fileMeta.fileRef || 'unknown';
-                const isUnlocked = unlockedResources.has(resourceKey);
-                const isPaid = fileMeta.is_paid;
+                AppState.allResources = [];
+                
+                // 并行加载所有卡片
+                const loadPromises = this.dataIndex.cards.map(async (cardPath) => {
+                    try {
+                        if (AppState.loadedFiles.has(cardPath)) {
+                            return AppState.loadedFiles.get(cardPath);
+                        }
+                        
+                        const resource = await this.loadMarkdownFile(cardPath);
+                        AppState.loadedFiles.set(cardPath, resource);
+                        return resource;
+                    } catch (error) {
+                        console.warn(`⚠️ 卡片加载失败 ${cardPath}:`, error);
+                        return null;
+                    }
+                });
 
-                let html = `
-                    <div class="file-detail" style="text-align:center">
-                        <i class="fas fa-${getFileIcon(fileMeta.fileType)}" style="font-size:4rem; color:var(--color-file)"></i>
-                        <h2>${escapeHtml(fileMeta.fileName || fileMeta.title)}</h2>
-                        <p>${escapeHtml(fileMeta.description || '')}</p>
-                        <p><i class="fas fa-weight-hanging"></i> ${fileMeta.fileSize || '大小未知'}</p>
-                `;
+                const results = await Promise.all(loadPromises);
+                AppState.allResources = results.filter(r => r !== null && !r.meta._error);
+                AppState.filteredResources = [...AppState.allResources];
+                
+                console.log(`✅ 成功加载 ${AppState.allResources.length} 张卡片`);
+            }
 
-                if (isPaid && !isUnlocked) {
-                    html += `
-                        <div class="redeem-box">
-                            <h3><i class="fas fa-lock"></i> 付费内容</h3>
-                            <input type="text" id="redeemCode" class="redeem-input" placeholder="输入16位兑换码">
-                            <button id="redeemBtn" class="redeem-btn">验证兑换码</button>
-                            <div id="redeemResult" class="redeem-result"></div>
+            // 加载单个Markdown文件
+            async loadMarkdownFile(filePath) {
+                try {
+                    const response = await fetch(filePath + CONFIG.cacheBuster);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}: ${filePath}`);
+                    
+                    const text = await response.text();
+                    const parsed = this.parseFrontMatter(text);
+                    
+                    // 验证必要字段
+                    if (!parsed.meta.id && !parsed.meta.title) {
+                        console.warn(`文件 ${filePath} 缺少必要的元数据`);
+                        parsed.meta._error = true;
+                    }
+                    
+                    parsed.meta._sourcePath = filePath;
+                    return parsed;
+                } catch (error) {
+                    console.error(`❌ 加载文件失败 ${filePath}:`, error);
+                    return {
+                        meta: {
+                            _error: true,
+                            id: filePath,
+                            title: '加载失败',
+                            description: '无法加载此资源',
+                            type: 'web',
+                            category: '错误'
+                        },
+                        content: ''
+                    };
+                }
+            }
+
+            // 解析YAML前置元数据
+            parseFrontMatter(content) {
+                content = content.trim();
+                
+                // 检查是否有YAML前置元数据
+                if (!content.startsWith('---')) {
+                    return {
+                        meta: {
+                            title: '未命名资源',
+                            description: content.slice(0, 150) + '...',
+                            type: 'web',
+                            category: '未分类'
+                        },
+                        content: content
+                    };
+                }
+
+                const lines = content.split('\n');
+                let i = 1;
+                const meta = {};
+                let yamlLines = [];
+
+                // 收集YAML内容
+                while (i < lines.length && lines[i].trim() !== '---') {
+                    yamlLines.push(lines[i]);
+                    i++;
+                }
+
+                // 解析YAML
+                yamlLines.forEach(line => {
+                    const trimmed = line.trim();
+                    if (!trimmed || trimmed.startsWith('#')) return;
+                    
+                    const colonIndex = trimmed.indexOf(':');
+                    if (colonIndex > -1) {
+                        const key = trimmed.slice(0, colonIndex).trim();
+                        let value = trimmed.slice(colonIndex + 1).trim();
+                        
+                        // 处理数组
+                        if (value.startsWith('[') && value.endsWith(']')) {
+                            try {
+                                value = value.slice(1, -1)
+                                    .split(',')
+                                    .map(v => v.trim().replace(/^['"]|['"]$/g, ''));
+                            } catch (e) {
+                                value = [];
+                            }
+                        }
+                        // 处理带引号的字符串
+                        else if ((value.startsWith('"') && value.endsWith('"')) || 
+                                 (value.startsWith("'") && value.endsWith("'"))) {
+                            value = value.slice(1, -1);
+                        }
+                        // 处理布尔值
+                        else if (value.toLowerCase() === 'true') value = true;
+                        else if (value.toLowerCase() === 'false') value = false;
+                        // 处理数字
+                        else if (/^-?\d+(\.\d+)?$/.test(value)) value = Number(value);
+                        
+                        meta[key] = value;
+                    }
+                });
+
+                // 获取正文内容
+                const mainContent = lines.slice(i + 1).join('\n').trim();
+                
+                // 设置默认值
+                if (!meta.type) meta.type = 'web';
+                if (!meta.category) meta.category = '未分类';
+                if (!meta.icon) meta.icon = this.getDefaultIcon(meta.type);
+                if (!meta.date) meta.date = new Date().toISOString().split('T')[0];
+                
+                return { meta, content: mainContent };
+            }
+
+            // 渲染资源卡片
+            renderResources() {
+                const container = document.getElementById('resourcesContainer');
+                const resources = AppState.filteredResources;
+
+                if (resources.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-search"></i>
+                            <h3>未找到匹配的资源</h3>
+                            <p>尝试选择其他分类或稍后再试。</p>
                         </div>
                     `;
-                } else {
-                    const downloadUrl = fileMeta.downloadUrl || '#';
-                    html += `<button class="download-btn" id="downloadBtn" data-url="${downloadUrl}"><i class="fas fa-download"></i> 下载文件</button>`;
-                    if (fileMeta.password) {
-                        html += `<p><i class="fas fa-key"></i> 解压密码: <code>${escapeHtml(fileMeta.password)}</code></p>`;
-                    }
+                    return;
                 }
 
-                if (fileMeta.content) {
-                    html += `<hr><div class="article-content">${marked.parse(fileMeta.content)}</div>`;
-                }
-                html += '</div>';
-                modalBody.innerHTML = html;
-
-                if (isPaid && !isUnlocked) {
-                    document.getElementById('redeemBtn').addEventListener('click', () => {
-                        const code = document.getElementById('redeemCode').value.trim();
-                        verifyRedeemCode(code, resourceKey, fileMeta);
-                    });
-                } else {
-                    const btn = document.getElementById('downloadBtn');
-                    if (btn) {
-                        btn.addEventListener('click', () => {
-                            const url = btn.dataset.url;
-                            if (url && url !== '#') {
-                                const a = document.createElement('a');
-                                a.href = url;
-                                a.download = '';
-                                a.click();
-                            }
-                        });
+                container.innerHTML = resources.map((resource, index) => {
+                    const meta = resource.meta;
+                    const type = meta.type || 'web';
+                    const typeText = this.getTypeChineseName(type);
+                    const typeClass = `card-type-${type}`;
+                    
+                    // 构建标签HTML
+                    let tagsHtml = '';
+                    if (meta.tags && Array.isArray(meta.tags)) {
+                        tagsHtml = meta.tags.map(tag => {
+                            let tagClass = 'card-tag';
+                            if (tag === '热门') tagClass += ' tag-hot';
+                            else if (tag === '最新') tagClass += ' tag-new';
+                            else if (tag === '推荐') tagClass += ' tag-rec';
+                            return `<span class="${tagClass}">${tag}</span>`;
+                        }).join('');
                     }
+                    
+                    // 构建动作按钮
+                    let actionHtml = '';
+                    let actionText = '';
+                    let actionIcon = '';
+                    
+                    switch(type) {
+                        case 'article':
+                            actionText = '阅读文章';
+                            actionIcon = 'book-open';
+                            break;
+                        case 'file':
+                            actionText = '查看详情';
+                            actionIcon = 'download';
+                            break;
+                        case 'web':
+                        case 'software':
+                            actionText = '访问链接';
+                            actionIcon = 'external-link-alt';
+                            break;
+                    }
+                    
+                    if (meta.is_paid && meta.price) {
+                        actionHtml = `
+                            <div class="card-price">¥${meta.price}</div>
+                            <div class="paypal-button-container" data-product-id="${meta.id}">
+                                <!-- PayPal按钮将通过JS动态加载 -->
+                            </div>
+                        `;
+                    } else {
+                        actionHtml = `
+                            <button class="card-action-btn primary" data-index="${index}" data-type="${type}">
+                                <i class="fas fa-${actionIcon}"></i>
+                                ${actionText}
+                            </button>
+                        `;
+                    }
+
+                    // 构建卡片HTML
+                    return `
+                    <div class="resource-card" data-index="${index}">
+                        <div class="card-header" ${meta.cover ? `style="background-image: url('${meta.cover}')"` : ''}>
+                            <div class="card-type-badge ${typeClass}">${typeText}</div>
+                            ${tagsHtml ? `<div class="card-tags">${tagsHtml}</div>` : ''}
+                            <i class="${meta.icon} card-icon"></i>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">${this.escapeHtml(meta.title)}</h3>
+                            <p class="card-desc">${this.escapeHtml(meta.description || '暂无描述')}</p>
+                            <div class="card-meta">
+                                <span>${this.escapeHtml(meta.category)}</span>
+                                <span>${meta.date || ''}</span>
+                            </div>
+                            ${actionHtml}
+                        </div>
+                    </div>
+                    `;
+                }).join('');
+
+                // 绑定卡片事件
+                this.bindCardEvents();
+                
+                // 如果需要，加载PayPal按钮
+                if (resources.some(r => r.meta.is_paid)) {
+                    this.loadPayPalButtons();
                 }
-                hljs.highlightAll();
-            } catch (e) {
-                modalBody.innerHTML = `<div class="error-state">加载失败</div>`;
             }
-        }
 
-        async function renderArticleDetail(resource) {
-            try {
-                let article = resource;
-                if (resource.contentRef && !resource._fullDetail) {
-                    const res = await fetch(resource.contentRef);
-                    const text = await res.text();
-                    const parsed = parseFrontMatter(text);
-                    article = { ...resource, ...parsed.meta, content: parsed.content };
+            // 绑定卡片事件
+            bindCardEvents() {
+                const container = document.getElementById('resourcesContainer');
+                
+                container.addEventListener('click', (e) => {
+                    const card = e.target.closest('.resource-card');
+                    const actionBtn = e.target.closest('.card-action-btn');
+                    
+                    if (card && actionBtn) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        const index = parseInt(card.dataset.index);
+                        const type = actionBtn.dataset.type;
+                        this.handleCardAction(index, type);
+                    } else if (card && !e.target.closest('.paypal-button-container')) {
+                        const index = parseInt(card.dataset.index);
+                        const resource = AppState.filteredResources[index];
+                        if (resource && !resource.meta.is_paid) {
+                            this.handleCardAction(index, resource.meta.type);
+                        }
+                    }
+                });
+            }
+
+            // 处理卡片动作
+            async handleCardAction(index, type) {
+                const resource = AppState.filteredResources[index];
+                if (!resource) return;
+
+                const meta = resource.meta;
+                
+                switch(type) {
+                    case 'article':
+                        if (meta.contentRef) {
+                            await this.openArticleModal(meta.contentRef, meta);
+                        } else {
+                            this.showNotification('该文章暂无内容', 'warning');
+                        }
+                        break;
+                    case 'file':
+                        if (meta.fileRef) {
+                            await this.openFileModal(meta.fileRef, meta);
+                        } else if (meta.url) {
+                            window.open(meta.url, '_blank');
+                        }
+                        break;
+                    case 'web':
+                    case 'software':
+                        if (meta.url) {
+                            window.open(meta.url, '_blank');
+                            this.showNotification(`正在访问: ${meta.title}`, 'info');
+                        }
+                        break;
                 }
-                modalBody.innerHTML = `
-                    <div class="article-content">
-                        <h1>${escapeHtml(article.title)}</h1>
-                        <p><i class="fas fa-user"></i> ${escapeHtml(article.author || '鸿渚')} | <i class="fas fa-calendar"></i> ${article.date || ''}</p>
-                        ${marked.parse(article.content || '')}
+            }
+
+            // 打开文章模态框
+            async openArticleModal(articlePath, cardMeta) {
+                try {
+                    // 显示加载状态
+                    document.getElementById('modalTitle').innerHTML = 
+                        `<i class="fas fa-book-open"></i> ${this.escapeHtml(cardMeta.title)}`;
+                    document.getElementById('modalBody').innerHTML = `
+                        <div class="loading">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>正在加载文章内容...</p>
+                        </div>
+                    `;
+                    this.openModal();
+
+                    // 加载文章内容
+                    let article;
+                    if (AppState.loadedFiles.has(articlePath)) {
+                        article = AppState.loadedFiles.get(articlePath);
+                    } else {
+                        article = await this.loadMarkdownFile(articlePath);
+                        AppState.loadedFiles.set(articlePath, article);
+                    }
+                    
+                    if (article.meta._error) {
+                        throw new Error('文章文件加载失败');
+                    }
+                    
+                    // 解析和显示内容
+                    const htmlContent = article.content ? marked.parse(article.content) : '<p>暂无内容</p>';
+                    const readTime = article.meta.readTime || cardMeta.readTime || '10分钟阅读';
+                    const author = article.meta.author || cardMeta.author || '鸿渚';
+                    const date = article.meta.date || cardMeta.date || '未知日期';
+                    
+                    document.getElementById('modalBody').innerHTML = `
+                        <div style="margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-color);">
+                            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center;">
+                                <span><i class="fas fa-user"></i> ${this.escapeHtml(author)}</span>
+                                <span><i class="fas fa-calendar"></i> ${this.escapeHtml(date)}</span>
+                                <span><i class="fas fa-clock"></i> ${this.escapeHtml(readTime)}</span>
+                            </div>
+                        </div>
+                        <div class="article-content">
+                            ${htmlContent}
+                        </div>
+                    `;
+
+                    // 应用代码高亮
+                    setTimeout(() => {
+                        document.querySelectorAll('pre code').forEach(block => {
+                            hljs.highlightElement(block);
+                        });
+                    }, 100);
+
+                } catch (error) {
+                    console.error('❌ 加载文章失败:', error);
+                    document.getElementById('modalBody').innerHTML = `
+                        <div class="error-state">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>加载失败</h3>
+                            <p>无法加载文章内容，请稍后重试。</p>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem;">错误: ${this.escapeHtml(error.message)}</p>
+                        </div>
+                    `;
+                }
+            }
+
+            // 打开文件模态框
+            async openFileModal(filePath, cardMeta) {
+                try {
+                    document.getElementById('modalTitle').innerHTML = 
+                        `<i class="fas fa-file-archive"></i> ${this.escapeHtml(cardMeta.title)}`;
+                    document.getElementById('modalBody').innerHTML = `
+                        <div class="loading">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>正在加载文件信息...</p>
+                        </div>
+                    `;
+                    this.openModal();
+
+                    // 加载文件详情
+                    let fileDetail;
+                    if (AppState.loadedFiles.has(filePath)) {
+                        fileDetail = AppState.loadedFiles.get(filePath);
+                    } else {
+                        fileDetail = await this.loadMarkdownFile(filePath);
+                        AppState.loadedFiles.set(filePath, fileDetail);
+                    }
+                    
+                    const fileMeta = fileDetail.meta;
+                    const fileIcon = this.getFileIcon(fileMeta.fileType);
+                    const fileSize = fileMeta.fileSize || '大小未知';
+                    const fileName = fileMeta.fileName || cardMeta.title;
+                    const downloadUrl = fileMeta.downloadUrl || '#';
+                    
+                    let detailHtml = `
+                        <div class="file-detail">
+                            <i class="fas fa-${fileIcon} file-icon-large"></i>
+                            <h2 class="file-name">${this.escapeHtml(fileName)}</h2>
+                            <div class="file-meta">
+                                <p><i class="fas fa-weight-hanging"></i> ${this.escapeHtml(fileSize)}</p>
+                                <p><i class="fas fa-calendar"></i> ${this.escapeHtml(cardMeta.date || '未知日期')}</p>
+                            </div>
+                            
+                            <p style="margin: 1.5rem 0; font-size: 1.1rem; line-height: 1.6;">
+                                ${this.escapeHtml(fileMeta.description || cardMeta.description)}
+                            </p>
+                            
+                            <a href="${downloadUrl}" class="download-btn" target="_blank" ${downloadUrl !== '#' ? 'download' : ''}>
+                                <i class="fas fa-download"></i> 下载文件
+                            </a>
+                    `;
+
+                    // 添加解压密码
+                    if (fileMeta.password) {
+                        detailHtml += `
+                            <div style="background: var(--bg-light); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                                <p><i class="fas fa-key"></i> 解压密码: <code>${this.escapeHtml(fileMeta.password)}</code></p>
+                            </div>
+                        `;
+                    }
+
+                    // 添加详细说明
+                    if (fileDetail.content) {
+                        const contentHtml = marked.parse(fileDetail.content);
+                        detailHtml += `
+                            <div style="text-align: left; margin-top: 2.5rem;">
+                                <h3 style="margin-bottom: 1rem;"><i class="fas fa-info-circle"></i> 详细说明</h3>
+                                <div class="article-content">
+                                    ${contentHtml}
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    detailHtml += `</div>`;
+                    document.getElementById('modalBody').innerHTML = detailHtml;
+
+                } catch (error) {
+                    console.error('❌ 加载文件详情失败:', error);
+                    document.getElementById('modalBody').innerHTML = `
+                        <div class="error-state">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>加载失败</h3>
+                            <p>无法加载文件信息，请检查文件路径或网络连接。</p>
+                        </div>
+                    `;
+                }
+            }
+
+            // 设置活动分类
+            setActiveCategory(category) {
+                AppState.currentCategory = category;
+                
+                // 更新按钮状态
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.category === category);
+                });
+                
+                // 筛选资源
+                if (category === 'all') {
+                    AppState.filteredResources = [...AppState.allResources];
+                } else {
+                    AppState.filteredResources = AppState.allResources.filter(
+                        resource => resource.meta.type === category
+                    );
+                }
+                
+                // 重新渲染
+                this.renderResources();
+                this.updateStatistics();
+                
+                console.log(`📊 切换到分类: ${category}, 显示 ${AppState.filteredResources.length} 个资源`);
+            }
+
+            // 更新统计信息
+            updateStatistics() {
+                const resources = AppState.filteredResources;
+                
+                let webCount = 0, softwareCount = 0, fileCount = 0, articleCount = 0;
+                
+                resources.forEach(resource => {
+                    switch(resource.meta.type) {
+                        case 'web': webCount++; break;
+                        case 'software': softwareCount++; break;
+                        case 'file': fileCount++; break;
+                        case 'article': articleCount++; break;
+                    }
+                });
+                
+                // 更新显示
+                document.getElementById('statWeb').textContent = webCount;
+                document.getElementById('statSoftware').textContent = softwareCount;
+                document.getElementById('statFile').textContent = fileCount;
+                document.getElementById('statArticle').textContent = articleCount;
+                
+                console.log('📈 统计更新:', { webCount, softwareCount, fileCount, articleCount, total: resources.length });
+            }
+
+            // 打开模态框
+            openModal() {
+                document.getElementById('detailModal').classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            // 关闭模态框
+            closeModal() {
+                document.getElementById('detailModal').classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+
+            // 加载PayPal按钮
+            loadPayPalButtons() {
+                // 注意：这里需要替换为你的实际PayPal按钮ID
+                // 在实际部署中，你应该从每个付费资源的meta.paypal_button_id获取
+                console.log('💰 加载PayPal按钮（需要配置实际的按钮ID）');
+                
+                // 示例代码，实际使用时需要替换
+                document.querySelectorAll('.paypal-button-container').forEach(container => {
+                    const productId = container.dataset.productId;
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 1rem; background: var(--bg-light); border-radius: 8px;">
+                            <p style="margin-bottom: 0.5rem; color: var(--text-secondary);">
+                                <i class="fas fa-lock"></i> 付费内容
+                            </p>
+                            <button style="padding: 0.8rem 1.5rem; background: #0070ba; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                购买解锁
+                            </button>
+                            <p style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-secondary);">
+                                *实际部署时需要配置PayPal按钮
+                            </p>
+                        </div>
+                    `;
+                });
+            }
+
+            // 刷新数据
+            async refreshData() {
+                this.showNotification('正在刷新数据...', 'info');
+                try {
+                    // 清除缓存
+                    AppState.loadedFiles.clear();
+                    CONFIG.cacheBuster = '?v=' + new Date().getTime();
+                    
+                    await this.loadDataIndex();
+                    await this.loadAllResources();
+                    this.setActiveCategory(AppState.currentCategory);
+                    this.showNotification('数据刷新成功', 'success');
+                } catch (error) {
+                    console.error('❌ 刷新数据失败:', error);
+                    this.showNotification('刷新失败，请重试', 'error');
+                }
+            }
+
+            // 显示错误
+            showError(message) {
+                const container = document.getElementById('resourcesContainer');
+                container.innerHTML = `
+                    <div class="error-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>加载失败</h3>
+                        <p>${this.escapeHtml(message)}</p>
+                        <button onclick="location.reload()" 
+                                style="margin-top: 1.5rem; padding: 0.8rem 2rem; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer;">
+                            <i class="fas fa-redo"></i> 重新加载
+                        </button>
                     </div>
                 `;
-                hljs.highlightAll();
-            } catch (e) {
-                modalBody.innerHTML = `<div class="error-state">加载失败</div>`;
+            }
+
+            // 显示通知
+            showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: ${type === 'info' ? '#3b82f6' : type === 'success' ? '#10b981' : '#ef4444'};
+                    color: white;
+                    padding: 1rem 1.5rem;
+                    border-radius: 8px;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                    z-index: 9999;
+                    animation: slideIn 0.3s ease;
+                    max-width: 300px;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                `;
+                
+                const icon = type === 'info' ? 'info-circle' : type === 'success' ? 'check-circle' : 'exclamation-circle';
+                notification.innerHTML = `
+                    <i class="fas fa-${icon}"></i>
+                    <span>${this.escapeHtml(message)}</span>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // 3秒后移除
+                setTimeout(() => {
+                    notification.style.animation = 'slideOut 0.3s ease';
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 300);
+                }, 3000);
+            }
+
+            // 工具函数
+            getTypeChineseName(type) {
+                const map = {
+                    'web': '网页分享',
+                    'software': '软件分享', 
+                    'file': '文件分享',
+                    'article': '文章分享'
+                };
+                return map[type] || type;
+            }
+
+            getDefaultIcon(type) {
+                const map = {
+                    'web': 'fas fa-globe',
+                    'software': 'fas fa-download',
+                    'file': 'fas fa-file-archive',
+                    'article': 'fas fa-book-open'
+                };
+                return map[type] || 'fas fa-star';
+            }
+
+            getFileIcon(fileType) {
+                if (!fileType) return 'file';
+                const map = {
+                    'zip': 'file-archive',
+                    'rar': 'file-archive',
+                    '7z': 'file-archive',
+                    'pdf': 'file-pdf',
+                    'doc': 'file-word',
+                    'docx': 'file-word',
+                    'xls': 'file-excel',
+                    'xlsx': 'file-excel',
+                    'ppt': 'file-powerpoint',
+                    'pptx': 'file-powerpoint',
+                    'jpg': 'file-image',
+                    'jpeg': 'file-image',
+                    'png': 'file-image',
+                    'gif': 'file-image',
+                    'mp4': 'file-video',
+                    'avi': 'file-video',
+                    'mov': 'file-video',
+                    'mp3': 'file-audio',
+                    'wav': 'file-audio',
+                    'txt': 'file-alt',
+                    'md': 'file-alt'
+                };
+                return map[fileType.toLowerCase()] || 'file';
+            }
+
+            escapeHtml(text) {
+                if (!text) return '';
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
             }
         }
 
-        function renderDefaultDetail(resource) {
-            modalBody.innerHTML = `
-                <div style="text-align:center; padding:2rem">
-                    <h2>${escapeHtml(resource.title)}</h2>
-                    <p>${escapeHtml(resource.description || '')}</p>
-                    ${resource.url ? `<a href="${resource.url}" target="_blank" class="download-btn">访问链接</a>` : ''}
-                </div>
-            `;
-        }
-
-        // ==================== 兑换码验证 ====================
-        async function verifyRedeemCode(code, resourceKey, fileMeta) {
-            const btn = document.getElementById('redeemBtn');
-            const resultDiv = document.getElementById('redeemResult');
-            if (!code) { resultDiv.innerHTML = '请输入兑换码'; resultDiv.className = 'redeem-result redeem-error'; return; }
-
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 验证中...';
-            resultDiv.innerHTML = '';
-
-            try {
-                const res = await fetch(CONFIG.verifyApiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ code, resourceId: resourceKey })
-                });
-                const data = await res.json();
-                if (data.success) {
-                    unlockedResources.add(resourceKey);
-                    resultDiv.innerHTML = '✅ 验证成功！正在刷新...';
-                    resultDiv.className = 'redeem-result redeem-success';
-                    setTimeout(() => renderFileDetail(fileMeta), 1500);
-                } else {
-                    resultDiv.innerHTML = `❌ ${data.message || '验证失败'}`;
-                    resultDiv.className = 'redeem-result redeem-error';
-                    btn.disabled = false;
-                    btn.innerHTML = '验证兑换码';
+        // ============================================================================
+        // 页面初始化
+        // ============================================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // 添加CSS动画
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
                 }
-            } catch (err) {
-                resultDiv.innerHTML = '❌ 网络错误，请重试';
-                resultDiv.className = 'redeem-result redeem-error';
-                btn.disabled = false;
-                btn.innerHTML = '验证兑换码';
-            }
-        }
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
 
-        function getFileIcon(type) {
-            const map = { zip:'file-archive', rar:'file-archive', pdf:'file-pdf', doc:'file-word', xls:'file-excel', jpg:'file-image', png:'file-image', mp4:'file-video', mp3:'file-audio' };
-            return map[type] || 'file';
-        }
+            // 启动应用
+            window.app = new ResourceShareApp();
+            
+            // 添加调试快捷键
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'D' && e.altKey && e.shiftKey) {
+                    console.log('🔧 调试信息:');
+                    console.log('当前分类:', AppState.currentCategory);
+                    console.log('所有资源:', AppState.allResources);
+                    console.log('筛选后资源:', AppState.filteredResources);
+                    console.log('已加载文件:', AppState.loadedFiles);
+                }
+            });
+        });
     </script>
 </body>
 </html>
