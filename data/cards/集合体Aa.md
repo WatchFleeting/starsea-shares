@@ -1,13 +1,15 @@
 ---
-id: 20
-title: "集合体Aa"
-description: "AI绘画技术分享与作品展示。专注于AI绘画技术的深度解析和创作经验分享。"
-category: "优质UP"
+id: "集合体Aa"
+resource_id: "集合体Aa"
+title: "集合体 Aa"
+description: "艺术与设计集合体。"
 type: "web"
-url: "https://b23.tv/ve4uYzU"
-icon: "fas fa-palette"
-tags: ["最新"]
-date: "2025-11-11"
+category: "设计"
+author: "鸿渚"
+date: "2026-01-31"
+icon: "fas fa-paint-brush"
+cover: "/assets/covers/jiheti.jpg"
+url: "https://aa.example.com"
 ---
 
 集合体Aa专注于AI绘画技术的深度解析和创作经验分享。
