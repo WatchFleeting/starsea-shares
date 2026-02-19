@@ -1,16 +1,16 @@
 ---
-id: 6
-title: "彩e - 漫画资源"
-description: "Ehviewer彩版，功能强大的漫画阅读器，支持多种格式。拥有丰富的自定义选项和流畅的阅读体验。"
-category: "程序资源"
-type: "software"
-url: "https://github.com/Ehviewer-Overhauled/Ehviewer/releases/"
-icon: "fas fa-paint-brush"
-tags: ["热门", "推荐"]
-date: "2025-10-11"
-docUrl: "https://github.com/Ehviewer-Overhauled/Ehviewer/blob/1.8.x.x/docs/README/zh-cn.md"
-version: "最新版"
-platform: "Android"
+id: "彩e漫画资源"
+resource_id: "彩e漫画资源"
+title: "彩e 漫画资源"
+description: "彩色漫画资源合集。"
+type: "file"
+category: "漫画"
+tags: ["最新"]
+author: "鸿渚"
+date: "2026-02-14"
+icon: "fas fa-file-archive"
+cover: "/assets/covers/cai-e.jpg"
+fileRef: "data/files/cai-e-details.md"
 ---
 
 彩e是Ehviewer的彩色版本，提供丰富的自定义选项和流畅的阅读体验。
