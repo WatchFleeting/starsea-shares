@@ -1,13 +1,15 @@
 ---
-id: 17
-title: "仓鼠xixi"
-description: "AI绘画作品分享，创意十足。专注于AI绘画教程和资源分享，适合AI绘画爱好者。"
-category: "优质UP"
+id: "仓鼠xixi"
+resource_id: "仓鼠xixi"
+title: "仓鼠 xixi 的资源库"
+description: "个人分享的各种资源。"
 type: "web"
-url: "https://b23.tv/neGKc6G"
-icon: "fas fa-palette"
-tags: ["最新"]
-date: "2025-10-11"
+category: "个人站"
+author: "仓鼠xixi"
+date: "2026-02-03"
+icon: "fas fa-heart"
+cover: "/assets/covers/cangshu.jpg"
+url: "https://xixi.example.com"
 ---
 
 仓鼠xixi是专注于AI绘画教程和资源分享的UP主，创意十足。
