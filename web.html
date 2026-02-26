@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>网页资源 · 鸿渚の分享页</title>
+    <meta name="description" content="网页类资源列表">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
@@ -129,6 +130,13 @@
             font-size: 0.8rem;
             color: var(--text-desc);
             border: 1px solid var(--border-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .tag-item:hover {
+            background: var(--primary-500);
+            color: white;
+            border-color: var(--primary-500);
         }
         .ranking-list { display: flex; flex-direction: column; gap: var(--space-sm); }
         .ranking-item {
@@ -137,6 +145,10 @@
             gap: var(--space-sm);
             padding: var(--space-sm) 0;
             border-bottom: 1px dashed var(--border-light);
+            cursor: pointer;
+        }
+        .ranking-item:hover {
+            background: var(--bg-page);
         }
         .ranking-number { font-weight:700; color:var(--primary-600); min-width:28px; }
         .ranking-name { flex:1; color:var(--text-title); font-size:0.9rem; }
@@ -145,42 +157,134 @@
     </style>
 </head>
 <body>
-    <script>/* 防复制脚本（同前） */</script>
+    <script>
+        (function() {
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('selectstart', e => e.preventDefault());
+            document.addEventListener('keydown', e => {
+                if (e.ctrlKey || e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) e.preventDefault();
+            });
+            document.addEventListener('copy', e => e.preventDefault());
+        })();
+    </script>
+
     <main class="container">
         <div class="breadcrumb" id="breadcrumb"></div>
+
         <div class="main-grid">
-            <div id="resourcesContainer" class="resources-list"><div class="loading">加载中...</div></div>
+            <div id="resourcesContainer" class="resources-list">
+                <div class="loading"><i class="fas fa-spinner fa-spin"></i> 加载网页资源中...</div>
+            </div>
             <aside class="sidebar">
-                <div class="sidebar-card"><div class="sidebar-title">热门标签</div><div class="tag-cloud" id="tagCloud"></div></div>
-                <div class="sidebar-card"><div class="sidebar-title">下载排行榜</div><div class="ranking-list" id="rankingList"></div></div>
+                <div class="sidebar-card">
+                    <div class="sidebar-title"><i class="fas fa-tags"></i> 热门标签</div>
+                    <div class="tag-cloud" id="tagCloud"></div>
+                </div>
+                <div class="sidebar-card">
+                    <div class="sidebar-title"><i class="fas fa-chart-line"></i> 下载排行榜</div>
+                    <div class="ranking-list" id="rankingList"></div>
+                </div>
             </aside>
         </div>
     </main>
+
     <script src="js/common.js"></script>
     <script>
         (async function() {
             await loadHeader();
             await loadFooter();
             renderBreadcrumb('web');
+
             const container = document.getElementById('resourcesContainer');
             const tagCloud = document.getElementById('tagCloud');
             const rankingList = document.getElementById('rankingList');
+
             try {
                 const allResources = await loadAllResources();
                 const webResources = allResources.filter(r => r.meta.type === 'web');
-                if (webResources.length === 0) container.innerHTML = '<div class="empty-state">暂无网页资源</div>';
-                else {
+
+                if (webResources.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><i class="fas fa-compass"></i><h3>暂无网页资源</h3></div>';
+                } else {
                     container.innerHTML = webResources.map(res => {
                         const meta = res.meta;
-                        const displayId = meta.id?.slice(-6) || 'A000';
-                        let downloadsHtml = meta.downloads?.length ? meta.downloads.map(d => `<a href="${d.url}" class="download-btn" target="_blank"><i class="fas fa-download"></i> ${escapeHtml(d.name)}</a>`).join('') : `<a href="${meta.url}" class="download-btn" target="_blank"><i class="fas fa-external-link-alt"></i> 访问</a>`;
+                        const displayId = meta.id && meta.id.length > 6 ? meta.id.slice(-6) : (meta.id || 'A000');
+                        let downloadsHtml = '';
+                        if (meta.downloads && Array.isArray(meta.downloads) && meta.downloads.length > 0) {
+                            downloadsHtml = meta.downloads.map(d => 
+                                `<a href="${d.url || '#'}" class="download-btn" target="_blank"><i class="fas fa-download"></i> ${escapeHtml(d.name || '下载')}</a>`
+                            ).join('');
+                        } else {
+                            downloadsHtml = `<a href="${meta.url || '#'}" class="download-btn" target="_blank"><i class="fas fa-external-link-alt"></i> 访问</a>`;
+                        }
                         const noticeHtml = meta.notice ? `<div class="notice"><i class="fas fa-info-circle"></i> ${escapeHtml(meta.notice)}</div>` : '';
-                        return `<div class="resource-card"><div class="card-header"><span class="card-id">${displayId}</span><div class="card-icon"><i class="fas ${meta.icon}"></i></div><div class="card-title">${escapeHtml(meta.title)}</div></div><div class="card-description">${escapeHtml(meta.description)}</div><div class="download-section"><div class="download-label">选择下载方式：</div><div class="download-options">${downloadsHtml}</div>${noticeHtml}</div></div>`;
+                        return `
+                            <div class="resource-card" data-id="${escapeHtml(meta.id)}">
+                                <div class="card-header">
+                                    <span class="card-id">${escapeHtml(displayId)}</span>
+                                    <div class="card-icon"><i class="fas ${meta.icon}"></i></div>
+                                    <div class="card-title">${escapeHtml(meta.title || '无标题')}</div>
+                                </div>
+                                <div class="card-description">${escapeHtml(meta.description || '')}</div>
+                                <div class="download-section">
+                                    <div class="download-label"><i class="fas fa-arrow-right"></i> 选择下载方式：</div>
+                                    <div class="download-options">${downloadsHtml}</div>
+                                    ${noticeHtml}
+                                </div>
+                            </div>
+                        `;
                     }).join('');
                 }
-                // 标签云和排行榜逻辑（同原有，使用allResources）
-                // 此处省略以节省篇幅，实际需完整复制
-            } catch (e) { container.innerHTML = `<div class="error-state">${escapeHtml(e.message)}</div>`; }
+
+                const tagCount = new Map();
+                allResources.forEach(r => {
+                    let tags = r.meta.tags;
+                    if (!tags) return;
+                    if (typeof tags === 'string') tags = tags.split(',').map(t => t.trim());
+                    if (Array.isArray(tags)) {
+                        tags.forEach(tag => {
+                            const normalized = tag.trim().replace(/^#/, '');
+                            if (normalized) tagCount.set(normalized, (tagCount.get(normalized) || 0) + 1);
+                        });
+                    }
+                });
+                if (tagCount.size === 0) {
+                    tagCloud.innerHTML = '<span class="tag-item">暂无标签</span>';
+                } else {
+                    const sorted = Array.from(tagCount.entries()).sort((a, b) => b[1] - a[1]).slice(0, 20);
+                    tagCloud.innerHTML = sorted.map(([tag]) => `<span class="tag-item" data-tag="${escapeHtml(tag)}">#${escapeHtml(tag)}</span>`).join('');
+                    document.querySelectorAll('.tag-item').forEach(el => {
+                        el.addEventListener('click', () => {
+                            const tag = el.dataset.tag;
+                            window.location.href = `tags.html#${encodeURIComponent(tag)}`;
+                        });
+                    });
+                }
+
+                if (allResources.length === 0) {
+                    rankingList.innerHTML = '<div class="ranking-item"><span class="ranking-number">#1</span><span class="ranking-name">暂无数据</span></div>';
+                } else {
+                    const ranked = [...allResources]
+                        .sort((a, b) => {
+                            const aLen = a.meta.downloads ? a.meta.downloads.length : 0;
+                            const bLen = b.meta.downloads ? b.meta.downloads.length : 0;
+                            return bLen - aLen;
+                        })
+                        .slice(0, 5);
+                    rankingList.innerHTML = ranked.map((item, idx) => {
+                        const meta = item.meta;
+                        return `
+                            <div class="ranking-item" onclick="window.location.href='detail.html?id=${encodeURIComponent(meta.id)}'">
+                                <span class="ranking-number">#${idx + 1}</span>
+                                <span class="ranking-name">${escapeHtml(meta.title || '无题')}</span>
+                                <span class="ranking-count">${meta.downloads ? meta.downloads.length : 0} 链接</span>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            } catch (e) {
+                container.innerHTML = `<div class="error-state">加载失败：${escapeHtml(e.message)}</div>`;
+            }
         })();
     </script>
 </body>
