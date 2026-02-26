@@ -176,22 +176,23 @@ remainDownloads: 3                    # 剩余下载次数（静态展示）
 ```
 
 🌐 页面导航
-页面	功能
-index.html	首页，展示分类卡片和最新资源预览
-web.html	网页资源列表
-software.html	软件资源列表
-file.html	文件资源列表
-article.html	文章资源列表
-detail.html	资源详情页，显示完整描述、图片轮播、下载链接（付费解锁）
-search.html	搜索资源（标题、描述、标签、分类）
-tags.html	按标签浏览资源，点击标签显示对应资源列表
-hot.html	下载排行榜（按下载链接数量排序）
-about.html	关于本站
-help.html	帮助中心（常见问题、使用指南）
-changelog.html	更新日志
-links.html	友情链接
-privacy.html	隐私政策
-terms.html	用户协议
+| 页面 | 功能 |
+|------|------|
+| index.html	| 首页，展示分类卡片和最新资源预览|
+| web.html	| 网页资源列表|
+| software.html	| 软件资源列表|
+| file.html	| 文件资源列表|
+| article.html	| 文章资源列表|
+| detail.html	| 资源详情页，显示完整描述、图片轮播、下载链接（付费解锁）|
+| search.html	| 搜索资源（标题、描述、标签、分类）|
+| tags.html	| 按标签浏览资源，点击标签显示对应资源列表|
+| hot.html	| 下载排行榜（按下载链接数量排序）|
+| about.html	| 关于本站|
+| help.html	| 帮助中心（常见问题、使用指南）|
+| changelog.html	| 更新日志|
+| links.html	| 友情链接|
+| privacy.html	| 隐私政策|
+| terms.html	| 用户协议|
 所有页面均共享同一套 CSS 和 common.js，风格统一，支持深色模式。
 
 ⚙️ 付费功能配置（爱发电兑换码系统）
