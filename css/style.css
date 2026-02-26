@@ -310,6 +310,9 @@ header {
 .breadcrumb a:hover {
     color: var(--primary-600);
 }
+.breadcrumb i {
+    font-size: 0.7rem;
+}
 
 /* 页脚 */
 footer {
