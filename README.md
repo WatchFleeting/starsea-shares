@@ -89,6 +89,7 @@
 │   └── files/                 # 文件分享详情（由文件卡片中的 fileRef 引用）
 └── assets/                    # 静态资源（图片等）
     └── covers/                # 卡片封面图片
+```
 📝 内容管理：一切皆 Markdown
 每个 .md 文件都包含 YAML 前置元数据（Front Matter） 和 正文内容。
 
@@ -98,7 +99,7 @@
 
 示例：my-resource.md
 
-yaml
+```yaml
 ---
 id: "A081"
 title: "🌐 流量卡免费领取"
@@ -125,11 +126,13 @@ is_paid: true
 resource_id: "design-pack-101"
 ---
 （卡片备注，主页不显示）
+```
+
 2. 完整文章
 路径：data/articles/
 作用：当用户点击类型为 article 的卡片时，详情页会展示该文件内容。
 
-yaml
+```yaml
 ---
 title: "文章标题"
 author: "鸿渚"
@@ -139,11 +142,13 @@ tags: ["教程"]
 ---
 # 正文内容
 使用 Markdown 编写。
+```
+
 3. 文件详情
 路径：data/files/
 作用：当用户点击类型为 file 的卡片时，详情页展示该文件的下载信息。
 
-yaml
+```yaml
 ---
 title: "设计资源包"
 fileName: "design-pack.zip"
@@ -161,13 +166,15 @@ remainDownloads: 3                    # 剩余下载次数（静态展示）
 4. 更新索引
 重要：新增或删除卡片后，必须更新根目录的 data-index.json，列出所有卡片路径。
 
-json
+```json
 {
   "cards": [
     "data/cards/design_resources.md",
     "data/cards/ai_painting.md"
   ]
 }
+```
+
 🌐 页面导航
 页面	功能
 index.html	首页，展示分类卡片和最新资源预览
@@ -199,7 +206,7 @@ terms.html	用户协议
 部署云函数（使用 Vercel）
 文件：api/verify-redeem.js
 
-javascript
+```javascript
 const usedCodes = new Set();  // 生产环境请使用数据库（如 Vercel KV）
 const validCodes = {
   'design-pack-101': ['R20250321ABCDEF', 'R20250322GHIJKL']
@@ -225,6 +232,8 @@ export default async function handler(req, res) {
   usedCodes.add(code);
   return res.json({ success: true, downloadUrl: downloadUrls[resourceId] || null });
 }
+```
+
 部署步骤：
 
 在项目根目录创建 api/verify-redeem.js，粘贴上述代码。
@@ -276,4 +285,4 @@ A: 浏览器需支持 localStorage，且未禁用。清除缓存后重试。
 📄 许可证
 本项目采用 MIT 许可证。您可以自由使用、修改和分发。
 
-<div align="center"> <sub>Built with ❤️ by 鸿渚</sub> </div> ```
+<div align="center"> <sub>Built with ❤️ by 鸿渚</sub> </div>
