@@ -2,100 +2,41 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>鸿渚の分享页 · 首页</title>
-    <meta name="description" content="资源分类导航">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
     <style>
-        /* ===== 全局变量 ===== */
-        :root {
-            --cyan-400: #22d3ee;
-            --cyan-500: #06b6d4;
-            --cyan-600: #0891b2;
-            --blue-400: #60a5fa;
-            --blue-500: #3b82f6;
-            --blue-600: #2563eb;
-            --bg-page: #f4f6fa;
-            --bg-card: #ffffff;
-            --text-title: #0f172a;
-            --text-desc: #334155;
-            --text-muted: #5f6c80;
-            --border-light: #e9edf2;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.02);
-            --shadow-md: 0 4px 12px rgba(0,20,40,0.04);
-            --shadow-hover: 0 12px 24px -8px rgba(6,182,212,0.15);
-            --radius-card: 20px;
-            --transition: all 0.2s ease;
-            --space-xs: 0.5rem;
-            --space-sm: 0.75rem;
-            --space-md: 1rem;
-            --space-lg: 1.5rem;
-            --space-xl: 2rem;
-            --touch-target-size: 44px;
-        }
-        body.dark-mode {
-            --bg-page: #0b1423;
-            --bg-card: #1a2639;
-            --text-title: #e2eafc;
-            --text-desc: #b9d1ec;
-            --text-muted: #7f9bc0;
-            --border-light: #2d3f5e;
-            --shadow-hover: 0 12px 24px -8px #06b6d440;
-        }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-page);
-            color: var(--text-title);
-            line-height: 1.5;
-            transition: background 0.3s;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 var(--space-md);
-        }
-
-        header {
+        .stats-mini {
+            display: flex;
+            gap: var(--space-md);
+            flex-wrap: wrap;
             background: var(--bg-card);
-            border-bottom: 1px solid var(--border-light);
-            padding: var(--space-md) 0;
-            margin-bottom: var(--space-lg);
-        }
-        .header-inner {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .site-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--cyan-600);
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-        }
-        .site-title i { color: var(--blue-500); }
-        .theme-toggle {
-            background: var(--bg-page);
+            border-radius: 40px;
+            padding: var(--space-sm) var(--space-lg);
             border: 1px solid var(--border-light);
-            color: var(--text-title);
-            width: var(--touch-target-size);
-            height: var(--touch-target-size);
-            border-radius: 50%;
+            margin-bottom: var(--space-lg);
+            justify-content: space-around;
+        }
+        .stat-item {
             display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 1.2rem;
+            gap: 6px;
+            font-size:0.9rem;
+            color:var(--text-desc);
         }
-        .theme-toggle:hover { border-color: var(--cyan-400); transform: rotate(15deg); }
-
-        /* 分类导航卡片区 */
+        .stat-item i {
+            color: var(--primary-500);
+            width:20px;
+        }
+        .stat-item span {
+            font-weight:600;
+            color:var(--text-title);
+            margin-left:2px;
+        }
         .category-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -114,13 +55,13 @@
             text-align: center;
         }
         .category-card:hover {
-            border-color: var(--cyan-400);
+            border-color: var(--primary-400);
             box-shadow: var(--shadow-hover);
             transform: translateY(-4px);
         }
         .category-icon {
             font-size: 2.5rem;
-            color: var(--cyan-500);
+            color: var(--primary-500);
             margin-bottom: var(--space-md);
         }
         .category-title {
@@ -132,29 +73,11 @@
             color: var(--text-muted);
             font-size: 0.9rem;
         }
-
-        /* 统计卡片 */
-        .stats-mini {
-            display: flex;
-            gap: var(--space-md);
-            flex-wrap: wrap;
-            background: var(--bg-card);
-            border-radius: 40px;
-            padding: var(--space-sm) var(--space-lg);
-            border: 1px solid var(--border-light);
-            margin-bottom: var(--space-lg);
-            justify-content: space-around;
-        }
-        .stat-item { display: flex; align-items: center; gap: 6px; font-size:0.9rem; color:var(--text-desc); }
-        .stat-item i { color: var(--cyan-500); width:20px; }
-        .stat-item span { font-weight:600; color:var(--text-title); margin-left:2px; }
-
-        /* 最新资源预览 */
         .preview-title {
             font-size: 1.3rem;
             font-weight: 600;
             margin: var(--space-xl) 0 var(--space-lg);
-            color: var(--cyan-600);
+            color: var(--primary-600);
         }
         .preview-grid {
             display: grid;
@@ -171,7 +94,7 @@
             color: inherit;
         }
         .preview-card:hover {
-            border-color: var(--cyan-400);
+            border-color: var(--primary-400);
             box-shadow: var(--shadow-hover);
         }
         .preview-card h4 {
@@ -187,30 +110,9 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-
-        footer {
-            text-align: center;
-            padding: var(--space-xl) 0;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border-light);
-            margin-top: var(--space-xl);
-        }
-        footer a {
-            color: var(--cyan-500);
-            text-decoration: none;
-            margin: 0 var(--space-xs);
-        }
-
-        .loading, .error-state {
-            text-align: center;
-            padding: var(--space-xl);
-            background: var(--bg-card);
-            border-radius: var(--radius-card);
-        }
     </style>
 </head>
 <body>
-    <!-- 防复制脚本 -->
     <script>
         (function() {
             document.addEventListener('contextmenu', e => e.preventDefault());
@@ -222,17 +124,9 @@
         })();
     </script>
 
-    <header>
-        <div class="container">
-            <div class="header-inner">
-                <div class="site-title"><i class="fas fa-cube"></i> 鸿渚の分享页</div>
-                <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
-            </div>
-        </div>
-    </header>
-
     <main class="container">
-        <!-- 总统计卡片 -->
+        <div class="breadcrumb" id="breadcrumb"></div>
+
         <div class="stats-mini" id="statsMini">
             <div class="stat-item"><i class="fas fa-globe"></i> 网页 <span id="statWeb">0</span></div>
             <div class="stat-item"><i class="fas fa-download"></i> 软件 <span id="statSoftware">0</span></div>
@@ -240,7 +134,6 @@
             <div class="stat-item"><i class="fas fa-book-open"></i> 文章 <span id="statArticle">0</span></div>
         </div>
 
-        <!-- 分类导航卡片 -->
         <div class="category-grid">
             <a href="web.html" class="category-card">
                 <div class="category-icon"><i class="fas fa-globe"></i></div>
@@ -264,32 +157,21 @@
             </a>
         </div>
 
-        <!-- 最新资源预览（取全部资源中最新的4条） -->
         <h2 class="preview-title"><i class="fas fa-clock"></i> 最新更新</h2>
         <div id="previewContainer" class="preview-grid">
             <div class="loading"><i class="fas fa-spinner fa-spin"></i> 加载中...</div>
         </div>
     </main>
 
-     <footer>
-        <div class="container">
-            <p>© 鸿渚の分享页 · 2025-2026</p>
-            <p style="margin-top: 0.5rem;">
-                <a href="about.html">📘 关于</a> · <a href="hot.html">🔥 热门</a> · <a href="terms.html">📄 用户协议</a>
-                · <a href="changelog.html">📋 更新日志</a> · <a href="links.html">🔗 友情链接</a> · <a href="privacy.html">🔒 隐私</a>
-            </p>
-        </div>
-    </footer>
-
     <script src="js/common.js"></script>
     <script>
-        // 首页专用逻辑：加载统计数据 + 最新预览
         (async function() {
-            try {
-                // 加载所有资源
-                const allResources = await loadAllResources();
+            await loadHeader();
+            await loadFooter();
+            renderBreadcrumb('index');
 
-                // 统计各类型数量
+            try {
+                const allResources = await loadAllResources();
                 let web = 0, soft = 0, file = 0, art = 0;
                 allResources.forEach(r => {
                     switch (r.meta.type) {
@@ -300,7 +182,6 @@
                     }
                 });
 
-                // 更新统计卡片
                 document.getElementById('statWeb').textContent = web;
                 document.getElementById('statSoftware').textContent = soft;
                 document.getElementById('statFile').textContent = file;
@@ -310,7 +191,6 @@
                 document.getElementById('countFile').textContent = file + ' 个资源';
                 document.getElementById('countArticle').textContent = art + ' 个资源';
 
-                // 最新预览（按日期倒序）
                 const sorted = allResources.sort((a, b) => (b.meta.date || '').localeCompare(a.meta.date || ''));
                 const latest = sorted.slice(0, 4);
 
@@ -323,14 +203,13 @@
                         const detailUrl = `detail.html?id=${encodeURIComponent(meta.id)}`;
                         return `
                             <a href="${detailUrl}" class="preview-card">
-                                <h4><i class="fas ${meta.icon || 'fa-star'}" style="color: var(--cyan-500);"></i> ${escapeHtml(meta.title || '无题')}</h4>
+                                <h4><i class="fas ${meta.icon || 'fa-star'}" style="color: var(--primary-500);"></i> ${escapeHtml(meta.title || '无题')}</h4>
                                 <p>${escapeHtml(meta.description || '').slice(0, 60)}…</p>
                             </a>
                         `;
                     }).join('');
                 }
             } catch (e) {
-                console.error('首页加载失败', e);
                 document.getElementById('previewContainer').innerHTML = `<div class="error-state">加载失败：${escapeHtml(e.message)}</div>`;
             }
         })();
