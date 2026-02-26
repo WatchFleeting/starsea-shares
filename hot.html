@@ -2,128 +2,15 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>热门资源 · 鸿渚の分享页</title>
     <meta name="description" content="下载排行榜与热门资源">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
     <style>
-        /* ===== 全局变量 ===== */
-        :root {
-            --cyan-400: #22d3ee;
-            --cyan-500: #06b6d4;
-            --cyan-600: #0891b2;
-            --blue-400: #60a5fa;
-            --blue-500: #3b82f6;
-            --blue-600: #2563eb;
-            --bg-page: #f4f6fa;
-            --bg-card: #ffffff;
-            --text-title: #0f172a;
-            --text-desc: #334155;
-            --text-muted: #5f6c80;
-            --border-light: #e9edf2;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.02);
-            --shadow-md: 0 4px 12px rgba(0,20,40,0.04);
-            --shadow-hover: 0 12px 24px -8px rgba(6,182,212,0.15);
-            --radius-card: 20px;
-            --transition: all 0.2s ease;
-            --space-xs: 0.5rem;
-            --space-sm: 0.75rem;
-            --space-md: 1rem;
-            --space-lg: 1.5rem;
-            --space-xl: 2rem;
-            --touch-target-size: 44px;
-        }
-        body.dark-mode {
-            --bg-page: #0b1423;
-            --bg-card: #1a2639;
-            --text-title: #e2eafc;
-            --text-desc: #b9d1ec;
-            --text-muted: #7f9bc0;
-            --border-light: #2d3f5e;
-            --shadow-hover: 0 12px 24px -8px #06b6d440;
-        }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-page);
-            color: var(--text-title);
-            line-height: 1.5;
-            transition: background 0.3s;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 var(--space-md);
-        }
-
-        header {
-            background: var(--bg-card);
-            border-bottom: 1px solid var(--border-light);
-            padding: var(--space-md) 0;
-            margin-bottom: var(--space-lg);
-        }
-        .header-inner {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .site-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--cyan-600);
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-        }
-        .site-title i { color: var(--blue-500); }
-        .back-home {
-            background: var(--bg-page);
-            border: 1px solid var(--border-light);
-            color: var(--text-title);
-            padding: var(--space-sm) var(--space-lg);
-            border-radius: 40px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: var(--transition);
-            min-height: var(--touch-target-size);
-        }
-        .back-home:hover { border-color: var(--cyan-400); color: var(--cyan-600); }
-        .theme-toggle {
-            background: var(--bg-page);
-            border: 1px solid var(--border-light);
-            color: var(--text-title);
-            width: var(--touch-target-size);
-            height: var(--touch-target-size);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 1.2rem;
-        }
-        .theme-toggle:hover { border-color: var(--cyan-400); transform: rotate(15deg); }
-
-        /* 面包屑 */
-        .breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: var(--space-xs);
-            margin-bottom: var(--space-lg);
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-        .breadcrumb a { color: var(--text-muted); text-decoration: none; }
-        .breadcrumb a:hover { color: var(--cyan-600); }
-
-        /* 分类过滤器 */
         .category-filters {
             display: flex;
             gap: var(--space-xs);
@@ -142,16 +29,17 @@
             border: 1px solid transparent;
             min-height: var(--touch-target-size);
         }
-        .filter-btn:hover { border-color: var(--cyan-400); color: var(--cyan-600); }
+        .filter-btn:hover {
+            border-color: var(--primary-400);
+            color: var(--primary-600);
+        }
         .filter-btn.active {
             background: var(--bg-card);
             border-color: var(--border-light);
-            color: var(--cyan-600);
+            color: var(--primary-600);
             font-weight: 600;
             box-shadow: var(--shadow-md);
         }
-
-        /* 排行榜列表 */
         .ranking-page-list {
             background: var(--bg-card);
             border-radius: var(--radius-card);
@@ -163,7 +51,7 @@
         .ranking-page-title {
             font-size: 1.8rem;
             font-weight: 700;
-            color: var(--cyan-600);
+            color: var(--primary-600);
             margin-bottom: var(--space-lg);
             display: flex;
             align-items: center;
@@ -175,6 +63,7 @@
             padding: var(--space-md) var(--space-lg);
             border-bottom: 1px solid var(--border-light);
             transition: var(--transition);
+            cursor: pointer;
         }
         .ranking-page-item:last-child { border-bottom: none; }
         .ranking-page-item:hover {
@@ -185,7 +74,7 @@
             font-size: 1.5rem;
             font-weight: 800;
             min-width: 60px;
-            color: var(--cyan-500);
+            color: var(--primary-500);
             opacity: 0.7;
         }
         .ranking-page-info {
@@ -206,11 +95,11 @@
             gap: var(--space-md);
         }
         .ranking-page-info i {
-            color: var(--cyan-500);
+            color: var(--primary-500);
             margin-right: 4px;
         }
         .ranking-page-count {
-            background: var(--cyan-500);
+            background: var(--primary-500);
             color: white;
             padding: 4px 12px;
             border-radius: 40px;
@@ -222,27 +111,6 @@
             color: inherit;
             display: block;
         }
-
-        .loading, .empty-state {
-            text-align: center;
-            padding: var(--space-xl);
-            background: var(--bg-card);
-            border-radius: var(--radius-card);
-        }
-
-        footer {
-            text-align: center;
-            padding: var(--space-xl) 0;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border-light);
-            margin-top: var(--space-xl);
-        }
-        footer a {
-            color: var(--cyan-500);
-            text-decoration: none;
-            margin: 0 var(--space-xs);
-        }
-
         @media (max-width:600px) {
             .ranking-page-item { flex-wrap: wrap; }
             .ranking-page-number { min-width: 40px; font-size: 1.2rem; }
@@ -250,7 +118,6 @@
     </style>
 </head>
 <body>
-    <!-- 防复制脚本 -->
     <script>
         (function() {
             document.addEventListener('contextmenu', e => e.preventDefault());
@@ -262,26 +129,9 @@
         })();
     </script>
 
-    <header>
-        <div class="container">
-            <div class="header-inner">
-                <div class="site-title"><i class="fas fa-cube"></i> 鸿渚·热门榜</div>
-                <div style="display: flex; gap: var(--space-sm);">
-                    <a href="index.html" class="back-home"><i class="fas fa-arrow-left"></i> 返回首页</a>
-                    <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
-                </div>
-            </div>
-        </div>
-    </header>
-
     <main class="container">
-        <!-- 面包屑 -->
-        <div class="breadcrumb">
-            <a href="index.html">首页</a> <i class="fas fa-chevron-right" style="font-size:0.7rem;"></i>
-            <span>热门资源</span>
-        </div>
+        <div class="breadcrumb" id="breadcrumb"></div>
 
-        <!-- 分类过滤器 -->
         <div class="category-filters" id="categoryFilters">
             <button class="filter-btn filter-all active" data-category="all"><i class="fas fa-th-large"></i> 全部</button>
             <button class="filter-btn filter-web" data-category="web"><i class="fas fa-globe"></i> 网页</button>
@@ -290,66 +140,27 @@
             <button class="filter-btn filter-article" data-category="article"><i class="fas fa-book-open"></i> 文章</button>
         </div>
 
-        <!-- 排行榜列表容器 -->
         <div id="rankingContainer" class="ranking-page-list">
             <div class="loading"><i class="fas fa-spinner fa-spin"></i> 加载排行榜中...</div>
         </div>
     </main>
 
-    <footer>
-        <div class="container">
-            <p>© 鸿渚の分享页 · 2025-2026</p>
-            <p style="margin-top: 0.5rem;">
-                <a href="about.html">📘 关于</a> · <a href="hot.html">🔥 热门</a> · <a href="terms.html">📄 用户协议</a>
-                · <a href="changelog.html">📋 更新日志</a> · <a href="links.html">🔗 友情链接</a> · <a href="privacy.html">🔒 隐私</a>
-            </p>
-        </div>
-    </footer>
-
     <script src="js/common.js"></script>
     <script>
-        // ==================== 配置 ====================
-        const CONFIG = {
-            dataIndexUrl: 'data-index.json',
-            cacheBuster: '?v=' + new Date().getTime()
-        };
-
-        // ==================== 全局状态 ====================
         const AppState = {
-            allResources: [],        // 原始所有资源
-            filteredResources: [],   // 当前分类筛选后的资源
+            allResources: [],
+            filteredResources: [],
             currentCategory: 'all'
         };
 
-        // ==================== 加载数据 ====================
-        async function loadDataIndex() {
-            const resp = await fetch(CONFIG.dataIndexUrl + CONFIG.cacheBuster);
-            if (!resp.ok) throw new Error('无法加载数据索引');
-            return await resp.json();
-        }
-
-        async function loadMarkdownFile(filePath) {
-            try {
-                const resp = await fetch(filePath + CONFIG.cacheBuster);
-                if (!resp.ok) return null;
-                const text = await resp.text();
-                return parseFrontMatter(text, filePath);
-            } catch (e) {
-                console.warn(`跳过加载 ${filePath}: ${e.message}`);
-                return null;
-            }
-        }
-
         async function loadAllResources() {
-            const dataIndex = await loadDataIndex();
-            if (!dataIndex.cards || dataIndex.cards.length === 0) return [];
-
-            const promises = dataIndex.cards.map(path => loadMarkdownFile(path));
+            const dataIndex = await loadDataIndex('?t=' + Date.now());
+            if (!dataIndex.cards) return [];
+            const promises = dataIndex.cards.map(path => loadMarkdownFile(path, '?t=' + Date.now()));
             const results = await Promise.all(promises);
             return results.filter(r => r && !r.meta._error);
         }
 
-        // ==================== 渲染排行榜 ====================
         function renderRanking() {
             const container = document.getElementById('rankingContainer');
             const resources = AppState.filteredResources;
@@ -365,7 +176,6 @@
                 return;
             }
 
-            // 按 downloads 数组长度排序（模拟下载次数）
             const sorted = [...resources].sort((a, b) => {
                 const aLen = a.meta.downloads ? a.meta.downloads.length : 0;
                 const bLen = b.meta.downloads ? b.meta.downloads.length : 0;
@@ -385,26 +195,23 @@
                 const detailUrl = `detail.html?id=${encodeURIComponent(meta.id)}`;
 
                 html += `
-                    <a href="${detailUrl}" class="ranking-page-link">
-                        <div class="ranking-page-item">
-                            <div class="ranking-page-number">#${index + 1}</div>
-                            <div class="ranking-page-info">
-                                <h3>${escapeHtml(meta.title || '无标题')}</h3>
-                                <p>
-                                    <span><i class="fas fa-folder"></i> ${escapeHtml(meta.category || '未分类')}</span>
-                                    <span><i class="fas fa-tag"></i> ${typeChinese}</span>
-                                </p>
-                            </div>
-                            <div class="ranking-page-count">${downloadCount} 次下载</div>
+                    <div class="ranking-page-item" onclick="window.location.href='${detailUrl}'">
+                        <div class="ranking-page-number">#${index + 1}</div>
+                        <div class="ranking-page-info">
+                            <h3>${escapeHtml(meta.title || '无标题')}</h3>
+                            <p>
+                                <span><i class="fas fa-folder"></i> ${escapeHtml(meta.category || '未分类')}</span>
+                                <span><i class="fas fa-tag"></i> ${typeChinese}</span>
+                            </p>
                         </div>
-                    </a>
+                        <div class="ranking-page-count">${downloadCount} 次下载</div>
+                    </div>
                 `;
             });
 
             container.innerHTML = html;
         }
 
-        // ==================== 分类筛选 ====================
         function setActiveCategory(category) {
             AppState.currentCategory = category;
             document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -420,20 +227,21 @@
             renderRanking();
         }
 
-        // ==================== 初始化 ====================
         (async function init() {
+            await loadHeader();
+            await loadFooter();
+            renderBreadcrumb('hot');
+
             try {
                 AppState.allResources = await loadAllResources();
                 AppState.filteredResources = [...AppState.allResources];
                 renderRanking();
 
-                // 绑定分类点击事件
                 document.getElementById('categoryFilters').addEventListener('click', (e) => {
                     const btn = e.target.closest('.filter-btn');
                     if (btn) setActiveCategory(btn.dataset.category);
                 });
             } catch (error) {
-                console.error('初始化失败:', error);
                 document.getElementById('rankingContainer').innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-exclamation-triangle"></i>
