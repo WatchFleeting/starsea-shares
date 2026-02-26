@@ -93,7 +93,7 @@
 📝 内容管理：一切皆 Markdown
 每个 .md 文件都包含 YAML 前置元数据（Front Matter） 和 正文内容。
 
-1. 资源卡片
+### 1. 资源卡片
 路径：data/cards/
 作用：每个文件定义首页上的一张卡片。
 
@@ -128,7 +128,7 @@ resource_id: "design-pack-101"
 （卡片备注，主页不显示）
 ```
 
-2. 完整文章
+### 2. 完整文章
 路径：data/articles/
 作用：当用户点击类型为 article 的卡片时，详情页会展示该文件内容。
 
@@ -144,7 +144,7 @@ tags: ["教程"]
 使用 Markdown 编写。
 ```
 
-3. 文件详情
+### 3. 文件详情
 路径：data/files/
 作用：当用户点击类型为 file 的卡片时，详情页展示该文件的下载信息。
 
@@ -162,8 +162,9 @@ images:                               # 截图轮播（可选）
 remainDownloads: 3                    # 剩余下载次数（静态展示）
 ---
 ## 详细说明
-...
-4. 更新索引
+```
+
+### 4. 更新索引
 重要：新增或删除卡片后，必须更新根目录的 data-index.json，列出所有卡片路径。
 
 ```json
@@ -175,7 +176,8 @@ remainDownloads: 3                    # 剩余下载次数（静态展示）
 }
 ```
 
-🌐 页面导航
+## 🌐 页面导航
+
 | 页面 | 功能 |
 |------|------|
 | index.html	| 首页，展示分类卡片和最新资源预览|
@@ -193,9 +195,10 @@ remainDownloads: 3                    # 剩余下载次数（静态展示）
 | links.html	| 友情链接|
 | privacy.html	| 隐私政策|
 | terms.html	| 用户协议|
-所有页面均共享同一套 CSS 和 common.js，风格统一，支持深色模式。
 
-⚙️ 付费功能配置（爱发电兑换码系统）
+### 所有页面均共享同一套 CSS 和 common.js，风格统一，支持深色模式。
+
+## ⚙️ 付费功能配置（爱发电兑换码系统）
 本项目采用 兑换码系统 实现付费内容解锁。流程：
 
 创作者在爱发电创建商品，在发货内容中填入一次性兑换码。
@@ -235,7 +238,7 @@ export default async function handler(req, res) {
 }
 ```
 
-部署步骤：
+### 部署步骤：
 
 在项目根目录创建 api/verify-redeem.js，粘贴上述代码。
 
@@ -243,7 +246,7 @@ export default async function handler(req, res) {
 
 修改 detail.html 中的 CONFIG.verifyApiUrl 为你的云函数地址，例如 https://your-app.vercel.app/api/verify-redeem。
 
-🛡️ 防复制功能说明
+## 🛡️ 防复制功能说明
 为保护付费资源，网站已内置多层防复制机制：
 
 CSS 禁止选中：user-select: none
@@ -258,7 +261,7 @@ CSS 禁止选中：user-select: none
 
 开发者工具检测：检测窗口大小变化（仅记录，不干扰正常使用）
 
-🎨 自定义与扩展
+## 🎨 自定义与扩展
 修改网站信息：编辑各 HTML 文件中的 <title> 和 <header>。
 
 调整主题颜色：修改 :root 下的 CSS 变量（如 --cyan-500）。
@@ -267,7 +270,7 @@ CSS 禁止选中：user-select: none
 
 修改页脚导航：所有页面的 <footer> 部分，统一更新链接。
 
-❓ 常见问题
+## ❓ 常见问题
 Q: 为什么新卡片没有显示？
 A: 检查：① data-index.json 中添加了路径；② YAML 格式正确；③ 清除浏览器缓存后刷新。
 
@@ -283,7 +286,7 @@ A: 确认 detail.html 中的 verifyApiUrl 配置正确，且 Vercel 云函数已
 Q: 深色模式无法保存？
 A: 浏览器需支持 localStorage，且未禁用。清除缓存后重试。
 
-📄 许可证
+## 📄 许可证
 本项目采用 MIT 许可证。您可以自由使用、修改和分发。
 
 <div align="center"> <sub>Built with ❤️ by 鸿渚</sub> </div>
