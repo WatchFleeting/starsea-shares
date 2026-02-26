@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>搜索 · 鸿渚の分享页</title>
+    <meta name="description" content="搜索资源">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== 全局变量 ===== */
+        :root {
+            --cyan-400: #22d3ee;
+            --cyan-500: #06b6d4;
+            --cyan-600: #0891b2;
+            --blue-400: #60a5fa;
+            --blue-500: #3b82f6;
+            --blue-600: #2563eb;
+            --bg-page: #f4f6fa;
+            --bg-card: #ffffff;
+            --text-title: #0f172a;
+            --text-desc: #334155;
+            --text-muted: #5f6c80;
+            --border-light: #e9edf2;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.02);
+            --shadow-md: 0 4px 12px rgba(0,20,40,0.04);
+            --shadow-hover: 0 12px 24px -8px rgba(6,182,212,0.15);
+            --radius-card: 20px;
+            --transition: all 0.2s ease;
+            --space-xs: 0.5rem;
+            --space-sm: 0.75rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --touch-target-size: 44px;
+        }
+        body.dark-mode {
+            --bg-page: #0b1423;
+            --bg-card: #1a2639;
+            --text-title: #e2eafc;
+            --text-desc: #b9d1ec;
+            --text-muted: #7f9bc0;
+            --border-light: #2d3f5e;
+            --shadow-hover: 0 12px 24px -8px #06b6d440;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-page);
+            color: var(--text-title);
+            line-height: 1.5;
+            transition: background 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-light);
+            padding: var(--space-md) 0;
+            margin-bottom: var(--space-lg);
+        }
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .site-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--cyan-600);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        .site-title i { color: var(--blue-500); }
+        .back-home {
+            background: var(--bg-page);
+            border: 1px solid var(--border-light);
+            color: var(--text-title);
+            padding: var(--space-sm) var(--space-lg);
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            min-height: var(--touch-target-size);
+        }
+        .back-home:hover { border-color: var(--cyan-400); color: var(--cyan-600); }
+        .theme-toggle {
+            background: var(--bg-page);
+            border: 1px solid var(--border-light);
+            color: var(--text-title);
+            width: var(--touch-target-size);
+            height: var(--touch-target-size);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+        .theme-toggle:hover { border-color: var(--cyan-400); transform: rotate(15deg); }
+
+        /* 面包屑 */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-lg);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .breadcrumb a { color: var(--text-muted); text-decoration: none; }
+        .breadcrumb a:hover { color: var(--cyan-600); }
+
+        /* 搜索框 */
+        .search-box {
+            background: var(--bg-card);
+            border-radius: 60px;
+            padding: var(--space-xs) var(--space-xs) var(--space-xs) var(--space-lg);
+            border: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            margin-bottom: var(--space-xl);
+        }
+        .search-box i {
+            color: var(--cyan-500);
+            font-size: 1.2rem;
+        }
+        .search-box input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: var(--space-md) var(--space-sm);
+            font-size: 1rem;
+            color: var(--text-title);
+            outline: none;
+        }
+        .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+        .search-box button {
+            background: var(--cyan-500);
+            border: none;
+            color: white;
+            padding: var(--space-sm) var(--space-xl);
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            min-height: var(--touch-target-size);
+        }
+        .search-box button:hover {
+            background: var(--cyan-600);
+            transform: scale(1.02);
+        }
+
+        /* 搜索结果统计 */
+        .search-stats {
+            color: var(--text-muted);
+            margin-bottom: var(--space-lg);
+            font-size: 0.9rem;
+        }
+
+        /* 搜索结果列表 */
+        .search-results {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+        .result-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-card);
+            padding: var(--space-lg);
+            border: 1px solid var(--border-light);
+            transition: var(--transition);
+            text-decoration: none;
+            color: inherit;
+        }
+        .result-card:hover {
+            border-color: var(--cyan-400);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+        .result-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: var(--space-xs);
+            color: var(--text-title);
+        }
+        .result-card p {
+            color: var(--text-desc);
+            font-size: 0.9rem;
+            margin-bottom: var(--space-sm);
+        }
+        .result-meta {
+            display: flex;
+            gap: var(--space-md);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+        .result-meta i {
+            color: var(--cyan-500);
+            margin-right: 4px;
+        }
+
+        .loading, .empty-state {
+            text-align: center;
+            padding: var(--space-xl);
+            background: var(--bg-card);
+            border-radius: var(--radius-card);
+        }
+
+        footer {
+            text-align: center;
+            padding: var(--space-xl) 0;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-light);
+            margin-top: var(--space-xl);
+        }
+        footer a {
+            color: var(--cyan-500);
+            text-decoration: none;
+            margin: 0 var(--space-xs);
+        }
+    </style>
+</head>
+<body>
+    <!-- 防复制脚本 -->
+    <script>
+        (function() {
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('selectstart', e => e.preventDefault());
+            document.addEventListener('keydown', e => {
+                if (e.ctrlKey || e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) e.preventDefault();
+            });
+            document.addEventListener('copy', e => e.preventDefault());
+        })();
+    </script>
+
+    <header>
+        <div class="container">
+            <div class="header-inner">
+                <div class="site-title"><i class="fas fa-search"></i> 搜索资源</div>
+                <div style="display: flex; gap: var(--space-sm);">
+                    <a href="index.html" class="back-home"><i class="fas fa-arrow-left"></i> 返回首页</a>
+                    <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 面包屑 -->
+        <div class="breadcrumb">
+            <a href="index.html">首页</a> <i class="fas fa-chevron-right" style="font-size:0.7rem;"></i>
+            <span>搜索</span>
+        </div>
+
+        <!-- 搜索框 -->
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="输入关键词搜索资源..." autofocus>
+            <button id="searchBtn">搜索</button>
+        </div>
+
+        <!-- 搜索结果统计 -->
+        <div id="searchStats" class="search-stats"></div>
+
+        <!-- 搜索结果列表 -->
+        <div id="searchResults" class="search-results">
+            <div class="loading"><i class="fas fa-spinner fa-spin"></i> 加载资源中...</div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 鸿渚の分享页 · 2025-2026</p>
+            <p style="margin-top: 0.5rem;">
+                <a href="about.html">📘 关于</a> · <a href="hot.html">🔥 热门</a> · <a href="terms.html">📄 用户协议</a>
+                · <a href="changelog.html">📋 更新日志</a> · <a href="links.html">🔗 友情链接</a> · <a href="privacy.html">🔒 隐私</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="js/common.js"></script>
+    <script>
+        (async function() {
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const statsDiv = document.getElementById('searchStats');
+            const resultsDiv = document.getElementById('searchResults');
+
+            let allResources = [];
+
+            try {
+                // 加载所有资源
+                allResources = await loadAllResources();
+                resultsDiv.innerHTML = '<div class="empty-state">请输入关键词开始搜索</div>';
+                statsDiv.innerHTML = '';
+            } catch (e) {
+                resultsDiv.innerHTML = `<div class="error-state">加载失败：${escapeHtml(e.message)}</div>`;
+            }
+
+            function performSearch() {
+                const keyword = searchInput.value.trim().toLowerCase();
+                if (!keyword) {
+                    resultsDiv.innerHTML = '<div class="empty-state">请输入关键词</div>';
+                    statsDiv.innerHTML = '';
+                    return;
+                }
+
+                const filtered = allResources.filter(item => {
+                    const meta = item.meta;
+                    return (meta.title && meta.title.toLowerCase().includes(keyword)) ||
+                           (meta.description && meta.description.toLowerCase().includes(keyword)) ||
+                           (meta.category && meta.category.toLowerCase().includes(keyword)) ||
+                           (meta.tags && meta.tags.some(tag => tag.toLowerCase().includes(keyword)));
+                });
+
+                statsDiv.innerHTML = `找到 ${filtered.length} 个匹配的资源`;
+
+                if (filtered.length === 0) {
+                    resultsDiv.innerHTML = '<div class="empty-state">没有找到匹配的资源</div>';
+                } else {
+                    resultsDiv.innerHTML = filtered.map(item => {
+                        const meta = item.meta;
+                        const typeChinese = getTypeChineseName(meta.type);
+                        const detailUrl = `detail.html?id=${encodeURIComponent(meta.id)}`;
+                        return `
+                            <a href="${detailUrl}" class="result-card">
+                                <h3>${escapeHtml(meta.title)}</h3>
+                                <p>${escapeHtml(meta.description || '').substring(0, 120)}${meta.description && meta.description.length > 120 ? '…' : ''}</p>
+                                <div class="result-meta">
+                                    <span><i class="fas fa-folder"></i> ${escapeHtml(meta.category || '未分类')}</span>
+                                    <span><i class="fas fa-tag"></i> ${typeChinese}</span>
+                                    ${meta.date ? `<span><i class="fas fa-calendar"></i> ${escapeHtml(meta.date)}</span>` : ''}
+                                </div>
+                            </a>
+                        `;
+                    }).join('');
+                }
+            }
+
+            searchBtn.addEventListener('click', performSearch);
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') performSearch();
+            });
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>文件资源 · 鸿渚の分享页</title>
+    <meta name="description" content="文件类资源列表">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== 全局变量 ===== */
+        :root {
+            --cyan-400: #22d3ee;
+            --cyan-500: #06b6d4;
+            --cyan-600: #0891b2;
+            --blue-400: #60a5fa;
+            --blue-500: #3b82f6;
+            --blue-600: #2563eb;
+            --bg-page: #f4f6fa;
+            --bg-card: #ffffff;
+            --text-title: #0f172a;
+            --text-desc: #334155;
+            --text-muted: #5f6c80;
+            --border-light: #e9edf2;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.02);
+            --shadow-md: 0 4px 12px rgba(0,20,40,0.04);
+            --shadow-hover: 0 12px 24px -8px rgba(6,182,212,0.15);
+            --radius-card: 20px;
+            --transition: all 0.2s ease;
+            --space-xs: 0.5rem;
+            --space-sm: 0.75rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --touch-target-size: 44px;
+        }
+        body.dark-mode {
+            --bg-page: #0b1423;
+            --bg-card: #1a2639;
+            --text-title: #e2eafc;
+            --text-desc: #b9d1ec;
+            --text-muted: #7f9bc0;
+            --border-light: #2d3f5e;
+            --shadow-hover: 0 12px 24px -8px #06b6d440;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-page);
+            color: var(--text-title);
+            line-height: 1.5;
+            transition: background 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-light);
+            padding: var(--space-md) 0;
+            margin-bottom: var(--space-lg);
+        }
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .site-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--cyan-600);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        .site-title i { color: var(--blue-500); }
+        .back-home {
+            background: var(--bg-page);
+            border: 1px solid var(--border-light);
+            color: var(--text-title);
+            padding: var(--space-sm) var(--space-lg);
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            min-height: var(--touch-target-size);
+        }
+        .back-home:hover { border-color: var(--cyan-400); color: var(--cyan-600); }
+        .theme-toggle {
+            background: var(--bg-page);
+            border: 1px solid var(--border-light);
+            color: var(--text-title);
+            width: var(--touch-target-size);
+            height: var(--touch-target-size);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+        .theme-toggle:hover { border-color: var(--cyan-400); transform: rotate(15deg); }
+
+        /* 面包屑导航 */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-lg);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .breadcrumb a { color: var(--text-muted); text-decoration: none; }
+        .breadcrumb a:hover { color: var(--cyan-600); }
+
+        /* 页面标题 */
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--cyan-600);
+            margin-bottom: var(--space-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        /* 资源卡片列表 */
+        .resources-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+        .resource-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-card);
+            padding: var(--space-lg);
+            border: 1px solid var(--border-light);
+            transition: var(--transition);
+        }
+        .resource-card:hover {
+            border-color: var(--cyan-400);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+            margin-bottom: var(--space-sm);
+        }
+        .card-id {
+            font-family: monospace;
+            font-weight: 700;
+            color: var(--cyan-500);
+            background: rgba(6,182,212,0.1);
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+            border: 1px solid rgba(6,182,212,0.3);
+        }
+        .card-icon {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, var(--cyan-400), var(--blue-400));
+            display: flex; align-items: center; justify-content: center;
+            color: white;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-title);
+            flex: 1;
+        }
+        .card-description {
+            color: var(--text-desc);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: var(--space-xs) 0 var(--space-sm);
+        }
+        .download-section { margin-top: var(--space-sm); }
+        .download-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: var(--space-xs);
+        }
+        .download-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+        }
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-sm) var(--space-lg);
+            background: var(--bg-page);
+            border: 1px solid var(--border-light);
+            border-radius: 40px;
+            font-size: 0.85rem;
+            color: var(--text-title);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .download-btn:hover {
+            background: var(--cyan-500);
+            border-color: var(--cyan-500);
+            color: white;
+        }
+        .notice {
+            margin-top: var(--space-xs);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* 侧边栏 */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: var(--space-lg);
+            margin-top: var(--space-md);
+        }
+        .sidebar-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-card);
+            padding: var(--space-lg);
+            border: 1px solid var(--border-light);
+            margin-bottom: var(--space-lg);
+        }
+        .sidebar-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: var(--space-md);
+            padding-bottom: var(--space-sm);
+            border-bottom: 1px solid var(--border-light);
+            color: var(--cyan-600);
+        }
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+        }
+        .tag-item {
+            background: var(--bg-page);
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: var(--text-desc);
+            border: 1px solid var(--border-light);
+        }
+        .ranking-list { display: flex; flex-direction: column; gap: var(--space-sm); }
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) 0;
+            border-bottom: 1px dashed var(--border-light);
+        }
+        .ranking-number { font-weight:700; color:var(--cyan-600); min-width:28px; }
+        .ranking-name { flex:1; color:var(--text-title); font-size:0.9rem; }
+        .ranking-count { color:var(--text-muted); font-size:0.8rem; }
+
+        .loading, .empty-state {
+            text-align: center;
+            padding: var(--space-xl);
+            background: var(--bg-card);
+            border-radius: var(--radius-card);
+        }
+
+        footer {
+            text-align: center;
+            padding: var(--space-xl) 0;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-light);
+            margin-top: var(--space-xl);
+        }
+        footer a {
+            color: var(--cyan-500);
+            text-decoration: none;
+            margin: 0 var(--space-xs);
+        }
+
+        @media (max-width:800px) { .main-grid { grid-template-columns:1fr; } }
+    </style>
+</head>
+<body>
+    <!-- 防复制脚本 -->
+    <script>
+        (function() {
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('selectstart', e => e.preventDefault());
+            document.addEventListener('keydown', e => {
+                if (e.ctrlKey || e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) e.preventDefault();
+            });
+            document.addEventListener('copy', e => e.preventDefault());
+        })();
+    </script>
+
+    <header>
+        <div class="container">
+            <div class="header-inner">
+                <div class="site-title"><i class="fas fa-file-archive"></i> 文件资源</div>
+                <div style="display: flex; gap: var(--space-sm);">
+                    <a href="index.html" class="back-home"><i class="fas fa-arrow-left"></i> 返回首页</a>
+                    <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 面包屑导航 -->
+        <div class="breadcrumb">
+            <a href="index.html">首页</a> <i class="fas fa-chevron-right" style="font-size:0.7rem;"></i>
+            <span>文件资源</span>
+        </div>
+
+        <div class="main-grid">
+            <!-- 资源列表 -->
+            <div id="resourcesContainer" class="resources-list">
+                <div class="loading"><i class="fas fa-spinner fa-spin"></i> 加载文件资源中...</div>
+            </div>
+
+            <!-- 侧边栏 -->
+            <aside class="sidebar">
+                <div class="sidebar-card">
+                    <div class="sidebar-title"><i class="fas fa-tags"></i> 热门标签</div>
+                    <div class="tag-cloud" id="tagCloud"></div>
+                </div>
+                <div class="sidebar-card">
+                    <div class="sidebar-title"><i class="fas fa-chart-line"></i> 下载排行榜</div>
+                    <div class="ranking-list" id="rankingList"></div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 鸿渚の分享页 · 2025-2026</p>
+            <p style="margin-top: 0.5rem;">
+                <a href="about.html">📘 关于</a> · <a href="hot.html">🔥 热门</a> · <a href="terms.html">📄 用户协议</a>
+                · <a href="changelog.html">📋 更新日志</a> · <a href="links.html">🔗 友情链接</a> · <a href="privacy.html">🔒 隐私</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="js/common.js"></script>
+    <script>
+        (async function() {
+            const container = document.getElementById('resourcesContainer');
+            const tagCloud = document.getElementById('tagCloud');
+            const rankingList = document.getElementById('rankingList');
+
+            try {
+                const allResources = await loadAllResources();
+                // 只显示 file 类型
+                const fileResources = allResources.filter(r => r.meta.type === 'file');
+
+                if (fileResources.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><i class="fas fa-compass"></i><h3>暂无文件资源</h3></div>';
+                } else {
+                    container.innerHTML = fileResources.map(res => {
+                        const meta = res.meta;
+                        const displayId = meta.id && meta.id.length > 6 ? meta.id.slice(-6) : (meta.id || 'A000');
+                        // 文件类型通常链接到详情页
+                        const detailUrl = `detail.html?id=${encodeURIComponent(meta.id)}`;
+                        let downloadsHtml = '';
+                        if (meta.downloads && Array.isArray(meta.downloads) && meta.downloads.length > 0) {
+                            downloadsHtml = meta.downloads.map(d => 
+                                `<a href="${d.url || '#'}" class="download-btn" target="_blank"><i class="fas fa-download"></i> ${escapeHtml(d.name || '下载')}</a>`
+                            ).join('');
+                        } else {
+                            downloadsHtml = `<a href="${detailUrl}" class="download-btn"><i class="fas fa-download"></i> 详情</a>`;
+                        }
+                        const noticeHtml = meta.notice ? `<div class="notice"><i class="fas fa-info-circle"></i> ${escapeHtml(meta.notice)}</div>` : '';
+                        return `
+                            <div class="resource-card" data-id="${escapeHtml(meta.id)}">
+                                <div class="card-header">
+                                    <span class="card-id">${escapeHtml(displayId)}</span>
+                                    <div class="card-icon"><i class="fas ${meta.icon}"></i></div>
+                                    <div class="card-title">${escapeHtml(meta.title || '无标题')}</div>
+                                </div>
+                                <div class="card-description">${escapeHtml(meta.description || '')}</div>
+                                <div class="download-section">
+                                    <div class="download-label"><i class="fas fa-arrow-right"></i> 选择下载方式：</div>
+                                    <div class="download-options">${downloadsHtml}</div>
+                                    ${noticeHtml}
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+
+                // 渲染标签云（所有资源）
+                const tagCount = new Map();
+                allResources.forEach(r => {
+                    let tags = r.meta.tags;
+                    if (!tags) return;
+                    if (typeof tags === 'string') tags = tags.split(',').map(t => t.trim());
+                    if (Array.isArray(tags)) {
+                        tags.forEach(tag => {
+                            const normalized = tag.trim().replace(/^#/, '');
+                            if (normalized) tagCount.set(normalized, (tagCount.get(normalized) || 0) + 1);
+                        });
+                    }
+                });
+                if (tagCount.size === 0) {
+                    tagCloud.innerHTML = '<span class="tag-item">暂无标签</span>';
+                } else {
+                    const sorted = Array.from(tagCount.entries()).sort((a, b) => b[1] - a[1]).slice(0, 20);
+                    tagCloud.innerHTML = sorted.map(([tag]) => `<span class="tag-item">#${escapeHtml(tag)}</span>`).join('');
+                }
+
+                // 渲染排行榜（所有资源）
+                if (allResources.length === 0) {
+                    rankingList.innerHTML = '<div class="ranking-item"><span class="ranking-number">#1</span><span class="ranking-name">暂无数据</span></div>';
+                } else {
+                    const ranked = [...allResources]
+                        .sort((a, b) => {
+                            const aLen = a.meta.downloads ? a.meta.downloads.length : 0;
+                            const bLen = b.meta.downloads ? b.meta.downloads.length : 0;
+                            return bLen - aLen;
+                        })
+                        .slice(0, 5);
+                    rankingList.innerHTML = ranked.map((item, idx) => `
+                        <div class="ranking-item">
+                            <span class="ranking-number">#${idx + 1}</span>
+                            <span class="ranking-name">${escapeHtml(item.meta.title || '无题')}</span>
+                            <span class="ranking-count">${item.meta.downloads ? item.meta.downloads.length : 0} 链接</span>
+                        </div>
+                    `).join('');
+                }
+            } catch (e) {
+                container.innerHTML = `<div class="error-state">加载失败：${escapeHtml(e.message)}</div>`;
+            }
+        })();
+    </script>
+</body>
+</html>

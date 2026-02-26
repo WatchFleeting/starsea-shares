@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>隐私政策 · 鸿渚の分享页</title>
+    <meta name="description" content="隐私保护说明">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== 全局变量 ===== */
+        :root {
+            --cyan-400: #22d3ee;
+            --cyan-500: #06b6d4;
+            --cyan-600: #0891b2;
+            --blue-400: #60a5fa;
+            --blue-500: #3b82f6;
+            --blue-600: #2563eb;
+            --bg-page: #f4f6fa;
+            --bg-card: #ffffff;
+            --text-title: #0f172a;
+            --text-desc: #334155;
+            --text-muted: #5f6c80;
+            --border-light: #e9edf2;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.02);
+            --shadow-md: 0 4px 12px rgba(0,20,40,0.04);
+            --shadow-hover: 0 12px 24px -8px rgba(6,182,212,0.15);
+            --radius-card: 20px;
+            --transition: all 0.2s ease;
+            --space-xs: 0.5rem;
+            --space-sm: 0.75rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --touch-target-size: 44px;
+        }
+        body.dark-mode {
+            --bg-page: #0b1423;
+            --bg-card: #1a2639;
+            --text-title: #e2eafc;
+            --text-desc: #b9d1ec;
+            --text-muted: #7f9bc0;
+            --border-light: #2d3f5e;
+            --shadow-hover: 0 12px 24px -8px #06b6d440;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-page);
+            color: var(--text-title);
+            line-height: 1.6;
+            transition: background 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-light);
+            padding: var(--space-md) 0;
+            margin-bottom: var(--space-lg);
+        }
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .site-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--cyan-600);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        .site-title i { color: var(--blue-500); }
+        .back-home {
+            background: var(--bg-page);
+            border: 1px solid var(--border-light);
+            color: var(--text-title);
+            padding: var(--space-sm) var(--space-lg);
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            min-height: var(--touch-target-size);
+        }
+        .back-home:hover { border-color: var(--cyan-400); color: var(--cyan-600); }
+        .theme-toggle {
+            background: var(--bg-page);
+            border: 1px solid var(--border-light);
+            color: var(--text-title);
+            width: var(--touch-target-size);
+            height: var(--touch-target-size);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+        .theme-toggle:hover { border-color: var(--cyan-400); transform: rotate(15deg); }
+
+        /* 面包屑 */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-lg);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .breadcrumb a { color: var(--text-muted); text-decoration: none; }
+        .breadcrumb a:hover { color: var(--cyan-600); }
+
+        /* 隐私政策卡片 */
+        .privacy-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-card);
+            padding: var(--space-xl);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--space-xl);
+        }
+
+        .privacy-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--cyan-600);
+            margin-bottom: var(--space-md);
+            line-height: 1.3;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        .privacy-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-lg);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-md);
+            border-bottom: 1px solid var(--border-light);
+        }
+        .privacy-content {
+            color: var(--text-desc);
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+        .privacy-content h2 {
+            font-size: 1.5rem;
+            color: var(--cyan-600);
+            margin: 2rem 0 1rem;
+            font-weight: 600;
+        }
+        .privacy-content h3 {
+            font-size: 1.2rem;
+            color: var(--text-title);
+            margin: 1.5rem 0 0.5rem;
+        }
+        .privacy-content p {
+            margin-bottom: 1rem;
+        }
+        .privacy-content ul {
+            margin: 0.5rem 0 1.5rem 1.8rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: var(--space-xl) 0;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-light);
+            margin-top: var(--space-xl);
+        }
+        footer a {
+            color: var(--cyan-500);
+            text-decoration: none;
+            margin: 0 var(--space-xs);
+        }
+    </style>
+</head>
+<body>
+    <!-- 防复制脚本 -->
+    <script>
+        (function() {
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('selectstart', e => e.preventDefault());
+            document.addEventListener('keydown', e => {
+                if (e.ctrlKey || e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) e.preventDefault();
+            });
+            document.addEventListener('copy', e => e.preventDefault());
+        })();
+    </script>
+
+    <header>
+        <div class="container">
+            <div class="header-inner">
+                <div class="site-title"><i class="fas fa-shield-alt"></i> 隐私政策</div>
+                <div style="display: flex; gap: var(--space-sm);">
+                    <a href="index.html" class="back-home"><i class="fas fa-arrow-left"></i> 返回首页</a>
+                    <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 面包屑 -->
+        <div class="breadcrumb">
+            <a href="index.html">首页</a> <i class="fas fa-chevron-right" style="font-size:0.7rem;"></i>
+            <span>隐私政策</span>
+        </div>
+
+        <div class="privacy-card">
+            <h1 class="privacy-title">🔒 隐私政策</h1>
+            <div class="privacy-meta">
+                <span><i class="fas fa-calendar"></i> 最后更新：2026-02-26</span>
+                <span><i class="fas fa-user"></i> 鸿渚</span>
+            </div>
+            <div class="privacy-content">
+                <p>欢迎访问鸿渚の分享页（以下简称“本站”）。本站非常重视用户的隐私保护，本政策详细说明我们如何收集、使用和保护您的个人信息。使用本站即表示您同意本政策的条款。</p>
+
+                <h2>一、信息收集</h2>
+                <p>本站为纯静态网站，默认<strong>不主动收集</strong>任何个人信息。但在以下情况可能会收集有限信息：</p>
+                <ul>
+                    <li><strong>服务器日志</strong>：当您访问本站时，托管服务商（如GitHub Pages）可能会自动记录您的IP地址、浏览器类型、访问时间等标准日志信息，用于保障服务安全和统计分析。这些信息无法直接识别个人身份。</li>
+                    <li><strong>兑换码验证</strong>：当您使用付费兑换功能时，您输入的兑换码将被发送至后端API进行验证，验证通过后您的浏览器会存储一个解锁标记（localStorage），用于识别您已解锁该资源。此标记仅保存在您的本地设备中。</li>
+                    <li><strong>第三方服务</strong>：本站可能嵌入第三方服务（如爱发电链接），这些服务有各自的隐私政策，本站不对其负责。</li>
+                </ul>
+
+                <h2>二、信息使用</h2>
+                <p>本站收集的信息仅用于以下目的：</p>
+                <ul>
+                    <li>改进网站内容和用户体验；</li>
+                    <li>防范恶意访问和滥用；</li>
+                    <li>处理您的兑换请求并提供下载服务。</li>
+                </ul>
+
+                <h2>三、信息保护</h2>
+                <p>本站采取合理的技术措施保护您的信息。所有兑换码验证过程均通过加密连接（HTTPS）进行。您的浏览器本地存储数据仅由您本人访问。</p>
+
+                <h2>四、Cookie及本地存储</h2>
+                <p>本站不使用第三方跟踪Cookie。但会使用浏览器的本地存储（localStorage）保存您的深色模式偏好和资源解锁状态。您可以在浏览器设置中清除这些数据。</p>
+
+                <h2>五、第三方链接</h2>
+                <p>本站可能包含指向第三方网站的链接（如下载链接、爱发电等）。点击这些链接将离开本站，我们对这些网站的隐私实践不承担责任，建议您查阅其隐私政策。</p>
+
+                <h2>六、儿童隐私</h2>
+                <p>本站不针对13岁以下儿童，也不会故意收集儿童的个人信息。如果您是监护人并认为您的孩子提供了信息，请联系我们删除。</p>
+
+                <h2>七、政策更新</h2>
+                <p>我们可能不时更新本隐私政策。更新后的政策将在本页面发布，并注明最后更新日期。继续使用本站即表示您接受更新后的政策。</p>
+
+                <h2>八、联系我们</h2>
+                <p>如果您对本隐私政策有任何疑问，请通过以下方式联系我们：<br>
+                <i class="fas fa-envelope"></i> privacy@example.com</p>
+
+                <p style="margin-top: var(--space-lg); font-style: italic;">感谢您的信任与支持！</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 鸿渚の分享页 · 2025-2026</p>
+            <p style="margin-top: 0.5rem;">
+                <a href="about.html">📘 关于</a> · <a href="hot.html">🔥 热门</a> · <a href="terms.html">📄 用户协议</a>
+                · <a href="changelog.html">📋 更新日志</a> · <a href="links.html">🔗 友情链接</a> · <a href="privacy.html">🔒 隐私</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="js/common.js"></script>
+</body>
+</html>
