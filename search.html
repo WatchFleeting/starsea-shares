@@ -1,20 +1,195 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>...</head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索 · 鸿渚の分享页</title>
+    <meta name="description" content="搜索资源">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .search-box {
+            background: var(--bg-card);
+            border-radius: 60px;
+            padding: var(--space-xs) var(--space-xs) var(--space-xs) var(--space-lg);
+            border: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            margin-bottom: var(--space-xl);
+        }
+        .search-box i {
+            color: var(--primary-500);
+            font-size: 1.2rem;
+        }
+        .search-box input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: var(--space-md) var(--space-sm);
+            font-size: 1rem;
+            color: var(--text-title);
+            outline: none;
+        }
+        .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+        .search-box button {
+            background: var(--primary-500);
+            border: none;
+            color: white;
+            padding: var(--space-sm) var(--space-xl);
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            min-height: var(--touch-target-size);
+        }
+        .search-box button:hover {
+            background: var(--primary-600);
+            transform: scale(1.02);
+        }
+        .search-stats {
+            color: var(--text-muted);
+            margin-bottom: var(--space-lg);
+            font-size: 0.9rem;
+        }
+        .search-results {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+        .result-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-card);
+            padding: var(--space-lg);
+            border: 1px solid var(--border-light);
+            transition: var(--transition);
+            text-decoration: none;
+            color: inherit;
+        }
+        .result-card:hover {
+            border-color: var(--primary-400);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+        .result-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: var(--space-xs);
+            color: var(--text-title);
+        }
+        .result-card p {
+            color: var(--text-desc);
+            font-size: 0.9rem;
+            margin-bottom: var(--space-sm);
+        }
+        .result-meta {
+            display: flex;
+            gap: var(--space-md);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+        .result-meta i {
+            color: var(--primary-500);
+            margin-right: 4px;
+        }
+    </style>
+</head>
 <body>
+    <script>
+        (function() {
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('selectstart', e => e.preventDefault());
+            document.addEventListener('keydown', e => {
+                if (e.ctrlKey || e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) e.preventDefault();
+            });
+            document.addEventListener('copy', e => e.preventDefault());
+        })();
+    </script>
+
     <main class="container">
         <div class="breadcrumb" id="breadcrumb"></div>
-        <div class="search-box">...</div>
+
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="输入关键词搜索资源..." autofocus>
+            <button id="searchBtn">搜索</button>
+        </div>
+
         <div id="searchStats" class="search-stats"></div>
-        <div id="searchResults" class="search-results"></div>
+        <div id="searchResults" class="search-results">
+            <div class="loading"><i class="fas fa-spinner fa-spin"></i> 加载资源中...</div>
+        </div>
     </main>
+
     <script src="js/common.js"></script>
     <script>
         (async function() {
             await loadHeader();
             await loadFooter();
             renderBreadcrumb('search');
-            // 搜索逻辑（同原有，注意颜色变量改为primary）
+
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const statsDiv = document.getElementById('searchStats');
+            const resultsDiv = document.getElementById('searchResults');
+
+            let allResources = [];
+
+            try {
+                allResources = await loadAllResources();
+                resultsDiv.innerHTML = '<div class="empty-state">请输入关键词开始搜索</div>';
+                statsDiv.innerHTML = '';
+            } catch (e) {
+                resultsDiv.innerHTML = `<div class="error-state">加载失败：${escapeHtml(e.message)}</div>`;
+            }
+
+            function performSearch() {
+                const keyword = searchInput.value.trim().toLowerCase();
+                if (!keyword) {
+                    resultsDiv.innerHTML = '<div class="empty-state">请输入关键词</div>';
+                    statsDiv.innerHTML = '';
+                    return;
+                }
+
+                const filtered = allResources.filter(item => {
+                    const meta = item.meta;
+                    return (meta.title && meta.title.toLowerCase().includes(keyword)) ||
+                           (meta.description && meta.description.toLowerCase().includes(keyword)) ||
+                           (meta.category && meta.category.toLowerCase().includes(keyword)) ||
+                           (meta.tags && meta.tags.some(tag => tag.toLowerCase().includes(keyword)));
+                });
+
+                statsDiv.innerHTML = `找到 ${filtered.length} 个匹配的资源`;
+
+                if (filtered.length === 0) {
+                    resultsDiv.innerHTML = '<div class="empty-state">没有找到匹配的资源</div>';
+                } else {
+                    resultsDiv.innerHTML = filtered.map(item => {
+                        const meta = item.meta;
+                        const typeChinese = getTypeChineseName(meta.type);
+                        const detailUrl = `detail.html?id=${encodeURIComponent(meta.id)}`;
+                        return `
+                            <a href="${detailUrl}" class="result-card">
+                                <h3>${escapeHtml(meta.title)}</h3>
+                                <p>${escapeHtml(meta.description || '').substring(0, 120)}${meta.description && meta.description.length > 120 ? '…' : ''}</p>
+                                <div class="result-meta">
+                                    <span><i class="fas fa-folder"></i> ${escapeHtml(meta.category || '未分类')}</span>
+                                    <span><i class="fas fa-tag"></i> ${typeChinese}</span>
+                                    ${meta.date ? `<span><i class="fas fa-calendar"></i> ${escapeHtml(meta.date)}</span>` : ''}
+                                </div>
+                            </a>
+                        `;
+                    }).join('');
+                }
+            }
+
+            searchBtn.addEventListener('click', performSearch);
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') performSearch();
+            });
         })();
     </script>
 </body>
