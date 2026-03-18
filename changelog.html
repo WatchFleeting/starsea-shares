@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>更新日志 · 鸿渚の分享页</title>
+    <meta name="description" content="站点更新记录">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .changelog-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-card);
+            padding: var(--space-xl);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--space-xl);
+        }
+        .changelog-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-600);
+            margin-bottom: var(--space-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        .timeline {
+            position: relative;
+            padding-left: var(--space-xl);
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary-400), var(--secondary-500));
+            border-radius: 2px;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: var(--space-xl);
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -34px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary-500);
+            border: 3px solid var(--bg-card);
+            box-shadow: 0 0 0 2px var(--primary-400);
+        }
+        .timeline-date {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-600);
+            margin-bottom: var(--space-xs);
+        }
+        .timeline-content {
+            background: var(--bg-page);
+            border-radius: var(--radius-card);
+            padding: var(--space-lg);
+            border: 1px solid var(--border-light);
+        }
+        .timeline-content h3 {
+            font-size: 1.2rem;
+            color: var(--text-title);
+            margin-bottom: var(--space-sm);
+        }
+        .timeline-content ul {
+            list-style: none;
+            padding: 0;
+        }
+        .timeline-content li {
+            margin-bottom: var(--space-xs);
+            color: var(--text-desc);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+        }
+        .timeline-content li i {
+            color: var(--primary-500);
+            font-size: 0.9rem;
+            margin-top: 0.2rem;
+            min-width: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        (function() {
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('selectstart', e => e.preventDefault());
+            document.addEventListener('keydown', e => {
+                if (e.ctrlKey || e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) e.preventDefault();
+            });
+            document.addEventListener('copy', e => e.preventDefault());
+        })();
+    </script>
+
+    <main class="container">
+        <div class="breadcrumb" id="breadcrumb"></div>
+
+        <div class="changelog-card">
+            <h1 class="changelog-title"><i class="fas fa-history"></i> 站点更新记录</h1>
+            <div class="timeline">
+                <!-- 版本 2.0 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">2026-02-26</div>
+                    <div class="timeline-content">
+                        <h3>版本 2.0 · 重大重构</h3>
+                        <ul>
+                            <li><i class="fas fa-plus-circle"></i> 新增分类独立页面（网页、软件、文件、文章）</li>
+                            <li><i class="fas fa-plus-circle"></i> 新增热门排行榜页面</li>
+                            <li><i class="fas fa-plus-circle"></i> 新增标签浏览页面</li>
+                            <li><i class="fas fa-plus-circle"></i> 新增搜索功能</li>
+                            <li><i class="fas fa-paint-brush"></i> 全新UI设计，支持深色模式</li>
+                            <li><i class="fas fa-lock"></i> 集成爱发电兑换码付费系统</li>
+                            <li><i class="fas fa-shield-alt"></i> 加强防复制保护</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 版本 1.5 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">2026-01-15</div>
+                    <div class="timeline-content">
+                        <h3>版本 1.5 · 功能增强</h3>
+                        <ul>
+                            <li><i class="fas fa-plus-circle"></i> 添加资源详情页图片轮播</li>
+                            <li><i class="fas fa-plus-circle"></i> 添加猜你喜欢推荐</li>
+                            <li><i class="fas fa-chart-line"></i> 侧边栏添加下载排行榜</li>
+                            <li><i class="fas fa-tags"></i> 添加标签云</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 版本 1.0 -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">2025-12-01</div>
+                    <div class="timeline-content">
+                        <h3>版本 1.0 · 初始发布</h3>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> 基础资源展示功能</li>
+                            <li><i class="fas fa-check-circle"></i> 支持Markdown卡片</li>
+                            <li><i class="fas fa-check-circle"></i> 首页分类统计</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/common.js"></script>
+    <script>
+        (async function() {
+            await loadHeader();
+            await loadFooter();
+            renderBreadcrumb('changelog');
+        })();
+    </script>
+</body>
+</html>

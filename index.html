@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鸿渚の分享页 · 首页</title>
+    <meta name="description" content="资源分类导航">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .stats-mini {
+            display: flex;
+            gap: var(--space-md);
+            flex-wrap: wrap;
+            background: var(--bg-card);
+            border-radius: 40px;
+            padding: var(--space-sm) var(--space-lg);
+            border: 1px solid var(--border-light);
+            margin-bottom: var(--space-lg);
+            justify-content: space-around;
+        }
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size:0.9rem;
+            color:var(--text-desc);
+        }
+        .stat-item i {
+            color: var(--primary-500);
+            width:20px;
+        }
+        .stat-item span {
+            font-weight:600;
+            color:var(--text-title);
+            margin-left:2px;
+        }
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: var(--space-lg);
+            margin: var(--space-xl) 0;
+        }
+        .category-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-card);
+            padding: var(--space-xl);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            text-decoration: none;
+            color: inherit;
+            text-align: center;
+        }
+        .category-card:hover {
+            border-color: var(--primary-400);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-4px);
+        }
+        .category-icon {
+            font-size: 2.5rem;
+            color: var(--primary-500);
+            margin-bottom: var(--space-md);
+        }
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: var(--space-xs);
+        }
+        .category-count {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        .preview-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: var(--space-xl) 0 var(--space-lg);
+            color: var(--primary-600);
+        }
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: var(--space-lg);
+        }
+        .preview-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-card);
+            padding: var(--space-lg);
+            border: 1px solid var(--border-light);
+            transition: var(--transition);
+            text-decoration: none;
+            color: inherit;
+        }
+        .preview-card:hover {
+            border-color: var(--primary-400);
+            box-shadow: var(--shadow-hover);
+        }
+        .preview-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: var(--space-xs);
+            color: var(--text-title);
+        }
+        .preview-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        (function() {
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('selectstart', e => e.preventDefault());
+            document.addEventListener('keydown', e => {
+                if (e.ctrlKey || e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) e.preventDefault();
+            });
+            document.addEventListener('copy', e => e.preventDefault());
+        })();
+    </script>
+
+    <main class="container">
+        <div class="breadcrumb" id="breadcrumb"></div>
+
+        <div class="stats-mini" id="statsMini">
+            <div class="stat-item"><i class="fas fa-globe"></i> 网页 <span id="statWeb">0</span></div>
+            <div class="stat-item"><i class="fas fa-download"></i> 软件 <span id="statSoftware">0</span></div>
+            <div class="stat-item"><i class="fas fa-file-archive"></i> 文件 <span id="statFile">0</span></div>
+            <div class="stat-item"><i class="fas fa-book-open"></i> 文章 <span id="statArticle">0</span></div>
+        </div>
+
+        <div class="category-grid">
+            <a href="web.html" class="category-card">
+                <div class="category-icon"><i class="fas fa-globe"></i></div>
+                <div class="category-title">网页</div>
+                <div class="category-count" id="countWeb">0 个资源</div>
+            </a>
+            <a href="software.html" class="category-card">
+                <div class="category-icon"><i class="fas fa-download"></i></div>
+                <div class="category-title">软件</div>
+                <div class="category-count" id="countSoftware">0 个资源</div>
+            </a>
+            <a href="file.html" class="category-card">
+                <div class="category-icon"><i class="fas fa-file-archive"></i></div>
+                <div class="category-title">文件</div>
+                <div class="category-count" id="countFile">0 个资源</div>
+            </a>
+            <a href="article.html" class="category-card">
+                <div class="category-icon"><i class="fas fa-book-open"></i></div>
+                <div class="category-title">文章</div>
+                <div class="category-count" id="countArticle">0 个资源</div>
+            </a>
+        </div>
+
+        <h2 class="preview-title"><i class="fas fa-clock"></i> 最新更新</h2>
+        <div id="previewContainer" class="preview-grid">
+            <div class="loading"><i class="fas fa-spinner fa-spin"></i> 加载中...</div>
+        </div>
+    </main>
+
+    <script src="js/common.js"></script>
+    <script>
+        (async function() {
+            await loadHeader();
+            await loadFooter();
+            renderBreadcrumb('index');
+
+            try {
+                const allResources = await loadAllResources();
+                let web = 0, soft = 0, file = 0, art = 0;
+                allResources.forEach(r => {
+                    switch (r.meta.type) {
+                        case 'web': web++; break;
+                        case 'software': soft++; break;
+                        case 'file': file++; break;
+                        case 'article': art++; break;
+                    }
+                });
+
+                document.getElementById('statWeb').textContent = web;
+                document.getElementById('statSoftware').textContent = soft;
+                document.getElementById('statFile').textContent = file;
+                document.getElementById('statArticle').textContent = art;
+                document.getElementById('countWeb').textContent = web + ' 个资源';
+                document.getElementById('countSoftware').textContent = soft + ' 个资源';
+                document.getElementById('countFile').textContent = file + ' 个资源';
+                document.getElementById('countArticle').textContent = art + ' 个资源';
+
+                const sorted = allResources.sort((a, b) => (b.meta.date || '').localeCompare(a.meta.date || ''));
+                const latest = sorted.slice(0, 4);
+
+                const previewContainer = document.getElementById('previewContainer');
+                if (latest.length === 0) {
+                    previewContainer.innerHTML = '<p class="empty-state">暂无资源</p>';
+                } else {
+                    previewContainer.innerHTML = latest.map(item => {
+                        const meta = item.meta;
+                        const detailUrl = `detail.html?id=${encodeURIComponent(meta.id)}`;
+                        return `
+                            <a href="${detailUrl}" class="preview-card">
+                                <h4><i class="fas ${meta.icon || 'fa-star'}" style="color: var(--primary-500);"></i> ${escapeHtml(meta.title || '无题')}</h4>
+                                <p>${escapeHtml(meta.description || '').slice(0, 60)}…</p>
+                            </a>
+                        `;
+                    }).join('');
+                }
+            } catch (e) {
+                document.getElementById('previewContainer').innerHTML = `<div class="error-state">加载失败：${escapeHtml(e.message)}</div>`;
+            }
+        })();
+    </script>
+</body>
+</html>

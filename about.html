@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于 · 鸿渚の分享页</title>
+    <meta name="description" content="关于本站与作者">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .about-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-card);
+            padding: var(--space-xl);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--space-xl);
+        }
+        .about-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-600);
+            margin-bottom: var(--space-md);
+        }
+        .about-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-lg);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-md);
+            border-bottom: 1px solid var(--border-light);
+        }
+        .about-meta i {
+            color: var(--primary-500);
+            margin-right: 4px;
+        }
+        .about-content {
+            color: var(--text-desc);
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+        .about-content h2 {
+            font-size: 1.5rem;
+            color: var(--primary-600);
+            margin: 2rem 0 1rem;
+            font-weight: 600;
+        }
+        .about-content h3 {
+            font-size: 1.2rem;
+            color: var(--text-title);
+            margin: 1.5rem 0 0.5rem;
+        }
+        .about-content p {
+            margin-bottom: 1rem;
+        }
+        .about-content ul {
+            margin: 0.5rem 0 1.5rem 1.8rem;
+        }
+        .about-content li {
+            margin-bottom: 0.3rem;
+        }
+        .about-content a {
+            color: var(--primary-600);
+            text-decoration: none;
+        }
+        .about-content a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        (function() {
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('selectstart', e => e.preventDefault());
+            document.addEventListener('keydown', e => {
+                if (e.ctrlKey || e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) e.preventDefault();
+            });
+            document.addEventListener('copy', e => e.preventDefault());
+        })();
+    </script>
+
+    <main class="container">
+        <div class="breadcrumb" id="breadcrumb"></div>
+
+        <div class="about-card">
+            <h1 class="about-title">📚 关于本站</h1>
+            <div class="about-meta">
+                <span><i class="fas fa-user"></i> 鸿渚</span>
+                <span><i class="fas fa-calendar"></i> 建立：2025</span>
+                <span><i class="fas fa-code-branch"></i> 版本：2.0</span>
+            </div>
+
+            <div class="about-content">
+                <p><strong>鸿渚の分享页</strong> 是一个基于 Markdown + GitHub Pages 的纯静态资源分享站，旨在为个人备份与学习提供便利。本站所有资源均由作者整理，并集成了爱发电兑换码付费系统，支持网页、软件、文件、文章四种类型。</p>
+
+                <h2>✨ 核心特性</h2>
+                <ul>
+                    <li><strong>纯静态架构</strong>：无需服务器与数据库，完全依赖 GitHub Pages 免费托管。</li>
+                    <li><strong>Markdown 驱动</strong>：所有内容通过 Markdown 文件管理，易于编写与维护。</li>
+                    <li><strong>多资源类型</strong>：清晰区分网页分享、软件分享、文件分享和文章分享。</li>
+                    <li><strong>现代化 UI</strong>：响应式设计，支持深色/浅色主题，拥有平滑的交互动画。</li>
+                    <li><strong>爱发电付费集成</strong>：通过兑换码实现付费内容解锁，保护创作者劳动成果。</li>
+                    <li><strong>防复制保护</strong>：禁用右键、选择、复制快捷键及开发者工具快捷键，保护付费资源。</li>
+                </ul>
+
+                <h2>📁 项目结构</h2>
+                <p>仓库主要包含以下目录：</p>
+                <ul>
+                    <li><code>index.html</code> - 主页面</li>
+                    <li><code>detail.html</code> - 资源详情页</li>
+                    <li><code>data/</code> - 所有内容数据（卡片、文章、文件）</li>
+                    <li><code>data-index.json</code> - 核心索引文件</li>
+                </ul>
+
+                <h2>📄 内容管理</h2>
+                <p>每个 <code>.md</code> 文件都包含 YAML 前置元数据（Front Matter）和正文内容。具体格式请参考 <code>README.md</code>。</p>
+
+                <h2>🔗 友情链接</h2>
+                <ul>
+                    <li><a href="https://github.com/watchfleeting/starsea-shares" target="_blank">GitHub 仓库</a></li>
+                    <li><a href="https://afdian.com/a/lyxh-took" target="_blank">爱发电主页</a></li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/common.js"></script>
+    <script>
+        (async function() {
+            await loadHeader();
+            await loadFooter();
+            renderBreadcrumb('about');
+        })();
+    </script>
+</body>
+</html>
