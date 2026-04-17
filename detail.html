@@ -10,8 +10,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <!-- Markdown 解析与净化 -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <!-- 可选 YAML 解析增强 (如需使用，取消注释) -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script> -->
     <style>
+        /* 详情页专属样式保持不变 (与原始版本相同) */
         .detail-card {
             background: var(--bg-card);
             border-radius: var(--radius-card);
@@ -269,17 +274,6 @@
     </style>
 </head>
 <body>
-    <script>
-        (function() {
-            document.addEventListener('contextmenu', e => e.preventDefault());
-            document.addEventListener('selectstart', e => e.preventDefault());
-            document.addEventListener('keydown', e => {
-                if (e.ctrlKey || e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) e.preventDefault();
-            });
-            document.addEventListener('copy', e => e.preventDefault());
-        })();
-    </script>
-
     <main class="container">
         <div class="breadcrumb" id="breadcrumb"></div>
 
@@ -303,29 +297,33 @@
 
     <script src="js/common.js"></script>
     <script>
+        // ==================== 配置 ====================
         const CONFIG = {
             dataIndexUrl: 'data-index.json',
-            verifyApiUrl: 'https://your-vercel-app.vercel.app/api/verify-redeem', // 请替换为您的实际地址
+            // 请替换为你的 Vercel 云函数地址
+            verifyApiUrl: 'https://your-vercel-app.vercel.app/api/verify-redeem',
             cacheBuster: '?v=' + new Date().getTime()
         };
 
-        let cardMap = new Map();
-        let allResourcesMeta = [];
+        // ==================== 全局状态 ====================
+        let cardMap = new Map();          // id -> 完整资源对象
+        let allResourcesMeta = [];        // 仅元数据数组（用于推荐）
         let cardsLoaded = false;
 
+        // ==================== 数据加载 ====================
         async function loadAllCards() {
             if (cardsLoaded) return;
-            const dataIndex = await loadDataIndex(CONFIG.cacheBuster);
-            if (!dataIndex.cards) return;
-
-            const promises = dataIndex.cards.map(async path => {
-                const parsed = await loadMarkdownFile(path, CONFIG.cacheBuster);
-                if (parsed) {
-                    cardMap.set(parsed.meta.id, parsed);
-                    allResourcesMeta.push(parsed.meta);
+            
+            // 使用带缓存的加载函数 (common.js 提供)
+            const resources = await loadAllResourcesCached(CONFIG.cacheBuster);
+            
+            resources.forEach(res => {
+                if (res && res.meta && res.meta.id) {
+                    cardMap.set(res.meta.id, res);
+                    allResourcesMeta.push(res.meta);
                 }
             });
-            await Promise.all(promises);
+            
             cardsLoaded = true;
         }
 
@@ -334,10 +332,13 @@
             return cardMap.get(id) || null;
         }
 
+        // ==================== 主流程 ====================
         const urlParams = new URLSearchParams(window.location.search);
         const resourceId = urlParams.get('id');
+        
         if (!resourceId) {
-            document.getElementById('detailContainer').innerHTML = '<div class="error-state"><i class="fas fa-exclamation-triangle"></i><h3>缺少资源ID</h3><p>请返回首页重试。</p></div>';
+            document.getElementById('detailContainer').innerHTML = 
+                '<div class="error-state"><i class="fas fa-exclamation-triangle"></i><h3>缺少资源ID</h3><p>请返回首页重试。</p></div>';
             throw new Error('缺少资源ID');
         }
 
@@ -346,6 +347,7 @@
             await loadFooter();
 
             const container = document.getElementById('detailContainer');
+            
             try {
                 const resource = await findResourceById(resourceId);
                 if (!resource) {
@@ -357,7 +359,7 @@
                 let meta = resource.meta;
                 let content = resource.content;
 
-                // 处理引用
+                // 处理引用（文章引用内容文件、文件引用详情文件）
                 if (meta.type === 'article' && meta.contentRef) {
                     try {
                         const ref = await loadMarkdownFile(meta.contentRef, CONFIG.cacheBuster);
@@ -365,7 +367,7 @@
                             meta = { ...meta, ...ref.meta };
                             content = ref.content;
                         }
-                    } catch (e) { console.warn(e); }
+                    } catch (e) { console.warn('加载文章内容失败:', e); }
                 } else if (meta.type === 'file' && meta.fileRef) {
                     try {
                         const ref = await loadMarkdownFile(meta.fileRef, CONFIG.cacheBuster);
@@ -373,8 +375,13 @@
                             meta = { ...meta, ...ref.meta };
                             content = ref.content;
                         }
-                    } catch (e) { console.warn(e); }
+                    } catch (e) { console.warn('加载文件详情失败:', e); }
                 }
+
+                // 更新页面标题与描述
+                document.title = `${meta.title || '资源详情'} · 鸿渚の分享页`;
+                const metaDesc = document.querySelector('meta[name="description"]');
+                if (metaDesc) metaDesc.setAttribute('content', meta.description || '资源详情页');
 
                 // 渲染面包屑
                 renderBreadcrumb('detail', meta);
@@ -383,12 +390,20 @@
                 let imagesHtml = '';
                 if (meta.images && Array.isArray(meta.images) && meta.images.length > 0) {
                     imagesHtml = meta.images.map(img => 
-                        `<img src="${img}" alt="资源截图" onclick="showImage('${img}')">`
+                        `<img src="${img}" alt="资源截图" onclick="showImage('${img}')" loading="lazy">`
                     ).join('');
                 }
 
-                const descHtml = marked.parse(content || meta.description || '');
+                // Markdown 渲染 (安全净化)
+                const rawHtml = marked.parse(content || meta.description || '');
+                const descHtml = DOMPurify.sanitize(rawHtml, {
+                    ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 
+                                   'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'a', 'img', 'table', 
+                                   'thead', 'tbody', 'tr', 'th', 'td', 'hr'],
+                    ALLOWED_ATTR: ['href', 'target', 'src', 'alt', 'title', 'class', 'id']
+                });
 
+                // 构建详情页 HTML
                 let html = `
                     <h1 class="detail-title">${escapeHtml(meta.title || '无标题')}</h1>
                     <div class="detail-meta">
@@ -409,7 +424,7 @@
 
                 html += `<div class="description">${descHtml}</div>`;
 
-                // 根据类型添加交互区
+                // 根据类型生成下载/访问交互区
                 if (meta.type === 'article') {
                     html += `<p style="margin-top: var(--space-lg); color: var(--text-muted);"><i class="fas fa-info-circle"></i> 本文为文章内容，可直接阅读。</p>`;
                 } else if (meta.type === 'file') {
@@ -468,7 +483,7 @@
 
                 container.innerHTML = html;
 
-                // 绑定兑换按钮
+                // 绑定兑换按钮事件
                 const redeemBtn = document.getElementById('redeem-btn');
                 if (redeemBtn) {
                     redeemBtn.addEventListener('click', async () => {
@@ -519,24 +534,30 @@
                     });
                 }
 
-                // 猜你喜欢
+                // 猜你喜欢推荐
                 renderRecommends(meta.id);
+                
             } catch (error) {
-                container.innerHTML = `<div class="error-state"><i class="fas fa-exclamation-triangle"></i><p>${escapeHtml(error.message)}</p></div>`;
-                renderBreadcrumb('detail');
+                console.error('详情页渲染失败:', error);
+                container.innerHTML = `<div class="error-state"><i class="fas fa-exclamation-triangle"></i><p>加载失败：${escapeHtml(error.message)}</p></div>`;
+                renderBreadcrumb('detail'); // 即使失败也显示基础面包屑
             }
         })();
 
+        // ==================== 推荐逻辑 ====================
         function renderRecommends(currentId) {
             const grid = document.getElementById('recommendGrid');
             if (!grid) return;
+            
             const others = allResourcesMeta.filter(m => m.id !== currentId);
             const shuffled = others.sort(() => 0.5 - Math.random());
             const selected = shuffled.slice(0, 4);
+            
             if (selected.length === 0) {
                 grid.innerHTML = '<p style="color: var(--text-muted);">暂无更多推荐</p>';
                 return;
             }
+            
             grid.innerHTML = selected.map(item => `
                 <a href="detail.html?id=${encodeURIComponent(item.id)}" class="recommend-card">
                     <h4><i class="fas ${item.icon || 'fa-star'}" style="color: var(--primary-500); margin-right:6px;"></i> ${escapeHtml(item.title || '无题')}</h4>
@@ -546,6 +567,7 @@
             `).join('');
         }
 
+        // ==================== 图片模态框 ====================
         window.showImage = function(src) {
             const modal = document.getElementById('imageModal');
             const modalImg = document.getElementById('modalImage');
