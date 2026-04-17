@@ -14,6 +14,42 @@ function getTypeChineseName(type) {
     return map[type] || type;
 }
 
+// ==================== 防复制保护初始化 (统一管理) ====================
+function initCopyProtection(options = {}) {
+    const defaults = {
+        disableContextMenu: true,
+        disableSelection: true,
+        disableDevTools: true,
+        disableCopy: true
+    };
+    const config = { ...defaults, ...options };
+
+    if (config.disableContextMenu) {
+        document.addEventListener('contextmenu', e => e.preventDefault());
+    }
+    if (config.disableSelection) {
+        document.addEventListener('selectstart', e => e.preventDefault());
+    }
+    if (config.disableCopy) {
+        document.addEventListener('copy', e => e.preventDefault());
+    }
+    if (config.disableDevTools) {
+        document.addEventListener('keydown', e => {
+            // 阻止 F12、Ctrl+Shift+I/J/C、Ctrl+U 等
+            if (e.key === 'F12' ||
+                (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase())) ||
+                (e.ctrlKey && e.key.toLowerCase() === 'u')) {
+                e.preventDefault();
+            }
+        });
+    }
+}
+
+// 自动执行防复制 (可根据需要关闭)
+document.addEventListener('DOMContentLoaded', () => {
+    initCopyProtection();
+});
+
 // ==================== 数据加载 ====================
 async function loadDataIndex(cacheBuster = '') {
     const resp = await fetch('data-index.json' + cacheBuster);
@@ -21,31 +57,7 @@ async function loadDataIndex(cacheBuster = '') {
     return await resp.json();
 }
 
-function parseFrontMatter(text, filePath) {
-    const lines = text.split('\n');
-    if (lines[0] && lines[0].trim() === '---') {
-        let endIndex = -1;
-        for (let i = 1; i < lines.length; i++) {
-            if (lines[i].trim() === '---') {
-                endIndex = i;
-                break;
-            }
-        }
-        if (endIndex > 0) {
-            const frontMatterLines = lines.slice(1, endIndex).join('\n');
-            const content = lines.slice(endIndex + 1).join('\n').trim();
-            try {
-                const meta = parseYaml(frontMatterLines);
-                return { meta, content };
-            } catch (e) {
-                console.warn(`解析 YAML 失败 ${filePath}:`, e);
-                return { meta: { _error: true }, content: text };
-            }
-        }
-    }
-    return { meta: {}, content: text };
-}
-
+// 简易 YAML 解析器 (备用)
 function parseYaml(yaml) {
     const lines = yaml.split('\n');
     const result = {};
@@ -84,6 +96,38 @@ function parseYaml(yaml) {
     return result;
 }
 
+// 解析 Front Matter
+function parseFrontMatter(text, filePath) {
+    const lines = text.split('\n');
+    if (lines[0] && lines[0].trim() === '---') {
+        let endIndex = -1;
+        for (let i = 1; i < lines.length; i++) {
+            if (lines[i].trim() === '---') {
+                endIndex = i;
+                break;
+            }
+        }
+        if (endIndex > 0) {
+            const frontMatterLines = lines.slice(1, endIndex).join('\n');
+            const content = lines.slice(endIndex + 1).join('\n').trim();
+            try {
+                let meta;
+                // 如果加载了 js-yaml 库则使用，否则回退简易解析
+                if (typeof jsyaml !== 'undefined') {
+                    meta = jsyaml.load(frontMatterLines);
+                } else {
+                    meta = parseYaml(frontMatterLines);
+                }
+                return { meta, content };
+            } catch (e) {
+                console.warn(`解析 YAML 失败 ${filePath}:`, e);
+                return { meta: { _error: true }, content: text };
+            }
+        }
+    }
+    return { meta: {}, content: text };
+}
+
 async function loadMarkdownFile(filePath, cacheBuster = '') {
     try {
         const resp = await fetch(filePath + cacheBuster);
@@ -96,6 +140,7 @@ async function loadMarkdownFile(filePath, cacheBuster = '') {
     }
 }
 
+// 原始加载函数 (无缓存)
 async function loadAllResources(cacheBuster = '') {
     const dataIndex = await loadDataIndex(cacheBuster);
     if (!dataIndex.cards) return [];
@@ -106,6 +151,35 @@ async function loadAllResources(cacheBuster = '') {
     });
     const results = await Promise.all(promises);
     return results.filter(r => r !== null);
+}
+
+// ==================== 资源缓存 (sessionStorage) ====================
+const CACHE_TTL = 30 * 60 * 1000; // 30 分钟
+
+async function loadAllResourcesCached(cacheBuster = '') {
+    const CACHE_KEY = 'starsea_resources';
+    const CACHE_TIME_KEY = 'starsea_resources_time';
+    
+    const cachedData = sessionStorage.getItem(CACHE_KEY);
+    const cachedTime = sessionStorage.getItem(CACHE_TIME_KEY);
+    
+    if (cachedData && cachedTime) {
+        const age = Date.now() - parseInt(cachedTime, 10);
+        if (age < CACHE_TTL) {
+            console.log('📦 使用缓存的资源数据');
+            return JSON.parse(cachedData);
+        }
+    }
+    
+    console.log('🔄 从网络加载资源数据');
+    const resources = await loadAllResources(cacheBuster);
+    try {
+        sessionStorage.setItem(CACHE_KEY, JSON.stringify(resources));
+        sessionStorage.setItem(CACHE_TIME_KEY, Date.now().toString());
+    } catch (e) {
+        // 存储失败（可能超出容量），忽略
+    }
+    return resources;
 }
 
 // ==================== 主题与深色模式 ====================
