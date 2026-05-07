@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>站点状态 · 鸿渚の分享页</title>
+    <meta name="description" content="站点资源与卡片链接状态监控">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root {
+            --status-ok: #16a34a;
+            --status-warn: #d97706;
+            --status-fail: #dc2626;
+            --status-pending: #5f6c80;
+        }
+        body.dark-mode {
+            --status-pending: #7f9bc0;
+        }
+        .status-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-card);
+            padding: var(--space-xl);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--space-xl);
+        }
+        .status-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary-600);
+            margin-bottom: var(--space-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        .status-subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: var(--space-lg);
+        }
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid var(--border-light);
+            background: var(--bg-card);
+            color: var(--text-title);
+            min-height: var(--touch-target-size);
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: var(--primary-500);
+            color: white;
+            border-color: var(--primary-500);
+        }
+        .btn-primary:hover {
+            background: var(--primary-600);
+            border-color: var(--primary-600);
+        }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .auto-refresh {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+            margin-top: var(--space-md);
+            -webkit-overflow-scrolling: touch;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        th, td {
+            padding: 12px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-light);
+            white-space: nowrap;
+        }
+        th {
+            background: var(--bg-page);
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        td {
+            color: var(--text-desc);
+            vertical-align: middle;
+        }
+        td.url-cell {
+            max-width: 320px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+        td.name-cell {
+            max-width: 180px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+        .status-ok { background: #e6f7e6; color: var(--status-ok); }
+        .status-warn { background: #fff3e6; color: var(--status-warn); }
+        .status-fail { background: #ffeaea; color: var(--status-fail); }
+        .status-pending { background: var(--bg-page); color: var(--status-pending); }
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .dot-ok { background: var(--status-ok); }
+        .dot-warn { background: var(--status-warn); }
+        .dot-fail { background: var(--status-fail); }
+        .dot-pending { background: var(--status-pending); animation: pulse 1.2s infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .last-update {
+            text-align: right;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: var(--space-sm);
+            padding-top: var(--space-sm);
+            border-top: 1px solid var(--border-light);
+        }
+        .empty-text {
+            text-align: center;
+            padding: var(--space-xl);
+            color: var(--text-muted);
+        }
+        @media (max-width: 700px) {
+            .table-wrapper { margin-left: -1rem; margin-right: -1rem; }
+            th, td { padding: 10px 8px; font-size: 0.8rem; }
+            td.url-cell { max-width: 150px; }
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <div class="breadcrumb" id="breadcrumb"></div>
+
+        <!-- ========== 模块1：站点依赖资源监控 ========== -->
+        <div class="status-card">
+            <div class="flex-row">
+                <div>
+                    <h1 class="status-title"><i class="fas fa-heartbeat"></i> 站点资源状态</h1>
+                    <p class="status-subtitle">检测首页、CDN、字体库等外部依赖的在线状态与响应延迟</p>
+                </div>
+                <button class="btn btn-primary" id="refreshDepsBtn">
+                    <i class="fas fa-rotate"></i> 立即检测
+                </button>
+            </div>
+            <div class="auto-refresh" style="margin-bottom: 1rem;"><i class="fas fa-sync-alt"></i> 每60秒自动刷新</div>
+            <div class="table-wrapper">
+                <table id="depsTable">
+                    <thead>
+                        <tr>
+                            <th>资源名称</th>
+                            <th>检测 URL</th>
+                            <th>状态</th>
+                            <th>延迟</th>
+                            <th>最后检查</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="last-update" id="depsUpdateNote">等待首次检测...</div>
+        </div>
+
+        <!-- ========== 模块2：卡片链接监控 ========== -->
+        <div class="status-card">
+            <div class="flex-row">
+                <div>
+                    <h1 class="status-title"><i class="fas fa-link"></i> 资源卡片链接监控</h1>
+                    <p class="status-subtitle">自动扫描所有卡片中的外部链接，实时检测可达性 <span style="font-size:0.8rem;">(跨域限制可能导致误判)</span></p>
+                </div>
+                <div style="display:flex; gap:0.5rem;">
+                    <button class="btn" id="reloadCardsBtn"><i class="fas fa-sync-alt"></i> 重载卡片数据</button>
+                    <button class="btn btn-primary" id="refreshCardsBtn"><i class="fas fa-rotate"></i> 检测全部链接</button>
+                </div>
+            </div>
+            <div class="auto-refresh" style="margin-bottom: 1rem;"><i class="fas fa-sync-alt"></i> 每120秒自动刷新链接状态</div>
+            <div class="table-wrapper">
+                <table id="cardsTable">
+                    <thead>
+                        <tr>
+                            <th>资源标题</th>
+                            <th>链接 URL</th>
+                            <th>状态</th>
+                            <th>延迟</th>
+                            <th>最后检查</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="last-update" id="cardsUpdateNote">正在加载卡片数据...</div>
+        </div>
+    </main>
+
+    <script src="js/common.js"></script>
+    <script>
+        (function() {
+            // ==================== 配置 ====================
+            const DEPENDENCIES = [
+                { name: '首页',        url: 'https://watchfleeting.github.io/starsea-shares/' },
+                { name: 'DPlayer',     url: 'https://cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.js' },
+                { name: 'Font Awesome',url: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' },
+                { name: 'Google Fonts',url: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap' },
+                { name: 'Marked',      url: 'https://cdn.jsdelivr.net/npm/marked/marked.min.js' },
+                { name: 'DOMPurify',   url: 'https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js' },
+            ];
+
+            const DEPS_TIMEOUT = 8000;
+            const CARDS_TIMEOUT = 10000;
+
+            // ==================== 全局状态 ====================
+            const depsStatus = DEPENDENCIES.map(d => ({ ...d, status: 'pending', latency: null, lastCheck: null }));
+            let cardsStatus = [];
+            let allResourcesCache = null;
+
+            let depsChecking = false, cardsChecking = false;
+            let depsTimer = null, cardsTimer = null;
+
+            // UI 元素
+            const depsTbody = document.querySelector('#depsTable tbody');
+            const cardsTbody = document.querySelector('#cardsTable tbody');
+            const depsNote = document.getElementById('depsUpdateNote');
+            const cardsNote = document.getElementById('cardsUpdateNote');
+            const refreshDepsBtn = document.getElementById('refreshDepsBtn');
+            const refreshCardsBtn = document.getElementById('refreshCardsBtn');
+            const reloadCardsBtn = document.getElementById('reloadCardsBtn');
+
+            // ==================== 工具 ====================
+            function formatTime(date) {
+                if (!date) return '—';
+                const d = new Date(date);
+                const pad = n => n.toString().padStart(2, '0');
+                return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+            }
+
+            function getStatusInfo(status, latency) {
+                switch (status) {
+                    case 'normal':  return { cls: 'status-ok', dot: 'dot-ok', text: '🟢 正常' };
+                    case 'slow':    return { cls: 'status-warn', dot: 'dot-warn', text: `🟡 超时 (${latency}ms)` };
+                    case 'down':    return { cls: 'status-fail', dot: 'dot-fail', text: '🔴 不可用' };
+                    case 'pending': return { cls: 'status-pending', dot: 'dot-pending', text: '⏳ 检测中...' };
+                    default:        return { cls: '', dot: '', text: '⚪ 未知' };
+                }
+            }
+
+            function renderTable(tbody, data, noteEl) {
+                tbody.innerHTML = data.map(d => {
+                    const info = getStatusInfo(d.status, d.latency);
+                    const name = d.title || d.name || '—';
+                    const url = d.url || '—';
+                    return `
+                        <tr>
+                            <td class="name-cell" title="${escapeHtml(name)}">${escapeHtml(name)}</td>
+                            <td class="url-cell" title="${escapeHtml(url)}">${escapeHtml(url)}</td>
+                            <td><span class="status-badge ${info.cls}"><span class="dot ${info.dot}"></span>${info.text}</span></td>
+                            <td>${d.latency !== null ? d.latency + ' ms' : '—'}</td>
+                            <td>${formatTime(d.lastCheck)}</td>
+                        </tr>
+                    `;
+                }).join('');
+                const times = data.map(d => d.lastCheck).filter(Boolean);
+                if (noteEl) {
+                    noteEl.textContent = times.length ? `最近一次检测：${formatTime(new Date(Math.max(...times)))}` : '等待首次检测...';
+                }
+            }
+
+            async function checkUrl(url, timeoutMs, method = 'HEAD') {
+                const controller = new AbortController();
+                const timer = setTimeout(() => controller.abort(), timeoutMs);
+                const start = performance.now();
+                try {
+                    const resp = await fetch(url, {
+                        method: method,
+                        mode: 'cors',
+                        signal: controller.signal,
+                        cache: 'no-cache'
+                    });
+                    clearTimeout(timer);
+                    const latency = Math.round(performance.now() - start);
+                    return resp.ok ? { status: 'normal', latency } : { status: 'down', latency };
+                } catch (err) {
+                    clearTimeout(timer);
+                    const latency = Math.round(performance.now() - start);
+                    if (err.name === 'AbortError') return { status: 'slow', latency: timeoutMs };
+                    return { status: 'down', latency };
+                }
+            }
+
+            // ==================== 依赖检测 ====================
+            async function runDepsCheck() {
+                if (depsChecking) return;
+                depsChecking = true;
+                refreshDepsBtn.disabled = true;
+                refreshDepsBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 检测中...';
+                depsStatus.forEach(d => d.status = 'pending');
+                renderTable(depsTbody, depsStatus, depsNote);
+
+                const tasks = DEPENDENCIES.map((dep, i) =>
+                    checkUrl(dep.url, DEPS_TIMEOUT).then(result => {
+                        depsStatus[i].status = result.status;
+                        depsStatus[i].latency = result.latency;
+                        depsStatus[i].lastCheck = Date.now();
+                    }).catch(() => {
+                        depsStatus[i].status = 'down';
+                        depsStatus[i].latency = null;
+                        depsStatus[i].lastCheck = Date.now();
+                    })
+                );
+                await Promise.allSettled(tasks);
+                renderTable(depsTbody, depsStatus, depsNote);
+                depsChecking = false;
+                refreshDepsBtn.disabled = false;
+                refreshDepsBtn.innerHTML = '<i class="fas fa-rotate"></i> 立即检测';
+            }
+
+            // ==================== 卡片链接 ====================
+            async function loadCardsData() {
+                try {
+                    allResourcesCache = await loadAllResources('?t=' + Date.now());
+                    if (!allResourcesCache || allResourcesCache.length === 0) {
+                        console.warn('未加载到任何卡片数据');
+                        allResourcesCache = [];
+                    }
+                } catch (e) {
+                    console.error('加载卡片失败:', e);
+                    allResourcesCache = [];
+                }
+                cardsStatus = [];
+                const seenUrls = new Set();
+                allResourcesCache.forEach(res => {
+                    const meta = res.meta || {};
+                    const title = meta.title || '未知资源';
+
+                    const addLink = (url, label = '') => {
+                        if (!url || typeof url !== 'string') return;
+                        url = url.trim();
+                        if (!url.startsWith('http://') && !url.startsWith('https://')) return;
+                        if (seenUrls.has(url)) return;
+                        seenUrls.add(url);
+                        cardsStatus.push({
+                            title: title + (label ? ` (${label})` : ''),
+                            url: url,
+                            resourceId: meta.id || '',
+                            status: 'pending',
+                            latency: null,
+                            lastCheck: null
+                        });
+                    };
+
+                    if (meta.url) addLink(meta.url, '主链接');
+                    if (meta.downloadUrl) addLink(meta.downloadUrl, '下载');
+                    if (Array.isArray(meta.downloads)) {
+                        meta.downloads.forEach((d, idx) => {
+                            if (d && d.url) addLink(d.url, d.name || `下载${idx+1}`);
+                        });
+                    }
+                });
+            }
+
+            async function runCardsCheck(silent = false) {
+                if (cardsChecking) return;
+                cardsChecking = true;
+                refreshCardsBtn.disabled = true;
+                refreshCardsBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 检测中...';
+
+                if (!allResourcesCache || allResourcesCache.length === 0) {
+                    await loadCardsData();
+                }
+
+                cardsStatus.forEach(c => c.status = 'pending');
+                renderTable(cardsTbody, cardsStatus, cardsNote);
+
+                const chunkSize = 10;
+                for (let i = 0; i < cardsStatus.length; i += chunkSize) {
+                    const chunk = cardsStatus.slice(i, i + chunkSize);
+                    const tasks = chunk.map((item, chunkIndex) => {
+                        const globalIndex = i + chunkIndex;
+                        return checkUrl(item.url, CARDS_TIMEOUT, 'HEAD').then(result => {
+                            cardsStatus[globalIndex].status = result.status;
+                            cardsStatus[globalIndex].latency = result.latency;
+                            cardsStatus[globalIndex].lastCheck = Date.now();
+                        }).catch(() => {
+                            cardsStatus[globalIndex].status = 'down';
+                            cardsStatus[globalIndex].latency = null;
+                            cardsStatus[globalIndex].lastCheck = Date.now();
+                        });
+                    });
+                    await Promise.allSettled(tasks);
+                    renderTable(cardsTbody, cardsStatus, cardsNote);
+                }
+
+                cardsChecking = false;
+                refreshCardsBtn.disabled = false;
+                refreshCardsBtn.innerHTML = '<i class="fas fa-rotate"></i> 检测全部链接';
+            }
+
+            // ==================== 初始化 ====================
+            async function init() {
+                await loadHeader();
+                await loadFooter();
+                renderBreadcrumb('status');
+
+                renderTable(depsTbody, depsStatus, depsNote);
+                cardsTbody.innerHTML = '<tr><td colspan="5" class="empty-text">正在加载卡片数据...</td></tr>';
+
+                await loadCardsData();
+                if (cardsStatus.length === 0) {
+                    cardsTbody.innerHTML = '<tr><td colspan="5" class="empty-text"><i class="fas fa-info-circle"></i> 未找到任何外部链接</td></tr>';
+                    cardsNote.textContent = '无链接数据';
+                } else {
+                    renderTable(cardsTbody, cardsStatus, cardsNote);
+                    runCardsCheck(true);
+                }
+
+                runDepsCheck();
+                depsTimer = setInterval(runDepsCheck, 60000);
+                cardsTimer = setInterval(() => { if (cardsStatus.length > 0) runCardsCheck(true); }, 120000);
+
+                refreshDepsBtn.addEventListener('click', runDepsCheck);
+                refreshCardsBtn.addEventListener('click', () => runCardsCheck(false));
+                reloadCardsBtn.addEventListener('click', async () => {
+                    await loadCardsData();
+                    if (cardsStatus.length === 0) {
+                        cardsTbody.innerHTML = '<tr><td colspan="5" class="empty-text">未找到任何外部链接</td></tr>';
+                        cardsNote.textContent = '无链接数据';
+                    } else {
+                        renderTable(cardsTbody, cardsStatus, cardsNote);
+                        runCardsCheck(true);
+                    }
+                });
+            }
+
+            window.addEventListener('beforeunload', () => {
+                if (depsTimer) clearInterval(depsTimer);
+                if (cardsTimer) clearInterval(cardsTimer);
+            });
+
+            document.addEventListener('DOMContentLoaded', init);
+        })();
+    </script>
+</body>
+</html>

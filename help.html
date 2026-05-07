@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帮助中心 · 鸿渚の分享页</title>
+    <meta name="description" content="常见问题与使用指南">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .help-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-card);
+            padding: var(--space-xl);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--space-xl);
+        }
+        .help-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-600);
+            margin-bottom: var(--space-md);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        .help-section {
+            margin-bottom: var(--space-xl);
+        }
+        .help-section h2 {
+            font-size: 1.5rem;
+            color: var(--primary-600);
+            margin-bottom: var(--space-md);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        .help-section h3 {
+            font-size: 1.2rem;
+            color: var(--text-title);
+            margin: 1.5rem 0 0.5rem;
+        }
+        .help-section p {
+            color: var(--text-desc);
+            margin-bottom: 1rem;
+        }
+        .help-section ul {
+            margin: 0.5rem 0 1.5rem 1.8rem;
+            color: var(--text-desc);
+        }
+        .help-section ol {
+            margin: 0.5rem 0 1.5rem 1.8rem;
+            color: var(--text-desc);
+        }
+        .faq-item {
+            border-bottom: 1px solid var(--border-light);
+            padding: var(--space-md) 0;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        .faq-question {
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: var(--space-xs);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+        .faq-question i {
+            color: var(--primary-500);
+        }
+        .faq-answer {
+            color: var(--text-desc);
+            padding-left: var(--space-lg);
+        }
+    </style>
+</head>
+<body>
+    <script>
+        (function() {
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('selectstart', e => e.preventDefault());
+            document.addEventListener('keydown', e => {
+                if (e.ctrlKey || e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))) e.preventDefault();
+            });
+            document.addEventListener('copy', e => e.preventDefault());
+        })();
+    </script>
+
+    <main class="container">
+        <div class="breadcrumb" id="breadcrumb"></div>
+
+        <div class="help-card">
+            <h1 class="help-title"><i class="fas fa-question-circle"></i> 帮助中心</h1>
+
+            <div class="help-section">
+                <h2><i class="fas fa-compass"></i> 网站导航</h2>
+                <p>本站主要提供以下四类资源：</p>
+                <ul>
+                    <li><strong>网页</strong> - 推荐的有趣或有用的网站链接。</li>
+                    <li><strong>软件</strong> - 实用软件下载或介绍。</li>
+                    <li><strong>文件</strong> - 资源文件包、文档等下载。</li>
+                    <li><strong>文章</strong> - 原创或整理的技术文章、教程。</li>
+                </ul>
+                <p>您可以通过首页的分类卡片进入相应类别，或使用顶部的搜索功能查找特定资源。</p>
+            </div>
+
+            <div class="help-section">
+                <h2><i class="fas fa-lock"></i> 付费资源说明</h2>
+                <p>部分文件资源标记为“付费”，需要通过爱发电赞助获得兑换码后方可下载。具体流程：</p>
+                <ol>
+                    <li>点击资源详情页的“验证兑换码”区域下方的爱发电链接（或直接访问 <a href="https://afdian.com/a/lyxh-took" target="_blank">爱发电主页</a>）。</li>
+                    <li>选择对应商品完成赞助，您将收到一封包含兑换码的邮件或站内信。</li>
+                    <li>返回本站资源详情页，输入兑换码点击验证。</li>
+                    <li>验证成功后，下载按钮将显示，点击即可下载。</li>
+                </ol>
+                <p>每个兑换码仅限使用一次，请勿泄露。</p>
+            </div>
+
+            <div class="help-section">
+                <h2><i class="fas fa-question-circle"></i> 常见问题</h2>
+                <div class="faq-item">
+                    <div class="faq-question"><i class="fas fa-angle-right"></i> 为什么我打不开某些网页链接？</div>
+                    <div class="faq-answer">部分链接可能需要特殊网络环境（如翻墙），或链接已失效。您可以通过详情页的“反馈”功能告知我们。</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question"><i class="fas fa-angle-right"></i> 下载的文件需要密码？</div>
+                    <div class="faq-answer">部分文件资源设有解压密码，密码会显示在详情页的“解压密码”区域。如果未显示，说明该资源无需密码。</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question"><i class="fas fa-angle-right"></i> 如何反馈问题或建议？</div>
+                    <div class="faq-answer">您可以通过以下方式联系我们：<br>
+                        - 发送邮件至：lzc737507@outlook.com<br>
+                        - 在 <a href="https://github.com/watchfleeting/starsea-shares" target="_blank">GitHub 仓库</a> 提交 Issue<br>
+                        - 通过爱发电私信</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question"><i class="fas fa-angle-right"></i> 为什么有些资源无法复制文字？</div>
+                    <div class="faq-answer">为了保护资源版权，本站启用了防复制功能，禁止右键、选择、复制等操作。如需引用，请手动输入或联系管理员。</div>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <h2><i class="fas fa-handshake"></i> 联系与支持</h2>
+                <p>如果您喜欢本站，欢迎通过爱发电赞助支持，帮助维持服务器和带宽费用。您的支持是我更新的动力！</p>
+                <p style="margin-top: var(--space-md);">
+                    <a href="https://afdian.com/a/lyxh-took" target="_blank" style="display: inline-flex; align-items: center; gap: var(--space-sm); background: #946ce6; color: white; padding: var(--space-sm) var(--space-lg); border-radius: 40px; text-decoration: none;">
+                        <i class="fas fa-bolt"></i> 前往爱发电赞助
+                    </a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/common.js"></script>
+    <script>
+        (async function() {
+            await loadHeader();
+            await loadFooter();
+            renderBreadcrumb('help');
+        })();
+    </script>
+</body>
+</html>
